@@ -141,8 +141,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-      - name: Install dependencies
-        run: yarn install
       - name: Install CAN support on host
         run: |
           sudo apt-get update
@@ -158,6 +156,8 @@ jobs:
           sudo ip link add dev vcan0 type vcan
           sudo ip link set up vcan0
           sudo ip link show
+      - name: Install dependencies
+        run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -192,10 +192,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-      - name: Install dependencies
-        run: |
-          yarn config set supportedArchitectures.libc "musl"
-          yarn install
       - name: Install CAN support on host
         run: |
           sudo apt-get update
@@ -211,6 +207,10 @@ jobs:
           sudo ip link add dev vcan0 type vcan
           sudo ip link set up vcan0
           sudo ip link show
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.libc "musl"
+          yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
