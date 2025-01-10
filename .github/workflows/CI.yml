@@ -155,18 +155,22 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y linux-modules-extra-$(uname -r)
+      - name: Setup CAN kernel modules
+        run: |
           sudo modprobe can
           sudo modprobe can_raw
           sudo modprobe vcan
-          lsmod
+          lsmod | grep can
       - name: Test bindings
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-slim
           options: "--privileged -v ${{ github.workspace }}:/build -w /build"
           run: |
+            echo 'setting up vcan0 interface'
             sudo ip link add dev vcan0 type vcan
             sudo ip link set up vcan0
+            echo 'running tests'
             yarn test
   # test-linux-x64-musl-binding:
   #   name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
