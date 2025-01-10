@@ -151,17 +151,18 @@ jobs:
       - name: List packages
         run: ls -R .
         shell: bash
-      - name: Install can support
-        run: sudo apt-get install -y linux-modules-extra-$(uname -r)
-      - name: Setup vcan interface
-        run: |
-          sudo modprobe can
-          sudo modprobe can_raw
-          sudo modprobe vcan
-          sudo ip link add dev vcan0 type vcan
-          sudo ip link set up vcan0
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn test
+        run: |
+          docker run --rm -v $(pwd):/build -w /build --privileged node:${{ matrix.node }}-slim bash -c "
+            apt-get update && \
+            apt-get install -y linux-modules-extra-$(uname -r) && \
+            modprobe can && \
+            modprobe can_raw && \
+            modprobe vcan && \
+            ip link add dev vcan0 type vcan && \
+            ip link set up vcan0 && \
+            yarn test
+          "
   test-linux-x64-musl-binding:
     name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
     needs:
