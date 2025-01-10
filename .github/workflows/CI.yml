@@ -151,20 +151,22 @@ jobs:
       - name: List packages
         run: ls -R .
         shell: bash
+      - name: Install CAN support on host
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-modules-extra-$(uname -r)
+          sudo modprobe can
+          sudo modprobe can_raw
+          sudo modprobe vcan
+          lsmod
       - name: Test bindings
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-slim
           options: "--privileged -v ${{ github.workspace }}:/build -w /build"
           run: |
-            echo '---- SETTING UP CAN INTERFACE ----'
-            apt-get update
-            KERNEL_VERSION=$(uname -r)
-            echo "Kernel version: $KERNEL_VERSION"
-            apt-get install -y linux-modules-extra-$KERNEL_VERSION
-            modprobe can
-            modprobe can_raw
-            modprobe vcan
+            sudo ip link add dev vcan0 type vcan
+            sudo ip link set up vcan0
             yarn test
   # test-linux-x64-musl-binding:
   #   name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
