@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { execSync } from "child_process";
 import { CanSocket, type CanFrame } from "../index.js";
-import { buffer, waitFor, sleep } from "./util.js";
+import { buffer, waitFor, sleep, throttle, unthrottle } from "./util.js";
 
 test("log env", () => {
   console.log(process.env);
@@ -70,10 +70,8 @@ test("filters received messages", async () => {
 });
 
 test("queues messages when socket buffer is exhausted (EWOULDBLOCK, EAGAIN)", async (context) => {
-  execSync("sudo ./test-scripts.sh throttle 96");
-  context.onTestFinished(() => {
-    execSync("sudo ./test-scripts.sh unthrottle");
-  });
+  throttle(96)
+  context.onTestFinished(unthrottle);
 
   let total = 0;
   let reader = new CanSocket("vcan0");
@@ -95,19 +93,9 @@ test("queues messages when socket buffer is exhausted (EWOULDBLOCK, EAGAIN)", as
   expect(socket.getWriteQueueSize()).toBe(0);
 });
 
-function throttle(bytes: number) {
-  execSync(`sudo ./test-scripts.sh throttle ${bytes}`);
-}
-
-function unthrottle() {
-  execSync("sudo ./test-scripts.sh unthrottle");
-}
-
 test("queues messages when system buffer is exhausted (ENOBUFS)", async (context) => {
-  execSync("sudo ./test-scripts.sh throttle 16");
-  context.onTestFinished(() => {
-    execSync("sudo ./test-scripts.sh unthrottle");
-  });
+  throttle(16);
+  context.onTestFinished(unthrottle);
 
   let total = 0;
   let reader = new CanSocket("vcan0");

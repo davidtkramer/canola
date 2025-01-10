@@ -166,7 +166,6 @@ jobs:
           sudo ip link add dev vcan0 type vcan
           sudo ip link set up vcan0
           sudo ip link show
-          echo 'done!'
       - name: Test bindings
         uses: addnab/docker-run-action@v3
         with:
