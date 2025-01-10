@@ -1,0 +1,21 @@
+{
+  "name": "@davtomkra/canola-linux-arm64-musl",
+  "version": "0.0.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "canola.linux-arm64-musl.node",
+  "files": [
+    "canola.linux-arm64-musl.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "libc": [
+    "musl"
+  ]
+}

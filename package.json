@@ -1,0 +1,47 @@
+{
+  "name": "@davtomkra/canola",
+  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "type": "module",
+  "napi": {
+    "name": "canola",
+    "triples": {
+      "defaults": false,
+      "additional": [
+        "aarch64-linux-android",
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "armv7-unknown-linux-gnueabihf",
+        "armv7-unknown-linux-musleabihf",
+        "x86_64-unknown-linux-gnu",
+        "x86_64-unknown-linux-musl",
+        "x86_64-unknown-freebsd",
+        "armv7-linux-androideabi",
+        "riscv64gc-unknown-linux-gnu"
+      ]
+    }
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.4",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release --js ./native.cjs --dts ./native.d.cts ./js && tsc && cp ./js/*.node ./dist ",
+    "build:debug": "napi build --platform --js ./native.cjs --dts ./native.d.cts ./js && tsc && cp ./js/*.node ./dist",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "vitest run",
+    "universal": "napi universal",
+    "version": "napi version"
+  },
+  "packageManager": "yarn@4.5.3"
+}
