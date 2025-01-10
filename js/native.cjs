@@ -197,6 +197,8 @@ switch (platform) {
           try {
             if (localFileExisted) {
               nativeBinding = require("./canola.linux-x64-gnu.node");
+              console.log("Module loaded:", nativeBinding);
+              console.log("Module keys:", Object.keys(nativeBinding));
             } else {
               nativeBinding = require("@davtomkra/canola-linux-x64-gnu");
             }
