@@ -44,11 +44,11 @@ export function buffer(data: string) {
 }
 
 export function throttle(bytes: number) {
-  let sudo = process.env["CI"] ? "sudo " : "";
+  let sudo = process.env["CI"] ? "" : "sudo ";
   execSync(`${sudo}./test-scripts.sh throttle ${bytes}`);
 }
 
 export function unthrottle() {
-  let sudo = process.env["CI"] ? "sudo " : "";
+  let sudo = process.env["CI"] ? "" : "sudo ";
   execSync(`${sudo}./test-scripts.sh unthrottle`);
 }
