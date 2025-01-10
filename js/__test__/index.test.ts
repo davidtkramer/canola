@@ -2,10 +2,6 @@ import { test, expect } from "vitest";
 import { CanSocket, type CanFrame } from "../index.js";
 import { buffer, waitFor, sleep, throttle, unthrottle } from "./util.js";
 
-test("log env", () => {
-  console.log(process.env);
-});
-
 test("errors if can interface does not exist", () => {
   expect(() => {
     new CanSocket("fake");
