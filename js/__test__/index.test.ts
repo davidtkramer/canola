@@ -5,7 +5,7 @@ import { buffer, waitFor, sleep } from "./util.js";
 
 test("log env", () => {
   console.log(process.env);
-})
+});
 
 test("errors if can interface does not exist", () => {
   expect(() => {
@@ -94,6 +94,14 @@ test("queues messages when socket buffer is exhausted (EWOULDBLOCK, EAGAIN)", as
   });
   expect(socket.getWriteQueueSize()).toBe(0);
 });
+
+function throttle(bytes: number) {
+  execSync(`sudo ./test-scripts.sh throttle ${bytes}`);
+}
+
+function unthrottle() {
+  execSync("sudo ./test-scripts.sh unthrottle");
+}
 
 test("queues messages when system buffer is exhausted (ENOBUFS)", async (context) => {
   execSync("sudo ./test-scripts.sh throttle 16");

@@ -173,6 +173,7 @@ jobs:
           image: node:${{ matrix.node }}-slim
           options: "--privileged --network host -v ${{ github.workspace }}:/build -w /build"
           run: |
+            export CI=true
             yarn test
   # test-linux-x64-musl-binding:
   #   name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
