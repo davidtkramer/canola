@@ -33,10 +33,10 @@ jobs:
             target: x86_64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
             build: yarn build --target x86_64-unknown-linux-musl
-          # - host: ubuntu-latest
-          #   target: aarch64-unknown-linux-gnu
-          #   docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
-          #   build: yarn build --target aarch64-unknown-linux-gnu
+          - host: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
+            build: yarn build --target aarch64-unknown-linux-gnu
           # - host: ubuntu-latest
           #   target: armv7-unknown-linux-gnueabihf
           #   setup: |
@@ -170,10 +170,8 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-slim
-          options: "--privileged  --network host -v ${{ github.workspace }}:/build -w /build"
-          run: |
-            export CI=true
-            yarn test
+          options: "-e CI=true --network host -v ${{ github.workspace }}:/build -w /build"
+          run: yarn test
   test-linux-x64-musl-binding:
     name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
     needs:
@@ -221,46 +219,61 @@ jobs:
         shell: bash
       - name: Test bindings
         run: docker run -e CI=true --network host --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine yarn test
-  # test-linux-aarch64-gnu-binding:
-  #   name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
-  #   needs:
-  #     - build
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       node:
-  #         - '18'
-  #         - '20'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: bindings-aarch64-unknown-linux-gnu
-  #         path: ./js
-  #     - name: List packages
-  #       run: ls -R .
-  #       shell: bash
-  #     - name: Install dependencies
-  #       run: |
-  #         yarn config set supportedArchitectures.cpu "arm64"
-  #         yarn config set supportedArchitectures.libc "glibc"
-  #         yarn install
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-  #       with:
-  #         platforms: arm64
-  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-  #     - name: Setup and run tests
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: node:${{ matrix.node }}-slim
-  #         options: '--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
-  #         run: |
-  #           set -e
-  #           yarn test
-  #           ls -la
+  test-linux-aarch64-gnu-binding:
+    name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '18'
+          - '20'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install CAN support on host
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-modules-extra-$(uname -r)
+      - name: Setup CAN kernel modules
+        run: |
+          sudo modprobe can
+          sudo modprobe can_raw
+          sudo modprobe vcan
+          lsmod | grep can
+      - name: Setup virtual CAN interface
+        run: |
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+          sudo ip link show
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-aarch64-unknown-linux-gnu
+          path: ./js
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.cpu "arm64"
+          yarn config set supportedArchitectures.libc "glibc"
+          yarn install
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Setup and run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:${{ matrix.node }}-slim
+          options: '--network host -e CI=true --platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+          run: |
+            set -e
+            yarn test
+            ls -la
   # test-linux-aarch64-musl-binding:
   #   name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
   #   needs:
