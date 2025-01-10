@@ -36,3 +36,7 @@ export function sleep(timeout: number) {
     // Busy wait
   }
 }
+
+export function buffer(data: string) {
+  return Buffer.from(data, "hex");
+}

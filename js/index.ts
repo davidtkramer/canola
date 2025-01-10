@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { CanSocketNative } from "./native.cjs";
+import { CanSocketNative, type CanFilter } from "./native.cjs";
 
 export type CanFrame = {
   id: number,
@@ -31,6 +31,10 @@ export class CanSocket extends EventEmitter<CanEventMap> {
 
   close() {
     this.socket.close();
+  }
+
+  setFilters(filters: Array<CanFilter>) {
+    this.socket.setFilters(filters);
   }
 
   getWriteQueueSize() {

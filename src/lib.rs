@@ -8,12 +8,13 @@ use std::{
   ffi,
   io::{Read, Write},
   mem,
-  os::fd::AsRawFd,
+  os::{fd::AsRawFd, raw::c_int},
   ptr, slice,
 };
 
 use libc::{
-  can_frame, if_nametoindex, sa_family_t, sockaddr_can, sockaddr_storage, AF_CAN, CAN_RAW,
+  can_frame, if_nametoindex, sa_family_t, sockaddr_can, sockaddr_storage, socklen_t, AF_CAN,
+  CAN_RAW, CAN_RAW_FILTER, SOL_CAN_RAW,
 };
 use napi::{bindgen_prelude::*, Env, Ref};
 use socket2::{Domain, Protocol, SockAddr, Socket, Type};
@@ -37,6 +38,11 @@ struct CanSocket {
   write_pending: bool,
 }
 
+#[napi(object)]
+struct CanFilter {
+  pub id: u32,
+  pub mask: u32,
+}
 struct PendingWrite {
   frame: can_frame,
 }
@@ -67,6 +73,11 @@ impl CanSocketProxy {
         self.socket = ptr::null_mut();
       }
     }
+  }
+
+  #[napi]
+  pub fn set_filters(&mut self, filters: Vec<CanFilter>) -> Result<()> {
+    self.socket()?.set_filters(filters)
   }
 
   #[napi]
@@ -322,6 +333,38 @@ impl CanSocket {
 
   pub fn set_send_buffer_size(&self, size: i32) {
     self.socket.set_send_buffer_size(size as usize).unwrap();
+  }
+
+  pub fn set_filters(&self, filters: Vec<CanFilter>) -> Result<()> {
+    let libc_filters: Vec<libc::can_filter> = filters
+      .into_iter()
+      .map(|f| libc::can_filter {
+        can_id: f.id,
+        can_mask: f.mask,
+      })
+      .collect();
+
+    self.set_socket_option_multi(SOL_CAN_RAW, CAN_RAW_FILTER, &libc_filters)
+  }
+
+  fn set_socket_option_multi<T>(&self, level: c_int, name: c_int, values: &[T]) -> Result<()> {
+    let result = unsafe {
+      libc::setsockopt(
+        self.socket.as_raw_fd(),
+        level,
+        name,
+        values.as_ptr().cast(),
+        size_of_val(values) as socklen_t,
+      )
+    };
+
+    match result {
+      0 => Ok(()),
+      _ => Err(Error::new(
+        Status::GenericFailure,
+        std::io::Error::last_os_error(),
+      )),
+    }
   }
 }
 

@@ -1,8 +1,7 @@
 import { test, expect } from "vitest";
 import { execSync } from "child_process";
-
 import { CanSocket, type CanFrame } from "../index.js";
-import { waitFor, sleep } from "./util.js";
+import { buffer, waitFor, sleep } from "./util.js";
 
 test("errors if can interface does not exist", () => {
   expect(() => {
@@ -13,10 +12,7 @@ test("errors if can interface does not exist", () => {
 test("cannot send more than 8 bytes in can frame data", () => {
   let socket = new CanSocket("vcan0");
   expect(() => {
-    socket.write(
-      123,
-      Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xee])
-    );
+    socket.write(123, buffer("deadbeefdeadbeeeef"));
   }).toThrowError("CAN frame data cannot exceed 8 bytes");
 });
 
@@ -24,10 +20,7 @@ test("cannot write to a closed socket", () => {
   let socket = new CanSocket("vcan0");
   socket.close();
   expect(() => {
-    socket.write(
-      123,
-      Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef])
-    );
+    socket.write(123, buffer("deadbeefdeadbeef"));
   }).toThrowError("Socket is closed");
 });
 
@@ -40,17 +33,36 @@ test("reads and writes a message", async () => {
   });
 
   let socket = new CanSocket("vcan0");
-  socket.write(
-    123,
-    Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef])
-  );
+  socket.write(123, buffer("deadbeefdeadbeef"));
 
   let frame = await promise;
 
   expect(frame.id).toBe(123);
-  expect(frame.data).toEqual(
-    Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef])
-  );
+  expect(frame.data).toEqual(buffer("deadbeefdeadbeef"));
+});
+
+test("filters received messages", async () => {
+  let frames: Array<CanFrame> = [];
+  let reader = new CanSocket("vcan0");
+  reader.setFilters([
+    { id: 124, mask: 0x7ff },
+    { id: 125, mask: 0x7ff },
+  ]);
+  reader.on("message", (frame) => {
+    frames.unshift(frame);
+  });
+
+  let socket = new CanSocket("vcan0");
+  socket.write(123, buffer("deadbeefdeadbeef"));
+  socket.write(124, buffer("deadbeefdeadbeef"));
+  socket.write(125, buffer("deadbeefdeadbeef"));
+
+  // wait for last message to arrive
+  await waitFor(() => {
+    expect(frames[0]?.id).toBe(125);
+  });
+  expect(frames[1].id).toBe(124);
+  expect(frames).toHaveLength(2);
 });
 
 test("queues messages when socket buffer is exhausted (EWOULDBLOCK, EAGAIN)", async (context) => {
@@ -67,10 +79,9 @@ test("queues messages when socket buffer is exhausted (EWOULDBLOCK, EAGAIN)", as
 
   let socket = new CanSocket("vcan0");
   socket.setSendBufferSize(2304);
-  let buffer = Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef]);
 
   for (let i = 0; i < 14; i++) {
-    socket.write(123, buffer);
+    socket.write(123, buffer("deadbeefdeadbeef"));
   }
   expect(socket.getWriteQueueSize()).toBe(2);
 
@@ -93,10 +104,8 @@ test("queues messages when system buffer is exhausted (ENOBUFS)", async (context
   });
 
   let socket = new CanSocket("vcan0");
-  let buffer = Buffer.from([0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef]);
-
   for (let i = 0; i < 5; i++) {
-    socket.write(123, buffer);
+    socket.write(123, buffer("deadbeefdeadbeef"));
   }
   // can send 2 messages immediately and 3 are queued
   expect(socket.getWriteQueueSize()).toBe(3);
@@ -113,7 +122,7 @@ test("queues messages when system buffer is exhausted (ENOBUFS)", async (context
   sleep(100);
 
   for (let i = 0; i < 3; i++) {
-    socket.write(123, buffer);
+    socket.write(123, buffer("deadbeefdeadbeef"));
   }
   // Should be able to another 2 messages immediately and have 1 queued
   expect(socket.getWriteQueueSize()).toBe(1);
