@@ -310,7 +310,6 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { CanSocketNative, CanSocket } = nativeBinding
+const { CanSocketNative } = nativeBinding
 
 module.exports.CanSocketNative = CanSocketNative
-module.exports.CanSocket = CanSocket

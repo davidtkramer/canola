@@ -28,7 +28,6 @@ struct CanSocketProxy {
   socket: *mut CanSocket,
 }
 
-#[napi]
 struct CanSocket {
   handle: *mut uv_poll_t,
   socket: Socket,

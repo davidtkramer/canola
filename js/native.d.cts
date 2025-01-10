@@ -16,4 +16,3 @@ export declare class CanSocketNative {
   getWriteQueueSize(): number
   setSendBufferSize(size: number): void
 }
-export declare class CanSocket { }
