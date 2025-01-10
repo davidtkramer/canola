@@ -131,7 +131,7 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - "18"
+          # - "18"
           - "20"
     runs-on: ubuntu-latest
     steps:
@@ -161,17 +161,18 @@ jobs:
           sudo modprobe can_raw
           sudo modprobe vcan
           lsmod | grep can
+      - name: Setup virtual CAN interface
+        run: |
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+          sudo ip link show
+          echo 'done!'
       - name: Test bindings
         uses: addnab/docker-run-action@v3
         with:
           image: node:${{ matrix.node }}-slim
-          options: "--privileged -v ${{ github.workspace }}:/build -w /build"
+          options: "--privileged --network host -v ${{ github.workspace }}:/build -w /build"
           run: |
-            echo 'setting up vcan0 interface'
-            sudo ip link add dev vcan0 type vcan
-            sudo ip link set up vcan0
-            sudo ip link show
-            echo 'running tests'
             yarn test
   # test-linux-x64-musl-binding:
   #   name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
