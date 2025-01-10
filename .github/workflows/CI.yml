@@ -157,7 +157,12 @@ jobs:
           image: node:${{ matrix.node }}-slim
           options: '--privileged -v ${{ github.workspace }}:/build -w /build'
           run: |
-            echo 'wow'
+            echo '---- SETTING UP CAN INTERFACE ----'
+            apt-get update
+            apt-get install -y linux-modules-extra-\$(uname -r)
+            modprobe can
+            modprobe can_raw
+            modprobe vcan
             yarn test
   test-linux-x64-musl-binding:
     name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
