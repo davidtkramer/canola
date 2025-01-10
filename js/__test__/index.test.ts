@@ -8,6 +8,8 @@ test.only("ci test", () => {
   console.log(CanSocketAll);
   console.log(Object.keys(CanSocketAll));
   console.log(CanSocketAll.CanSocketNative);
+  console.log(CanSocketAll.CanSocketNative.toString());
+  console.log(CanSocketAll.CanSocketNative.prototype);
 })
 
 test("errors if can interface does not exist", () => {
