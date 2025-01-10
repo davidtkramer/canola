@@ -1,8 +1,7 @@
 import { EventEmitter } from "events";
 import { CanSocketNative, type CanFilter } from "./native.cjs";
-import * as CanSocketAll from './native.cjs';
+console.log('CANSOCKETNATIVE:', CanSocketNative);
 
-export { CanSocketAll };
 export type CanFrame = {
   id: number,
   data: Buffer
