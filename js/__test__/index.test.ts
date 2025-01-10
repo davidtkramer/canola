@@ -1,7 +1,12 @@
 import { test, expect } from "vitest";
 import { execSync } from "child_process";
-import { CanSocket, type CanFrame } from "../index.js";
+import { CanSocket, CanSocketNative, type CanFrame } from "../index.js";
 import { buffer, waitFor, sleep } from "./util.js";
+
+test.only("ci test", () => {
+  console.log("CanSocketNative:")
+  console.log(CanSocketNative);
+})
 
 test("errors if can interface does not exist", () => {
   expect(() => {
