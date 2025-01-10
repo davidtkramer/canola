@@ -147,7 +147,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-unknown-linux-gnu
-          path: .
+          path: ./js
       - name: pwd
         run: pwd && ls -la
       - name: List packages
