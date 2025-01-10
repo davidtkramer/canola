@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import { CanSocket, CanSocketAll, type CanFrame } from "../index.js";
 import { buffer, waitFor, sleep } from "./util.js";
 
-test("ci test", () => {
+test.only("ci test", () => {
   console.log("CanSocketNative:")
   console.log(CanSocketAll);
   console.log(Object.keys(CanSocketAll));
