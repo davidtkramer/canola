@@ -3,14 +3,14 @@ import { execSync } from "child_process";
 import { CanSocket, CanSocketAll, type CanFrame } from "../index.js";
 import { buffer, waitFor, sleep } from "./util.js";
 
-test.only("ci test", () => {
+test("ci test", () => {
   console.log("CanSocketNative:")
   console.log(CanSocketAll);
   console.log(Object.keys(CanSocketAll));
   console.log(CanSocketAll.CanSocketNative);
   console.log(CanSocketAll.CanSocketNative.toString());
   console.log(CanSocketAll.CanSocketNative.prototype);
-})
+});
 
 test("errors if can interface does not exist", () => {
   expect(() => {
