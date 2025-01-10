@@ -155,7 +155,7 @@ jobs:
         run: |
           docker run --rm -v $(pwd):/build -w /build --privileged node:${{ matrix.node }}-slim bash -c "
             apt-get update && \
-            apt-get install -y linux-modules-extra-generic && \
+            apt-get install -y kmod linux-modules-generic can-utils iproute2 && \
             modprobe can && \
             modprobe can_raw && \
             modprobe vcan && \
