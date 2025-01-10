@@ -43,6 +43,7 @@ struct CanFilter {
   pub id: u32,
   pub mask: u32,
 }
+
 struct PendingWrite {
   frame: can_frame,
 }
