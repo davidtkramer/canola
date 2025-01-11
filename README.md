@@ -16,7 +16,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 Install nvm + node: https://nodejs.org/en/download
 
 ```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/\<VERSION\>/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/<VERSION>/install.sh | bash
 nvm install 22
 ```
 
@@ -36,4 +36,10 @@ Build project
 
 ```
 yarn build:debug
+```
+
+Run tests
+
+```
+yarn test
 ```
