@@ -40,5 +40,8 @@
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.5.3",
+  "dependencies": {
+    "@rgrove/parse-xml": "^4.2.0"
+  }
 }

@@ -26,5 +26,5 @@
     /* AND if you're building for a library: */
     "declaration": true
   },
-  "include": ["js/*.ts", "js/*.cjs"]
+  "include": ["js/*.ts", "js/*.cjs", "js/parser/*.ts"]
 }

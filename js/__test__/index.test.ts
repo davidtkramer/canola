@@ -1,6 +1,15 @@
 import { test, expect } from "vitest";
+import { promises as fs } from "fs";
+import path from "path";
 import { CanSocket, type CanFrame } from "../index.js";
+import { loadString } from '../parser/database.js';
 import { buffer, waitFor, sleep, throttle, unthrottle } from "./util.js";
+
+test("loads kcd file", async () => {
+  let file = await fs.readFile(path.join(__dirname, "./test.kcd"), "utf-8");
+  let db = loadString(file.replace(/>\s+</g, "><").trim());
+  console.log(db);
+});
 
 test("errors if can interface does not exist", () => {
   expect(() => {
@@ -33,7 +42,6 @@ test("reads and writes a message", async () => {
 
   let socket = new CanSocket("vcan0");
   socket.write(123, buffer("deadbeefdeadbeef"));
-
   let frame = await promise;
 
   expect(frame.id).toBe(123);
