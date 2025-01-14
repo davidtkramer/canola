@@ -1,0 +1,540 @@
+<NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://kayak.2codeornot2code.org/1.0" xsi:noNamespaceSchemaLocation="Definition.xsd">
+  <Document version="" />
+  <Node id="1" name="Receiver" />
+  <Node id="2" name="ChassisBus" />
+  <Node id="3" name="VehicleBus" />
+  <Node id="4" name="PartyBus" />
+  <Bus name="Bus">
+    <Message id="0x3C2" name="ID3C2VCLEFT_switchStatus" length="8" interval="50">
+      <Producer>
+        <NodeRef id="3" />
+      </Producer>
+      <Multiplex name="VCLEFT_switchStatusIndex" offset="0" length="2">
+        <Consumer>
+          <NodeRef id="1" />
+        </Consumer>
+        <Value min="0" max="2" />
+        <LabelSet>
+          <Label name="VCLEFT_SWITCH_STATUS_INDEX_0" value="0" />
+          <Label name="VCLEFT_SWITCH_STATUS_INDEX_1" value="1" />
+          <Label name="VCLEFT_SWITCH_STATUS_INDEX_INVALID" value="2" />
+        </LabelSet>
+        <MuxGroup count="0">
+          <Signal name="VCLEFT_hornSwitchPressed" offset="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_hazardButtonPressed" offset="3">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_brakeSwitchPressed" offset="4">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_rightMirrorTilt" offset="5" length="3">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="4" />
+            <LabelSet>
+              <Label name="MIRROR_TILT_DOWN" value="1" />
+              <Label name="MIRROR_TILT_LEFT" value="4" />
+              <Label name="MIRROR_TILT_RIGHT" value="3" />
+              <Label name="MIRROR_TILT_STOP" value="0" />
+              <Label name="MIRROR_TILT_UP" value="2" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatTrackBack" offset="8" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatTrackForward" offset="10" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatTiltDown" offset="12" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatTiltUp" offset="14" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLiftDown" offset="16" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLiftUp" offset="18" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatBackrestBack" offset="20" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatBackrestForward" offset="22" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLumbarDown" offset="24" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLumbarUp" offset="26" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLumbarIn" offset="28" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontSeatLumbarOut" offset="30" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackUpLF" offset="32">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoUpLF" offset="33">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackDownLF" offset="34">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoDownLF" offset="35">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackUpLR" offset="36">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoUpLR" offset="37">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackDownLR" offset="38">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoDownLR" offset="39">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackUpRF" offset="40">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoUpRF" offset="41">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackDownRF" offset="42">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoDownRF" offset="43">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackUpRR" offset="44">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoUpRR" offset="45">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackDownRR" offset="46">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowSwPackAutoDownRR" offset="47">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_frontBuckleSwitch" offset="48" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_frontOccupancySwitch" offset="50" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_rearLeftBuckleSwitch" offset="52" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_rearCenterOccupancySwitch" offset="54" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_rearLeftOccupancySwitchVCLEFT_rearLeftOccupancySwitch" offset="56" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+          </Signal>
+          <Signal name="VCLEFT_rearRightOccupancySwitch" offset="58" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_brakePressed" offset="60">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_rearHVACButtonPressed" offset="61">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_rearCenterBuckleSwitch" offset="62" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+        </MuxGroup>
+        <MuxGroup count="1">
+          <Signal name="VCLEFT_swcLeftTiltRight" offset="3" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcLeftPressed" offset="5" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcRightTiltLeft" offset="8" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcRightTiltRight" offset="10" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcRightPressed" offset="12" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcLeftTiltLeft" offset="14" length="2">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="3" />
+            <LabelSet>
+              <Label name="SWITCH_FAULT" value="3" />
+              <Label name="SWITCH_OFF" value="1" />
+              <Label name="SWITCH_ON" value="2" />
+              <Label name="SWITCH_SNA" value="0" />
+            </LabelSet>
+          </Signal>
+          <Signal name="VCLEFT_swcLeftScrollTicks" offset="16" length="6">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="-32" max="31" type="signed" />
+          </Signal>
+          <Signal name="VCLEFT_swcRightScrollTicks" offset="24" length="6">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="-32" max="31" type="signed" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowUpLR" offset="32">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowAutoUpLR" offset="33">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowDownLR" offset="34">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_btnWindowAutoDownLR" offset="35">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_2RowSeatReclineSwitch" offset="36">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_2RowSeatCenterSwitch" offset="37">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_2RowSeatLeftFoldFlatSwitc" offset="38">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_2RowSeatRightFoldFlatSwit" offset="39">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_2RowSeatBothFoldFlatSwitc" offset="40">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_swcLeftDoublePress" offset="41">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="VCLEFT_swcRightDoublePress" offset="42">
+            <Consumer>
+              <NodeRef id="1" />
+            </Consumer>
+            <Value min="0" max="1" />
+          </Signal>
+        </MuxGroup>
+      </Multiplex>
+    </Message>
+  </Bus>
+</NetworkDefinition>

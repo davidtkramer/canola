@@ -1,13 +1,30 @@
 import { parseXml, XmlElement, XmlNode } from "@rgrove/parse-xml";
-import {
-  type ByteOrder,
-  type Signal,
-  type Message,
-  type Node,
-  type Bus,
-  type InternalDatabase,
-} from "./types.js";
-import { IdentityConversion } from "./conversions.js";
+import type { ByteOrder, Comments } from "./types.js";
+import { Message } from "./message.js";
+import { Signal } from "./signal.js";
+import { BaseConversion } from "./conversions.js";
+
+export interface Node {
+  id?: string;
+  name?: string;
+  comment?: string;
+  comments?: Comments;
+}
+
+export interface Bus {
+  name: string;
+  comment?: string;
+  comments?: Comments;
+  baudrate?: number;
+  fdBaudrate?: number;
+}
+
+export interface InternalDatabase {
+  messages: Message[];
+  nodes: Node[];
+  buses: Bus[];
+  version?: string;
+}
 
 export function loadString(
   xmlString: string,
@@ -20,7 +37,9 @@ export function loadString(
   }
 
   if (root.name !== "NetworkDefinition") {
-    throw new Error(`Expected root element tag 'NetworkDefinition', but got ${root.name}`);
+    throw new Error(
+      `Expected root element tag 'NetworkDefinition', but got ${root.name}`
+    );
   }
 
   let nodes = findAllByName(root, "Node").map((node) => ({
@@ -71,8 +90,8 @@ function loadMessageElement(
   let notes: string | undefined;
   let length: number = 0;
   let interval: number | undefined;
-  let senders: string[] = [];
-  let signals: Signal[] = [];
+  let senders: Array<string> = [];
+  let signals: Array<Signal> = [];
 
   // Message XML attributes
   Object.entries(message.attributes).forEach(([key, value]) => {
@@ -158,22 +177,22 @@ function loadMessageElement(
     );
   }
 
-  return {
-    frame_id: frameId,
-    isExtendedFrame: isExtendedFrame,
+  return new Message({
+    frameId,
+    isExtendedFrame,
     name,
     length,
-    signals,
+    unusedBitPattern: 0xff,
     senders,
     cycleTime: interval,
-    comments: notes ? { null: notes } : undefined,
-    busName: busName,
+    signals,
+    comment: notes ? { _default: notes } : undefined,
+    busName,
     strict,
-  };
+  });
 }
 
 function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
-  // Default values
   let name: string | undefined;
   let offset: number | undefined;
   let length = 1;
@@ -185,7 +204,7 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   let slope = 1;
   let intercept = 0;
   let unit: string | undefined;
-  let labels: Record<number, string> | undefined;
+  let labels: Record<number, string> | undefined = undefined;
   let notes: string | undefined;
   let receivers: string[] = [];
 
@@ -248,11 +267,11 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   // Label set
   const labelSet = findFirstByName(signal, "LabelSet");
   if (labelSet) {
-    let labels: Record<number, string> = {};
+    labels = {};
     findAllByName(labelSet, "Label").forEach((label) => {
       const labelValue = parseInt(label.attributes.value || "");
       const labelName = label.attributes.name || "";
-      labels[labelValue] = labelName;
+      labels![labelValue] = labelName;
     });
   }
 
@@ -273,20 +292,19 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
     throw new Error("Signal must have name and offset");
   }
 
-  return {
+  return new Signal({
     name,
     start: startBit(offset, byteOrder),
     length,
-    byteOrder: byteOrder,
-    isSigned: isSigned,
-    conversion: new IdentityConversion(isFloat, slope, intercept, labels),
+    receivers,
+    byteOrder,
+    isSigned,
+    conversion: BaseConversion.factory(slope, intercept, labels, isFloat),
     minimum,
     maximum,
     unit,
-    receivers,
-    isMultiplexer: false,
-    comments: notes ? { null: notes } : undefined,
-  };
+    comment: notes ? { _default: notes } : undefined,
+  });
 }
 
 function startBit(offset: number, byteOrder: ByteOrder): number {
@@ -306,15 +324,13 @@ function getNodeNameById(
 
 function findAllByName(parent: XmlElement, name: string) {
   return parent.children.filter(
-    (child) =>
-      isXmlElement(child) && (child as XmlElement).name === name
+    (child) => isXmlElement(child) && (child as XmlElement).name === name
   ) as Array<XmlElement>;
 }
 
 function findFirstByName(parent: XmlElement, name: string) {
   return parent.children.find(
-    (child) =>
-      isXmlElement(child) && (child as XmlElement).name === name
+    (child) => isXmlElement(child) && (child as XmlElement).name === name
   ) as XmlElement | undefined;
 }
 
