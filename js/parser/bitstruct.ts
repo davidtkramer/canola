@@ -12,6 +12,8 @@ type FormatItemNumber = {
 type FormatItem = FormatItemPadding | FormatItemNumber;
 type Format = Array<FormatItem>;
 
+const MAX_SAFE_INT_AS_BIGINT = BigInt(Number.MAX_SAFE_INTEGER);
+
 export class BitStruct {
   items: Array<FormatType> = [];
   private size: number;
@@ -78,7 +80,7 @@ export class BitStruct {
     data: Buffer,
     offset: number = 0,
     allowTruncated = false
-  ): Record<string, number> {
+  ): Record<string, number | bigint> {
     let bits = "";
     for (let byte of data) {
       bits += byte.toString(2).padStart(8, "0");
@@ -94,7 +96,7 @@ export class BitStruct {
     }
 
     offset = 0;
-    let result: Record<string, number> = {};
+    let result: Record<string, number | bigint> = {};
 
     for (let item of this.items) {
       if (offset + item.size > bits.length) {
@@ -188,23 +190,29 @@ class UnsignedInteger {
 
     if (value < 0n || value > this.maximum) {
       throw new Error(
-        `"u${this.size}" requires 0 <= integer <= ${this.maximum} (got ${data})`
+        `u${this.size} requires 0 <= integer <= ${this.maximum} (got ${data})`
       );
     }
 
     return (value + (1n << BigInt(this.size))).toString(2).slice(1);
   }
 
-  unpack(bits: string): number {
-    return parseInt(bits, 2);
+  unpack(bits: string): number | bigint {
+    let value = BigInt(`0b${bits}`);
+
+    if (value <= MAX_SAFE_INT_AS_BIGINT) {
+      return Number(value);
+    } else {
+      return value;
+    }
   }
 }
 
 class SignedInteger {
   kind: "s" = "s";
   name: string;
-  minimum: number;
-  maximum: number;
+  minimum: bigint;
+  maximum: bigint;
   endian: Endian;
   size: number;
 
@@ -212,44 +220,46 @@ class SignedInteger {
     this.size = size;
     this.name = name;
     this.endian = endian;
-    this.minimum = (-2) ** (size - 1);
-    this.maximum = -this.minimum - 1;
+    this.minimum = (-2n) ** (BigInt(size) - 1n);
+    this.maximum = -this.minimum - 1n;
   }
 
   pack(data: number | string | bigint): string {
-    let value = typeof data === "string" ? parseInt(data) : data;
+    let value = BigInt(data);
 
     if (value < this.minimum || value > this.maximum) {
       throw new Error(
-        `${this.size} requires ${this.minimum} <= integer <= ${this.maximum} (got ${data})`
+        `s${this.size} requires ${this.minimum} <= integer <= ${this.maximum} (got ${data})`
       );
     }
 
+    let size = BigInt(this.size);
     if (value < 0) {
-      value += 1 << this.size;
+      value += 1n << size;
     }
-
-    value += 1 << this.size;
+    value += 1n << size;
 
     return value.toString(2).slice(1);
   }
 
-  unpack(bits: string): number {
-    let value = parseInt(bits, 2);
+  unpack(bits: string): number | bigint {
+    let value = BigInt(`0b${bits}`);
 
     if (bits[0] === "1") {
-      value -= 1 << bits.length;
+      value -= 1n << BigInt(bits.length);
     }
 
-    return value;
+    if (value >= -MAX_SAFE_INT_AS_BIGINT && value <= MAX_SAFE_INT_AS_BIGINT) {
+      return Number(value);
+    } else {
+      return value;
+    }
   }
 }
 
 class Float {
   kind: "f" = "f";
   name: string;
-  minimum: number;
-  maximum: number;
   endian: Endian;
   size: number;
 
@@ -257,24 +267,25 @@ class Float {
     this.size = size;
     this.name = name;
     this.endian = endian;
-    this.minimum = (-2) ** (size - 1);
-    this.maximum = -this.minimum - 1;
   }
 
   pack(data: number | string | bigint): string {
-    let value = typeof data === "string" ? parseInt(data) : data;
+    let value =
+      typeof data === "string"
+        ? parseFloat(data)
+        : typeof data === "bigint"
+        ? Number(data)
+        : data;
 
     let buffer = Buffer.alloc(this.size / 8);
 
-    if (this.size === 16) {
-      throw new Error("Float16 not supported");
-    } else if (this.size === 32) {
+    if (this.size === 32) {
       buffer.writeFloatBE(value, 0);
     } else if (this.size === 64) {
       buffer.writeDoubleBE(value, 0);
     } else {
       throw new Error(
-        `Expected float size of 16, 32, or 64 bits (got ${this.size})`
+        `Expected float size of 32 or 64 bits (got ${this.size})`
       );
     }
 
@@ -291,15 +302,13 @@ class Float {
       buffer[i / 8] = parseInt(bits.slice(i, i + 8), 2);
     }
 
-    if (this.size === 16) {
-      throw new Error("Float16 not supported");
-    } else if (this.size === 32) {
+    if (this.size === 32) {
       return buffer.readFloatBE(0);
     } else if (this.size === 64) {
       return buffer.readDoubleBE(0);
     } else {
       throw new Error(
-        `Expected float size of 16, 32, or 64 bits (got ${this.size})`
+        `Expected float size of 32 or 64 bits (got ${this.size})`
       );
     }
   }
