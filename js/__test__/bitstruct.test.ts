@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { BitStruct } from "../parser/bitstruct.js";
 
-test("bit struct", () => {
+test("packing and unpacking", () => {
   let struct = new BitStruct([
     { name: "a", type: "u", size: 4 },
     { name: "b", type: "u", size: 1 },
@@ -42,17 +42,9 @@ test("bit struct", () => {
   expect(unpacked.g).toBe(data.g);
 });
 
-test("foo", () => {
-  let struct = new BitStruct([{ name: "foo", type: "u", size: 4 }]);
-  let packed = struct.pack({ foo: 10 });
-  console.log('packed', packed);
-  let foo = packed.at(0);
-  console.log("foo", foo?.toString(2));
-});
-
-test("padding", () => {
+test("padding with large sizes", () => {
   let struct = new BitStruct([{ name: "foo", type: "u", size: 64 }]);
-  let packed = struct.pack({ foo:100 });
+  let packed = struct.pack({ foo: 3 });
   console.log("packed", packed);
   let unpacked = struct.unpack(packed);
   console.log("unpacked", unpacked);

@@ -189,27 +189,3 @@ test.runIf(!process.env["CI"])(
 // console.log("isContainer", message.isContainer);
 // console.log("comment", message.comment);
 // console.log("isMultiplexed", message.isMultiplexed());
-
-// let data = {
-//   VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_1",
-//   VCLEFT_swcLeftTiltRight: "SWITCH_OFF",
-//   VCLEFT_swcLeftPressed: "SWITCH_OFF",
-//   VCLEFT_swcRightTiltLeft: "SWITCH_OFF",
-//   VCLEFT_swcRightTiltRight: "SWITCH_OFF",
-//   VCLEFT_swcRightPressed: "SWITCH_OFF",
-//   VCLEFT_swcLeftTiltLeft: "SWITCH_OFF",
-//   VCLEFT_swcLeftScrollTicks: -1,
-//   VCLEFT_swcRightScrollTicks: 0,
-//   VCLEFT_btnWindowUpLR: 0,
-//   VCLEFT_btnWindowAutoUpLR: 0,
-//   VCLEFT_btnWindowDownLR: 0,
-//   VCLEFT_btnWindowAutoDownLR: 0,
-//   VCLEFT_2RowSeatReclineSwitch: 0,
-//   VCLEFT_2RowSeatCenterSwitch: 0,
-//   VCLEFT_2RowSeatLeftFoldFlatSwitc: 0,
-//   VCLEFT_2RowSeatRightFoldFlatSwit: 0,
-//   VCLEFT_2RowSeatBothFoldFlatSwitc: 0,
-//   VCLEFT_swcLeftDoublePress: 0,
-//   VCLEFT_swcRightDoublePress: 0,
-// };
-// let result = message.encode(data);
