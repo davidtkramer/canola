@@ -1,5 +1,8 @@
+import { start } from "repl";
+import { NamedSignalValue } from "./named-signal-value.js";
 import { Signal } from "./signal.js";
 import type { ByteOrder, Comments } from "./types.js";
+import { BitStruct } from "./bitstruct.js";
 
 interface Codec {
   signals: Array<Signal>;
@@ -7,11 +10,12 @@ interface Codec {
   multiplexers: Record<string, Record<number, Codec>>;
 }
 interface SignalFormat {
-  paddingMask: number;
-  signalMasks: Map<string, number>;
+  paddingMask: bigint;
+  big: BitStruct;
+  little: BitStruct;
 }
 type SignalValue = number | string;
-type SignalMapping = Record<string, SignalValue>;
+type SignalMap = Record<string, SignalValue>;
 
 export class Message {
   public frameId: number;
@@ -103,28 +107,109 @@ export class Message {
     this.refresh();
   }
 
+  refresh(): void {
+    // Rebuild internal state
+    this.signalDict = new Map(
+      this.signals.map((signal) => [signal.name, signal])
+    );
+    this.codecs = this.createCodec();
+    this.signalTree = this.createSignalTree(this.codecs);
+
+    if (this.strict) {
+      this.validateSignals();
+    }
+  }
+
+  private createCodec(parentSignal?: string, multiplexerId?: number): Codec {
+    let signals: Array<Signal> = [];
+    let multiplexers: Record<string, Record<number, Codec>> = {};
+
+    // Handle multiplexer signals
+    for (let signal of this.signals) {
+      if (signal.multiplexerSignal != parentSignal) {
+        continue;
+      }
+
+      if (
+        multiplexerId !== undefined &&
+        (signal.multiplexerIds === undefined ||
+          !signal.multiplexerIds.includes(multiplexerId))
+      ) {
+        continue;
+      }
+
+      if (signal.isMultiplexer) {
+        let childrenIds = new Set<number>();
+
+        for (let s of this.signals) {
+          if (s.multiplexerSignal != signal.name) {
+            continue;
+          }
+
+          if (s.multiplexerIds !== undefined) {
+            s.multiplexerIds.forEach((id) => childrenIds.add(id));
+          }
+        }
+
+        // Some CAN messages will have muxes containing only
+        // the multiplexer and no additional signals. At Tesla
+        // these are indicated in advance by assigning them an
+        // enumeration. Here we ensure that any named
+        // multiplexer is included, even if it has no child
+        // signals.
+        if (signal.conversion.choices) {
+          Object.keys(signal.conversion.choices).forEach((key) =>
+            childrenIds.add(parseInt(key))
+          );
+        }
+
+        for (let childId of childrenIds) {
+          let codec = this.createCodec(signal.name, childId);
+
+          if (!multiplexers[signal.name]) {
+            multiplexers[signal.name] = {};
+          }
+
+          multiplexers[signal.name]![childId] = codec;
+        }
+      }
+
+      signals.push(signal);
+    }
+
+    return {
+      signals,
+      formats: createEncodeDecodeFormats(signals, this.length),
+      multiplexers,
+    };
+  }
+
+  private createSignalTree(
+    codec: Codec
+  ): Array<string | Record<string, Record<number, string[]>>> {
+    const nodes: Array<string | Record<string, Record<number, string[]>>> = [];
+
+    for (const signal of codec.signals) {
+      if (signal.name in codec.multiplexers) {
+        const node: any = {
+          [signal.name]: Object.fromEntries(
+            Object.entries(codec.multiplexers[signal.name]!).map(
+              ([mux, muxCodec]) => [mux, this.createSignalTree(muxCodec)]
+            )
+          ),
+        };
+        nodes.push(node);
+      } else {
+        nodes.push(signal.name);
+      }
+    }
+
+    return nodes;
+  }
+
   // Properties
   get isContainer(): boolean {
     return this.containedMessages !== undefined;
-  }
-
-  get comment(): string | undefined {
-    if (!this.comments) {
-      return undefined;
-    }
-    return (
-      this.comments["_default"] ??
-      this.comments["FOR-ALL"] ??
-      this.comments["EN"]
-    );
-  }
-
-  set comment(value: string | undefined) {
-    if (value === undefined) {
-      this.comments = undefined;
-    } else {
-      this.comments = { _default: value };
-    }
   }
 
   // Methods for working with signals
@@ -143,206 +228,133 @@ export class Message {
     return Object.keys(this.codecs.multiplexers).length > 0;
   }
 
-  // Methods for contained messages
-  getContainedMessageByHeaderId(headerId: number): Message | undefined {
-    if (!this.containedMessages) {
-      return undefined;
-    }
-
-    const matches = this.containedMessages.filter(
-      (msg) => msg.headerId === headerId
-    );
-    if (matches.length > 1) {
-      throw new Error(
-        `Container message "${
-          this.name
-        }" contains multiple contained messages with id 0x${headerId.toString(
-          16
-        )}`
-      );
-    }
-
-    return matches[0];
-  }
-
-  getContainedMessageByName(name: string): Message | undefined {
-    if (!this.containedMessages) {
-      return undefined;
-    }
-
-    const matches = this.containedMessages.filter((msg) => msg.name === name);
-    if (matches.length > 1) {
-      throw new Error(
-        `Container message "${this.name}" contains multiple contained messages named "${name}"`
-      );
-    }
-
-    return matches[0];
-  }
-
-  decode(
-    data: Uint8Array,
-    decodeChoices: boolean = true,
-    scaling: boolean = true
-  ): SignalMapping {
+  encode(
+    data: SignalMap,
+    scaling: boolean = true,
+    padding: boolean = false,
+    strict: boolean = true
+  ): Buffer {
     if (this.isContainer) {
-      throw new Error("Cannot decode container message directly");
+      // TODO: handle container messages
+      throw new Error("Container messages not yet supported");
+    }
+
+    if (strict) {
+      // TODO: implement strictness validations
+      // throw new Error("Strict option not yet supported");
     }
 
     if (!this.codecs) {
       throw new Error("Codec is not initialized");
     }
 
-    // Convert byte array to number
-    const value = parseInt(
-      Array.from(data)
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join(""),
-      16
-    );
+    let [encoded, paddingMask] = this._encode(this.codecs, data, scaling);
 
-    return this.decodeValue(value, this.codecs, decodeChoices, scaling);
-  }
-
-  _encode(data: SignalMapping, scaling: boolean = true) {
-
-  }
-
-  // Encoding/Decoding methods
-  encode(data: SignalMapping, scaling: boolean = true): Uint8Array {
-    if (this.isContainer) {
-      throw new Error("Cannot encode container message directly");
+    if (padding) {
+      let paddingPattern = Buffer.alloc(
+        this.length,
+        this.unusedBitPattern
+      ).readBigUInt64BE();
+      encoded |= paddingMask & paddingPattern;
     }
 
-    if (!this.codecs) {
-      throw new Error("Codec is not initialized");
-    }
-
-    // Encode data using codecs
-    let encoded = this.gatherAndEncodeSignals(data, this.codecs, scaling);
-
-    // TODO: fix padding pattern
-    // Apply padding pattern if specified
-    // if (this.unusedBitPattern !== 0) {
-    //   const paddingMask = this.codecs.formats.paddingMask;
-    //   const paddingPattern = Array(this.length).fill(this.unusedBitPattern);
-    //   encoded = encoded | (paddingMask & paddingPattern);
-    // }
-
-    // Convert to byte array
-    return new Uint8Array(
-      encoded
-        .toString(16)
-        .padStart(this.length * 2, "0")
-        .match(/.{2}/g)!
-        .map((byte) => parseInt(byte, 16))
-    );
+    return bigIntToBuffer(encoded);
   }
 
-  private gatherAndEncodeSignals(
-    data: SignalMapping,
-    codec: Codec,
+  private _encode(
+    node: Codec,
+    data: SignalMap,
     scaling: boolean
-  ): number {
-    let result = 0;
+  ): [bigint, bigint, Array<Signal>] {
+    let encoded = this.packData(node, data, scaling);
+    let paddingMask = node.formats.paddingMask;
+    let multiplexers = node.multiplexers;
 
-    // Encode regular signals
-    for (const signal of codec.signals) {
-      const value = data[signal.name];
-      if (value === undefined) {
-        throw new Error(`Missing value for signal ${signal.name}`);
+    let allSignals = node.signals;
+    for (let [signalName, codecMap] of Object.entries(multiplexers)) {
+      let mux = this.getMuxNumber(data, signalName);
+
+      if (codecMap[mux]) {
+        node = codecMap[mux];
+      } else {
+        let ids = Object.keys(codecMap).join(", ");
+        throw new Error(
+          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`
+        );
       }
 
-      const encoded = scaling
-        ? signal.scaledToRaw(value)
-        : typeof value === "string"
-        ? signal.choiceToNumber(value)
-        : value;
+      let [muxEncoded, muxPaddingMask, muxSignals] = this._encode(
+        node,
+        data,
+        scaling
+      );
+      allSignals.push(...muxSignals);
 
-      result |= this.encodeSignalValue(encoded, signal);
+      encoded |= muxEncoded;
+      paddingMask |= muxPaddingMask;
     }
 
-    // Handle multiplexed signals
-    for (const [muxName, muxCodecs] of Object.entries(codec.multiplexers)) {
-      const muxValue = data[muxName];
-      if (muxValue === undefined) {
-        throw new Error(`Missing multiplexer value for ${muxName}`);
-      }
+    return [encoded, paddingMask, allSignals] as const;
+  }
 
-      const muxId =
-        typeof muxValue === "string"
-          ? this.getSignalByName(muxName).choiceToNumber(muxValue)
-          : muxValue;
+  private getMuxNumber(data: SignalMap, signalName: string) {
+    let mux = data[signalName]!;
 
-      const muxCodec = muxCodecs[muxId];
-      if (!muxCodec) {
-        throw new Error(`Invalid multiplexer ID ${muxId} for ${muxName}`);
-      }
-
-      result |= this.gatherAndEncodeSignals(data, muxCodec, scaling);
+    if (typeof mux === "string") {
+      let signal = this.getSignalByName(signalName);
+      mux = signal.conversion.choiceToNumber(mux);
     }
 
-    return result;
+    return mux;
   }
 
-  private encodeSignalValue(value: number, signal: Signal): number {
-    // Implement bit manipulation for encoding
-    // This would need proper implementation based on byte order and bit position
-    return value << signal.start;
+  private packData(node: Codec, signalMap: SignalMap, scaling: boolean) {
+    if (node.signals.length === 0) {
+      return 0n;
+    }
+
+    let rawSignalValues = this.encodeSignalValues(
+      node.signals,
+      signalMap,
+      scaling
+    );
+    let bigPacked = node.formats.big.pack(rawSignalValues);
+    let littlePacked = node.formats.little.pack(rawSignalValues);
+
+    let packedUnion =
+      bufferToBigInt(bigPacked) | bufferToBigInt(littlePacked, true);
+
+    return packedUnion;
   }
 
-  private decodeValue(
-    value: number,
-    codec: Codec,
-    decodeChoices: boolean,
+  private encodeSignalValues(
+    signals: Array<Signal>,
+    signalMap: SignalMap,
     scaling: boolean
-  ): SignalMapping {
-    const result: SignalMapping = {};
+  ): Record<string, number> {
+    let rawValues: Record<string, number> = {};
 
-    // Decode regular signals
-    for (const signal of codec.signals) {
-      const raw = this.decodeSignalValue(value, signal);
-      result[signal.name] = scaling
-        ? signal.rawToScaled(raw, decodeChoices)
-        : raw;
+    for (let signal of signals) {
+      let name = signal.name;
+      let conversion = signal.conversion;
+      let value = signalMap[name];
 
-      // Handle multiplexers
-      if (signal.isMultiplexer) {
-        const muxId = result[signal.name];
-        const muxCodec =
-          codec.multiplexers[signal.name]?.[
-            typeof muxId === "string" ? signal.choiceToNumber(muxId) : muxId
-          ];
-
-        if (muxCodec) {
-          Object.assign(
-            result,
-            this.decodeValue(value, muxCodec, decodeChoices, scaling)
-          );
+      if (typeof value === "number") {
+        if (scaling) {
+          rawValues[name] = conversion.numericScaledToRaw(value);
+        } else {
+          rawValues[name] = conversion.isFloat ? value : Math.round(value);
         }
+      } else if (typeof value === "string") {
+        rawValues[name] = conversion.choiceToNumber(value);
+      } else {
+        throw new Error(
+          `Unable to encode signal '${name}' with type '${typeof value}'`
+        );
       }
     }
 
-    return result;
-  }
-
-  private decodeSignalValue(value: number, signal: Signal): number {
-    // Implement bit manipulation for decoding
-    // This would need proper implementation based on byte order and bit position
-    return (value >> signal.start) & ((1 << signal.length) - 1);
-  }
-
-  refresh(): void {
-    // Rebuild internal state
-    this.signalDict = new Map(
-      this.signals.map((signal) => [signal.name, signal])
-    );
-    this.codecs = createCodec(this.signals);
-    this.signalTree = createSignalTree(this.codecs);
-
-    if (this.strict) {
-      this.validateSignals();
-    }
+    return rawValues;
   }
 
   private validateSignals(): void {
@@ -352,87 +364,133 @@ export class Message {
 }
 
 export function sortSignalsByStartBit(signals: Signal[]): Signal[] {
-  return [...signals].sort((a, b) => getStartBit(a) - getStartBit(b));
+  return [...signals].sort((a, b) => startBit(a) - startBit(b));
 }
 
-export function getStartBit(signal: Signal): number {
+export function startBit(signal: Signal): number {
   if (signal.byteOrder === "big_endian") {
     return 8 * Math.floor(signal.start / 8) + (7 - (signal.start % 8));
   }
   return signal.start;
 }
 
-export function createSignalFormats(
-  signals: Signal[],
-  messageLength: number
-): SignalFormat {
-  // Implementation for creating signal formats
-  // This would create the bit masks and positions for encoding/decoding
-  return {
-    paddingMask: 0, // This needs proper implementation
-    signalMasks: new Map(),
-  };
-}
-
-function createCodec(
+function createEncodeDecodeFormats(
   signals: Array<Signal>,
-  parentSignal?: string,
-  multiplexerId?: number
-): Codec {
-  const relevantSignals = signals.filter(
-    (signal) =>
-      signal.multiplexerSignal === parentSignal &&
-      (!multiplexerId || signal.multiplexerIds?.includes(multiplexerId))
-  );
+  numberOfBytes: number
+): SignalFormat {
+  let formatLength = 8 * numberOfBytes;
 
-  const multiplexers: Record<string, Record<number, Codec>> = {};
+  let createBig = () => {
+    let items: any = [];
+    let start = 0;
 
-  // Handle multiplexer signals
-  for (const signal of relevantSignals) {
-    if (signal.isMultiplexer) {
-      multiplexers[signal.name] = {};
+    let beSignals = signals.filter(
+      (signal) => signal.byteOrder == "big_endian"
+    );
 
-      // Find all possible multiplexer IDs
-      const childIds = new Set<number>();
-      for (const s of signals) {
-        if (s.multiplexerSignal === signal.name && s.multiplexerIds) {
-          s.multiplexerIds.forEach((id) => childIds.add(id));
-        }
+    let sortedSignals = beSignals.sort(
+      (a, b) =>
+        sawtoothToNetworkBitnum(a.start) - sawtoothToNetworkBitnum(b.start)
+    );
+
+    for (let signal of sortedSignals) {
+      let paddingLength = startBit(signal) - start;
+
+      if (paddingLength > 0) {
+        items.push({ type: "p", size: paddingLength });
       }
 
-      // Create codecs for each multiplexer ID
-      for (const id of childIds) {
-        multiplexers[signal.name]![id] = createCodec(signals, signal.name, id);
-      }
+      let type = signal.conversion.isFloat ? "f" : signal.isSigned ? "s" : "u";
+      items.push({ name: signal.name, type, size: signal.length });
+
+      start = startBit(signal) + signal.length;
     }
+
+    if (start < formatLength) {
+      let length = formatLength - start;
+      items.push({ type: "p", size: length });
+    }
+
+    return items;
+  };
+
+  let createLittle = () => {
+    let items: any = [];
+    let end = formatLength;
+
+    for (let signal of [...signals].reverse()) {
+      if (signal.byteOrder === "big_endian") {
+        continue;
+      }
+
+      let paddingLength = end - (signal.start + signal.length);
+
+      if (paddingLength > 0) {
+        items.push({ type: "p", size: paddingLength });
+      }
+
+      let type = signal.conversion.isFloat ? "f" : signal.isSigned ? "s" : "u";
+      items.push({ name: signal.name, type, size: signal.length });
+
+      end = signal.start;
+    }
+
+    if (end > 0) {
+      items.push({ type: "p", size: end });
+    }
+
+    return items;
+  };
+
+  let little = createLittle();
+  let big = createBig();
+
+  let littlePaddingMaskString = little
+    .map((item: any) =>
+      item.type === "p" ? "1".repeat(item.size) : "0".repeat(item.size)
+    )
+    .join("");
+  let littlePaddingMask = BigInt("0b" + littlePaddingMaskString);
+  if (formatLength > 0) {
+    let struct = new BitStruct([
+      { name: "pad", type: "u", size: littlePaddingMaskString.length },
+    ]);
+    let packed = struct.pack({ pad: littlePaddingMask });
+    littlePaddingMask = Buffer.from(packed).readBigInt64LE(0);
   }
 
+  let bigPaddingMaskString = big
+    .map((item: any) =>
+      item.type === "p" ? "1".repeat(item.size) : "0".repeat(item.size)
+    )
+    .join("");
+  let bigPaddingMask = BigInt("0b" + bigPaddingMaskString);
+
   return {
-    signals: relevantSignals,
-    formats: createSignalFormats(relevantSignals, 0), // message length needs to be passed
-    multiplexers,
+    paddingMask: littlePaddingMask & bigPaddingMask,
+    little: new BitStruct(little),
+    big: new BitStruct(big),
   };
 }
 
-function createSignalTree(
-  codec: Codec
-): Array<string | Record<string, Record<number, string[]>>> {
-  const nodes: Array<string | Record<string, Record<number, string[]>>> = [];
+// Convert SawTooth bit number to Network bit number
+function sawtoothToNetworkBitnum(sawtoothBitnum: number): number {
+  /*
+   * Byte     |   0   |   1   |
+   * Sawtooth |7 ... 0|15... 8|
+   * Network  |0 ... 7|8 ...15|
+   */
+  return 8 * Math.floor(sawtoothBitnum / 8) + (7 - (sawtoothBitnum % 8));
+}
 
-  for (const signal of codec.signals) {
-    if (signal.name in codec.multiplexers) {
-      const node: Record<string, Record<number, string[]>> = {
-        [signal.name]: Object.fromEntries(
-          Object.entries(codec.multiplexers[signal.name]!).map(
-            ([mux, muxCodec]) => [mux, createSignalTree(muxCodec)]
-          )
-        ),
-      };
-      nodes.push(node);
-    } else {
-      nodes.push(signal.name);
-    }
+function bufferToBigInt(buffer: Buffer, littleEndian: boolean = false): bigint {
+  if (littleEndian) {
+    // Reverse the buffer for little endian
+    buffer = Buffer.from([...buffer].reverse());
   }
+  return BigInt("0x" + buffer.toString("hex"));
+}
 
-  return nodes;
+function bigIntToBuffer(integer: bigint) {
+  return Buffer.from(integer.toString(16).padStart(2, "0"), "hex");
 }

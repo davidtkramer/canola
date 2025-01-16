@@ -12,21 +12,6 @@ test("loads kcd file", async () => {
   );
   let db = loadString(file.replace(/>\s+</g, "><").trim());
   let message = db.messages.find((message) => message.frameId === 0x3c2)!;
-  console.log('frameId', message.frameId);
-  console.log('name', message.name);
-  console.log('length', message.length);
-  console.log('headerId', message.headerId);
-  console.log('headerByteOrder', message.headerByteOrder);
-  console.log('isFd', message.isFd);
-  console.log('isExtendedFrame', message.isExtendedFrame);
-  console.log('unusedBitPattern', message.unusedBitPattern);
-  console.log('comments', message.comments)
-  console.log('protocol', message.protocol);
-  // console.log('signalTree', JSON.stringify(message.signalTree, null, 2));
-  // console.log('signals', JSON.stringify(message.signals, null, 2));
-  console.log('isContainer', message.isContainer);
-  console.log('comment', message.comment);
-  console.log('isMultiplexed', message.isMultiplexed());
 
   let data = {
     VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_1",
@@ -50,11 +35,11 @@ test("loads kcd file", async () => {
     VCLEFT_swcLeftDoublePress: 0,
     VCLEFT_swcRightDoublePress: 0,
   };
-  let result = message.encode(data);
+  let encoded = message.encode(data);
+  console.log("encoded", encoded);
 
-  console.log(result);
-  const hex = Array.from(result, (b) => b.toString(16).padStart(2, "0"));
-  console.log(hex.join(" "));
+  // let decoded = message.decode(result)
+  // console.log('decoded', decoded);
 });
 
 test("errors if can interface does not exist", () => {
@@ -188,3 +173,43 @@ test.runIf(!process.env["CI"])(
     expect(socket.getWriteQueueSize()).toBe(0);
   }
 );
+
+// console.log("frameId", message.frameId);
+// console.log("name", message.name);
+// console.log("length", message.length);
+// console.log("headerId", message.headerId);
+// console.log("headerByteOrder", message.headerByteOrder);
+// console.log("isFd", message.isFd);
+// console.log("isExtendedFrame", message.isExtendedFrame);
+// console.log("unusedBitPattern", message.unusedBitPattern);
+// console.log("comments", message.comments);
+// console.log("protocol", message.protocol);
+// console.log('signalTree', JSON.stringify(message.signalTree, null, 2));
+// console.log('signals', JSON.stringify(message.signals, null, 2));
+// console.log("isContainer", message.isContainer);
+// console.log("comment", message.comment);
+// console.log("isMultiplexed", message.isMultiplexed());
+
+// let data = {
+//   VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_1",
+//   VCLEFT_swcLeftTiltRight: "SWITCH_OFF",
+//   VCLEFT_swcLeftPressed: "SWITCH_OFF",
+//   VCLEFT_swcRightTiltLeft: "SWITCH_OFF",
+//   VCLEFT_swcRightTiltRight: "SWITCH_OFF",
+//   VCLEFT_swcRightPressed: "SWITCH_OFF",
+//   VCLEFT_swcLeftTiltLeft: "SWITCH_OFF",
+//   VCLEFT_swcLeftScrollTicks: -1,
+//   VCLEFT_swcRightScrollTicks: 0,
+//   VCLEFT_btnWindowUpLR: 0,
+//   VCLEFT_btnWindowAutoUpLR: 0,
+//   VCLEFT_btnWindowDownLR: 0,
+//   VCLEFT_btnWindowAutoDownLR: 0,
+//   VCLEFT_2RowSeatReclineSwitch: 0,
+//   VCLEFT_2RowSeatCenterSwitch: 0,
+//   VCLEFT_2RowSeatLeftFoldFlatSwitc: 0,
+//   VCLEFT_2RowSeatRightFoldFlatSwit: 0,
+//   VCLEFT_2RowSeatBothFoldFlatSwitc: 0,
+//   VCLEFT_swcLeftDoublePress: 0,
+//   VCLEFT_swcRightDoublePress: 0,
+// };
+// let result = message.encode(data);
