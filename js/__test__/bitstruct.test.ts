@@ -146,4 +146,27 @@ describe("floats", () => {
       struct.pack({ foo: 1.0 });
     }).toThrowError("Expected float size of 32 or 64 bits (got 16)");
   });
+
+  test("packing infinity", () => {
+    let struct = new BitStruct([{ name: "foo", type: "f", size: 64 }]);
+    let packed = struct.pack({ foo: Infinity });
+    expect(packed).toEqual(buffer("7ff0000000000000"));
+    let unpacked = struct.unpack(packed);
+    expect(unpacked).toEqual({ foo: Infinity });
+  });
+
+  test("packing NaN", () => {
+    let struct = new BitStruct([{ name: "foo", type: "f", size: 64 }]);
+    let packed = struct.pack({ foo: NaN });
+    expect(packed).toEqual(buffer("7ff8000000000000"));
+    let unpacked = struct.unpack(packed);
+    expect(Number.isNaN(unpacked.foo)).toBe(true);
+  });
+
+  test("packing string representation of float", () => {
+    let struct = new BitStruct([{ name: "foo", type: "f", size: 64 }]);
+    let packed = struct.pack({ foo: "3.14159" });
+    let unpacked = struct.unpack(packed);
+    expect(unpacked).toEqual({ foo: 3.14159 });
+  });
 });

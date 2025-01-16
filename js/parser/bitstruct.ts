@@ -53,7 +53,7 @@ export class BitStruct {
     this.size = this.items.reduce((sum, item) => sum + item.size, 0);
   }
 
-  pack(data: Record<string, number | bigint>) {
+  pack(data: Record<string, string | number | bigint>) {
     let bits = "";
 
     for (let item of this.items) {
@@ -138,7 +138,7 @@ export class BitStruct {
 
   private packValue(
     item: Exclude<FormatType, ZeroPadding>,
-    value: number | bigint,
+    value: string | number | bigint,
     bits: string
   ): string {
     let valueBits = item.pack(value);
