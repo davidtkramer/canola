@@ -52,7 +52,7 @@ export class TypeGenerator {
     message: Message,
     multiplexName: string,
     index: number | string,
-    signals: string[]
+    signals: Array<string>
   ): TypeAliasDeclaration {
     let signal = message.getSignalByName(multiplexName);
     let discriminantNode: any;
@@ -99,7 +99,7 @@ export class TypeGenerator {
   private generateMultiplexUnionType(
     messageName: string,
     multiplexName: string,
-    variants: string[]
+    variants: Array<string>
   ): TypeAliasDeclaration {
     return factory.createTypeAliasDeclaration(
       [factory.createModifier(SyntaxKind.ExportKeyword)],
@@ -164,9 +164,7 @@ export class TypeGenerator {
     return types;
   }
 
-  private generateNonMultiplexedType(
-    message: Message
-  ): TypeAliasDeclaration {
+  private generateNonMultiplexedType(message: Message): TypeAliasDeclaration {
     let members = message.signals.map((signal) => {
       let typeNode = this.generateSignalTypeNode(signal);
       return factory.createPropertySignature(
@@ -185,7 +183,9 @@ export class TypeGenerator {
     );
   }
 
-  private generateContainerType(messages: Message[]): TypeAliasDeclaration {
+  private generateContainerType(
+    messages: Array<Message>
+  ): TypeAliasDeclaration {
     let members = messages.map((message) =>
       factory.createPropertySignature(
         undefined,
@@ -206,16 +206,13 @@ export class TypeGenerator {
     );
   }
 
-  async generateTypes(messages: Message[]): Promise<void> {
+  async generateTypes(messages: Array<Message>): Promise<void> {
     let allTypes: Array<TypeAliasDeclaration> = [];
 
     // Generate message types
     messages.forEach((message) => {
       if (message.isMultiplexed()) {
-        let types = this.generateMultiplexedTypes(
-          message,
-          message.signalTree!
-        );
+        let types = this.generateMultiplexedTypes(message, message.signalTree!);
         allTypes.push(...types);
       } else {
         allTypes.push(this.generateNonMultiplexedType(message));
