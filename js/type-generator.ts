@@ -1,4 +1,4 @@
-import ts, {
+import {
   factory,
   createSourceFile,
   createPrinter,
@@ -8,6 +8,9 @@ import ts, {
   ScriptKind,
   EmitHint,
   type TypeNode,
+  type TypeAliasDeclaration,
+  type SourceFile,
+  type Printer,
 } from "typescript";
 import fs from "fs";
 import path from "path";
@@ -19,8 +22,8 @@ import {
 } from "./parser/message.js";
 
 export class TypeGenerator {
-  private sourceFile: ts.SourceFile;
-  private printer: ts.Printer;
+  private sourceFile: SourceFile;
+  private printer: Printer;
 
   constructor(private outputDir: string) {
     this.sourceFile = createSourceFile(
@@ -50,7 +53,7 @@ export class TypeGenerator {
     multiplexName: string,
     index: number | string,
     signals: string[]
-  ): ts.TypeAliasDeclaration {
+  ): TypeAliasDeclaration {
     let signal = message.getSignalByName(multiplexName);
     let discriminantNode: any;
 
@@ -97,7 +100,7 @@ export class TypeGenerator {
     messageName: string,
     multiplexName: string,
     variants: string[]
-  ): ts.TypeAliasDeclaration {
+  ): TypeAliasDeclaration {
     return factory.createTypeAliasDeclaration(
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       factory.createIdentifier(messageName),
@@ -116,8 +119,8 @@ export class TypeGenerator {
   private generateMultiplexedTypes(
     message: Message,
     signalNodes: Array<SignalNode>
-  ): ts.TypeAliasDeclaration[] {
-    let types: ts.TypeAliasDeclaration[] = [];
+  ): Array<TypeAliasDeclaration> {
+    let types: Array<TypeAliasDeclaration> = [];
 
     for (let node of signalNodes) {
       if (typeof node === "string") continue;
@@ -163,7 +166,7 @@ export class TypeGenerator {
 
   private generateNonMultiplexedType(
     message: Message
-  ): ts.TypeAliasDeclaration {
+  ): TypeAliasDeclaration {
     let members = message.signals.map((signal) => {
       let typeNode = this.generateSignalTypeNode(signal);
       return factory.createPropertySignature(
@@ -182,7 +185,7 @@ export class TypeGenerator {
     );
   }
 
-  private generateContainerType(messages: Message[]): ts.TypeAliasDeclaration {
+  private generateContainerType(messages: Message[]): TypeAliasDeclaration {
     let members = messages.map((message) =>
       factory.createPropertySignature(
         undefined,
@@ -204,7 +207,7 @@ export class TypeGenerator {
   }
 
   async generateTypes(messages: Message[]): Promise<void> {
-    let allTypes: ts.TypeAliasDeclaration[] = [];
+    let allTypes: Array<TypeAliasDeclaration> = [];
 
     // Generate message types
     messages.forEach((message) => {
