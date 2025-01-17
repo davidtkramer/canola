@@ -14,8 +14,11 @@ interface SignalFormat {
 }
 
 type SignalMap = Record<string, SignalValue>;
+export type SignalBranch = Record<string, Record<number, Array<SignalNode>>>;
+export type SignalNode = string | SignalBranch;
+type UnionKeys<T> = T extends any ? keyof T : never;
 
-export class Message {
+export class Message<T extends SignalMap = SignalMap> {
   public frameId: number;
   public headerId?: number;
   public headerByteOrder: ByteOrder;
@@ -25,7 +28,7 @@ export class Message {
   public length: number;
   public unusedBitPattern: number;
   public signals: Array<Signal>;
-  public signalDict: Map<string, Signal>; // TODO: change back to private?
+  private signalDict: Map<string, Signal>;
   private containedMessages?: Array<Message>;
   public comments?: Comments;
   public senders: Array<string>;
@@ -34,10 +37,8 @@ export class Message {
   public busName?: string;
   private strict: boolean;
   public protocol?: string;
-  public codecs?: Codec; // TODO: change back to private
-  public signalTree?: Array<
-    string | Record<string, Record<number, Array<string>>>
-  >;
+  private codecs?: Codec;
+  public signalTree?: Array<SignalNode>;
 
   constructor(params: {
     frameId: number;
@@ -60,7 +61,7 @@ export class Message {
     sortSignals?: boolean;
   }) {
     // Validate frame ID
-    const frameIdBitLength = params.frameId.toString(2).length;
+    let frameIdBitLength = params.frameId.toString(2).length;
     if (params.isExtendedFrame && frameIdBitLength > 29) {
       throw new Error(
         `Extended frame id 0x${params.frameId.toString(
@@ -106,7 +107,6 @@ export class Message {
   }
 
   refresh(): void {
-    // Rebuild internal state
     this.signalDict = new Map(
       this.signals.map((signal) => [signal.name, signal])
     );
@@ -182,18 +182,19 @@ export class Message {
     };
   }
 
-  private createSignalTree(
-    codec: Codec
-  ): Array<string | Record<string, Record<number, string[]>>> {
-    const nodes: Array<string | Record<string, Record<number, string[]>>> = [];
+  private createSignalTree(codec: Codec): Array<SignalNode> {
+    let nodes: Array<SignalNode> = [];
 
-    for (const signal of codec.signals) {
-      if (signal.name in codec.multiplexers) {
-        const node: any = {
-          [signal.name]: Object.fromEntries(
-            Object.entries(codec.multiplexers[signal.name]!).map(
-              ([mux, muxCodec]) => [mux, this.createSignalTree(muxCodec)]
-            )
+    for (let signal of codec.signals) {
+      let multiplexer = codec.multiplexers[signal.name];
+      if (multiplexer !== undefined) {
+        let node = {
+          [signal.name]: Object.entries(multiplexer).reduce(
+            (muxMap, [muxIndex, muxCodec]) => {
+              muxMap[parseInt(muxIndex)] = this.createSignalTree(muxCodec);
+              return muxMap;
+            },
+            {} as Record<number, Array<SignalNode>>
           ),
         };
         nodes.push(node);
@@ -205,18 +206,18 @@ export class Message {
     return nodes;
   }
 
-  // Properties
-  get isContainer(): boolean {
-    return this.containedMessages !== undefined;
-  }
-
-  // Methods for working with signals
-  getSignalByName(name: string): Signal {
-    const signal = this.signalDict.get(name);
+  getSignalByName<K extends UnionKeys<T>>(name: K): Signal {
+    let signal = this.signalDict.get(name.toString());
     if (!signal) {
-      throw new Error(`Signal ${name} not found in message ${this.name}`);
+      throw new Error(
+        `Signal ${name.toString()} not found in message ${this.name}`
+      );
     }
     return signal;
+  }
+
+  isContainer(): boolean {
+    return this.containedMessages !== undefined;
   }
 
   isMultiplexed(): boolean {
@@ -227,7 +228,7 @@ export class Message {
   }
 
   decode(data: Buffer, scaling: boolean = true) {
-    if (this.isContainer) {
+    if (this.isContainer()) {
       throw new Error("Container messages not yet supported");
     }
 
@@ -294,12 +295,8 @@ export class Message {
     return decoded;
   }
 
-  encode(
-    data: SignalMap,
-    scaling: boolean = true,
-    padding: boolean = false
-  ): Buffer {
-    if (this.isContainer) {
+  encode(data: T, scaling: boolean = true, padding: boolean = false): Buffer {
+    if (this.isContainer()) {
       // TODO: handle container messages
       throw new Error("Container messages not yet supported");
     }
@@ -357,17 +354,6 @@ export class Message {
     return [encoded, paddingMask, allSignals] as const;
   }
 
-  private getMuxNumber(data: SignalMap, signalName: string) {
-    let mux = data[signalName]!;
-
-    if (typeof mux === "string") {
-      let signal = this.getSignalByName(signalName);
-      mux = signal.conversion.choiceToNumber(mux);
-    }
-
-    return mux;
-  }
-
   private packData(node: Codec, signalMap: SignalMap, scaling: boolean) {
     if (node.signals.length === 0) {
       return 0n;
@@ -382,7 +368,7 @@ export class Message {
     let littlePacked = node.formats.little.pack(rawSignalValues);
 
     let packedUnion =
-      bufferToBigInt(bigPacked) | bufferToBigInt(littlePacked, true);
+      bufferToBigInt(bigPacked) | bufferToBigInt(littlePacked, "little");
 
     return packedUnion;
   }
@@ -417,17 +403,28 @@ export class Message {
     return rawValues;
   }
 
+  private getMuxNumber(data: SignalMap, signalName: string) {
+    let mux = data[signalName]!;
+
+    if (typeof mux === "string") {
+      let signal = this.getSignalByName(signalName as UnionKeys<T>);
+      mux = signal.conversion.choiceToNumber(mux);
+    }
+
+    return mux;
+  }
+
   private validateSignals(): void {
     // Implement signal validation
     // Check for overlapping signals and ensure they fit within message length
   }
 }
 
-export function sortSignalsByStartBit(signals: Signal[]): Signal[] {
+function sortSignalsByStartBit(signals: Signal[]): Signal[] {
   return [...signals].sort((a, b) => startBit(a) - startBit(b));
 }
 
-export function startBit(signal: Signal): number {
+function startBit(signal: Signal): number {
   if (signal.byteOrder === "big_endian") {
     return 8 * Math.floor(signal.start / 8) + (7 - (signal.start % 8));
   }
@@ -516,7 +513,7 @@ function createEncodeDecodeFormats(
       { name: "pad", type: "u", size: littlePaddingMaskString.length },
     ]);
     let packed = struct.pack({ pad: littlePaddingMask });
-    littlePaddingMask = Buffer.from(packed).readBigInt64LE(0);
+    littlePaddingMask = bufferToBigInt(packed, "little");
   }
 
   let bigPaddingMaskString = big
@@ -533,7 +530,6 @@ function createEncodeDecodeFormats(
   };
 }
 
-// Convert SawTooth bit number to Network bit number
 function sawtoothToNetworkBitnum(sawtoothBitnum: number): number {
   /*
    * Byte     |   0   |   1   |
@@ -543,8 +539,11 @@ function sawtoothToNetworkBitnum(sawtoothBitnum: number): number {
   return 8 * Math.floor(sawtoothBitnum / 8) + (7 - (sawtoothBitnum % 8));
 }
 
-function bufferToBigInt(buffer: Buffer, littleEndian: boolean = false): bigint {
-  if (littleEndian) {
+function bufferToBigInt(
+  buffer: Buffer,
+  endian: "big" | "little" = "big"
+): bigint {
+  if (endian === "little") {
     // Reverse the buffer for little endian
     buffer = Buffer.from(buffer).reverse();
   }

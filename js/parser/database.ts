@@ -19,62 +19,77 @@ export interface Bus {
   fdBaudrate?: number;
 }
 
-export interface InternalDatabase {
-  messages: Message[];
-  nodes: Node[];
-  buses: Bus[];
+export class Database<T extends Record<string, any>> {
+  messages: Array<Message>;
+  nodes: Array<Node>;
+  buses: Array<Bus>;
   version?: string;
-}
 
-export function loadString(
-  xmlString: string,
-  strict: boolean = true
-): InternalDatabase {
-  let { root } = parseXml(xmlString);
-
-  if (root === null) {
-    throw new Error("Document is empty");
+  constructor(
+    messages: Array<Message>,
+    nodes: Array<Node>,
+    buses: Array<Bus>,
+    version?: string
+  ) {
+    this.messages = messages;
+    this.nodes = nodes;
+    this.buses = buses;
+    this.version = version;
   }
 
-  if (root.name !== "NetworkDefinition") {
-    throw new Error(
-      `Expected root element tag 'NetworkDefinition', but got ${root.name}`
-    );
-  }
+  static loadString<T extends Record<string, any>>(
+    xmlString: string,
+    strict: boolean = true
+  ): Database<T> {
+    let { root } = parseXml(xmlString);
 
-  let nodes = findAllByName(root, "Node").map((node) => ({
-    id: node.attributes.id,
-    name: node.attributes.name,
-  }));
+    if (root === null) {
+      throw new Error("Document is empty");
+    }
 
-  let buses: Array<Bus> = [];
-  let messages: Array<Message> = [];
-  let version: string | undefined;
+    if (root.name !== "NetworkDefinition") {
+      throw new Error(
+        `Expected root element tag 'NetworkDefinition', but got ${root.name}`
+      );
+    }
 
-  // Version
-  let document = findFirstByName(root, "Document");
-  if (document) {
-    version = document.attributes.version;
-  }
+    let nodes = findAllByName(root, "Node").map((node) => ({
+      id: node.attributes.id,
+      name: node.attributes.name,
+    }));
 
-  // Process buses and messages
-  findAllByName(root, "Bus").forEach((bus) => {
-    let busName = bus.name;
-    let busBaudrate = parseInt(bus.attributes.baudrate || "500000");
-    buses.push({ name: busName, baudrate: busBaudrate });
+    let buses: Array<Bus> = [];
+    let messages: Array<Message> = [];
+    let version: string | undefined;
 
-    // Process messages in this bus
-    findAllByName(bus, "Message").forEach((message) => {
-      messages.push(loadMessageElement(message, busName, nodes, strict));
+    // Version
+    let document = findFirstByName(root, "Document");
+    if (document) {
+      version = document.attributes.version;
+    }
+
+    // Process buses and messages
+    findAllByName(root, "Bus").forEach((bus) => {
+      let busName = bus.name;
+      let busBaudrate = parseInt(bus.attributes.baudrate || "500000");
+      buses.push({ name: busName, baudrate: busBaudrate });
+
+      // Process messages in this bus
+      findAllByName(bus, "Message").forEach((message) => {
+        messages.push(loadMessageElement(message, busName, nodes, strict));
+      });
     });
-  });
 
-  return {
-    messages,
-    nodes,
-    buses,
-    version,
-  };
+    return new Database(messages, nodes, buses, version);
+  }
+
+  getMessageByName<K extends keyof T>(name: K): Message<T[K]> {
+    let message = this.messages.find((message) => message.name === name)
+    if (message === undefined) {
+      throw new Error(`Unable to find message with name ${String(name)}`);
+    }
+    return message;
+  }
 }
 
 function loadMessageElement(
