@@ -1,14 +1,9 @@
 import { NamedSignalValue } from "./named-signal-value.js";
-import type { Choices, SignalValueType } from "./types.js";
+import type { Choices, SignalValue } from "./types.js";
 
-/**
- * The BaseConversion class defines the interface for all signal conversion classes.
- */
 export abstract class BaseConversion {
-  // The scaling factor of the conversion
   abstract scale: number;
 
-  // The offset value of the conversion
   abstract offset: number;
 
   // True if raw value is float, false if integer
@@ -17,10 +12,6 @@ export abstract class BaseConversion {
   // Optional mapping of raw values to text values
   abstract choices?: Choices;
 
-  /**
-   * Factory method that returns an instance of a conversion subclass
-   * based on the given parameters.
-   */
   static factory(
     scale: number = 1,
     offset: number = 0,
@@ -42,37 +33,20 @@ export abstract class BaseConversion {
     return new NamedSignalConversion(scale, offset, choices, isFloat);
   }
 
-  /**
-   * Convert an internal raw value according to scaling or value table
-   */
   abstract rawToScaled(
-    raw_value: number,
-    decode_choices?: boolean
-  ): SignalValueType;
+    rawValue: number,
+    decodeChoices?: boolean
+  ): SignalValue;
 
-  /**
-   * Convert a scaled value to the internal raw value
-   */
-  abstract scaledToRaw(scaled_value: SignalValueType): number;
+  abstract scaledToRaw(scaledValue: number | string): number;
 
-  /**
-   * Convert a numeric scaled value to the internal raw value
-   */
-  abstract numericScaledToRaw(scaled_value: number): number;
+  abstract numericScaledToRaw(scaledValue: number): number;
 
-  /**
-   * Convert a choice string/value to its numeric representation
-   */
   choiceToNumber(choice: string | NamedSignalValue): number {
     throw new Error("Choice conversion not supported");
   }
-
-  abstract toString(): string;
 }
 
-/**
- * Simple pass-through conversion with optional float handling
- */
 export class IdentityConversion extends BaseConversion {
   scale = 1;
   offset = 0;
@@ -86,7 +60,7 @@ export class IdentityConversion extends BaseConversion {
     return rawValue;
   }
 
-  scaledToRaw(scaledValue: SignalValueType): number {
+  scaledToRaw(scaledValue: SignalValue): number {
     if (typeof scaledValue !== "number") {
       throw new TypeError(
         `'scaled_value' must be number (is ${typeof scaledValue})`
@@ -98,15 +72,8 @@ export class IdentityConversion extends BaseConversion {
   numericScaledToRaw(scaledValue: number): number {
     return this.isFloat ? scaledValue : Math.round(scaledValue);
   }
-
-  toString(): string {
-    return `IdentityConversion(is_float=${this.isFloat})`;
-  }
 }
 
-/**
- * Integer-only linear conversion
- */
 export class LinearIntegerConversion extends BaseConversion {
   isFloat = false;
   choices?: Choices = undefined;
@@ -119,7 +86,7 @@ export class LinearIntegerConversion extends BaseConversion {
     return rawValue * this.scale + this.offset;
   }
 
-  scaledToRaw(scaledValue: SignalValueType): number {
+  scaledToRaw(scaledValue: SignalValue): number {
     if (typeof scaledValue !== "number") {
       throw new TypeError(
         `'scaled_value' must be number (is ${typeof scaledValue})`
@@ -139,15 +106,8 @@ export class LinearIntegerConversion extends BaseConversion {
     }
     return Math.round(raw / this.scale);
   }
-
-  toString(): string {
-    return `LinearIntegerConversion(scale=${this.scale}, offset=${this.offset})`;
-  }
 }
 
-/**
- * General linear conversion supporting both integer and float
- */
 export class LinearConversion extends BaseConversion {
   choices?: Choices = undefined;
 
@@ -163,7 +123,7 @@ export class LinearConversion extends BaseConversion {
     return rawValue * this.scale + this.offset;
   }
 
-  scaledToRaw(scaledValue: SignalValueType): number {
+  scaledToRaw(scaledValue: SignalValue): number {
     if (typeof scaledValue !== "number") {
       throw new TypeError(
         `'scaled_value' must be number (is ${typeof scaledValue})`
@@ -176,15 +136,8 @@ export class LinearConversion extends BaseConversion {
     const raw = (scaledValue - this.offset) / this.scale;
     return this.isFloat ? raw : Math.round(raw);
   }
-
-  toString(): string {
-    return `LinearConversion(scale=${this.scale}, offset=${this.offset}, isFloat=${this.isFloat})`;
-  }
 }
 
-/**
- * Conversion supporting named values (choices)
- */
 export class NamedSignalConversion extends BaseConversion {
   private inverseChoices: Map<string, number>;
   private conversion: BaseConversion;
@@ -196,9 +149,12 @@ export class NamedSignalConversion extends BaseConversion {
     public isFloat: boolean
   ) {
     super();
-    this.inverseChoices = new Map();
-    this.updateChoices();
-
+    this.inverseChoices = new Map(
+      Object.entries(this.choices).map(([value, text]) => [
+        String(text),
+        Number(value),
+      ])
+    );
     this.conversion = BaseConversion.factory(
       this.scale,
       this.offset,
@@ -210,20 +166,16 @@ export class NamedSignalConversion extends BaseConversion {
   rawToScaled(
     rawValue: number,
     decodeChoices: boolean = true
-  ): SignalValueType {
+  ): SignalValue {
     if (decodeChoices && this.choices && rawValue in this.choices) {
       return this.choices[rawValue]!;
     }
     return this.conversion.rawToScaled(rawValue, false);
   }
 
-  scaledToRaw(scaledValue: SignalValueType): number {
+  scaledToRaw(scaledValue: SignalValue): number {
     if (typeof scaledValue === "number") {
       return this.conversion.scaledToRaw(scaledValue);
-    }
-
-    if (scaledValue instanceof NamedSignalValue) {
-      return scaledValue.value;
     }
 
     if (typeof scaledValue === "string") {
@@ -237,40 +189,15 @@ export class NamedSignalConversion extends BaseConversion {
     return this.conversion.scaledToRaw(scaled_value);
   }
 
-  setChoices(choices: Choices): void {
-    this.choices = choices;
-    this.updateChoices();
-  }
-
-  private updateChoices(): void {
-    this.inverseChoices = new Map(
-      Object.entries(this.choices).map(([value, text]) => [
-        String(text),
-        Number(value),
-      ])
-    );
-  }
-
-  override choiceToNumber(choice: string | NamedSignalValue): number {
-    const value = this.inverseChoices.get(String(choice));
+  override choiceToNumber(choice: string): number {
+    const value = this.inverseChoices.get(choice);
     if (value === undefined) {
       throw new Error(`Choice "${choice}" not found`);
     }
     return value;
   }
-
-  toString(): string {
-    const choicesList = Object.entries(this.choices)
-      .map(([value, text]) => `${value}: '${text}'`)
-      .join(", ");
-
-    return `NamedSignalConversion(scale=${this.scale}, offset=${this.offset}, choices={${choicesList}}, isFloat=${this.isFloat})`;
-  }
 }
 
-/**
- * Helper to check if a number is an integer
- */
 function isInteger(value: number): boolean {
   if (Number.isInteger(value)) {
     return true;

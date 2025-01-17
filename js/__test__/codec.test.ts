@@ -1,9 +1,10 @@
-import { test } from "vitest";
+import { expect, test } from "vitest";
 import { promises as fs } from "fs";
 import path from "path";
 import { loadString } from "../parser/database.js";
+import { buffer } from "./utils.js";
 
-test("multiplexed messages", async () => {
+test("encodes and decodes multiplexed messages", async () => {
   let file = await fs.readFile(
     path.join(__dirname, "./files/multiplex.kcd"),
     "utf-8"
@@ -34,24 +35,8 @@ test("multiplexed messages", async () => {
     VCLEFT_swcRightDoublePress: 0,
   };
   let encoded = message.encode(data);
-  console.log("encoded", encoded);
+  expect(encoded).toEqual(buffer("29553f0000000000"));
 
-  // let decoded = message.decode(result)
-  // console.log('decoded', decoded);
+  let decoded = message.decode(encoded)
+  expect(decoded).toEqual(data);
 });
-
-// console.log("frameId", message.frameId);
-// console.log("name", message.name);
-// console.log("length", message.length);
-// console.log("headerId", message.headerId);
-// console.log("headerByteOrder", message.headerByteOrder);
-// console.log("isFd", message.isFd);
-// console.log("isExtendedFrame", message.isExtendedFrame);
-// console.log("unusedBitPattern", message.unusedBitPattern);
-// console.log("comments", message.comments);
-// console.log("protocol", message.protocol);
-// console.log('signalTree', JSON.stringify(message.signalTree, null, 2));
-// console.log('signals', JSON.stringify(message.signals, null, 2));
-// console.log("isContainer", message.isContainer);
-// console.log("comment", message.comment);
-// console.log("isMultiplexed", message.isMultiplexed());

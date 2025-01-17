@@ -1,7 +1,5 @@
-import { start } from "repl";
-import { NamedSignalValue } from "./named-signal-value.js";
 import { Signal } from "./signal.js";
-import type { ByteOrder, Comments } from "./types.js";
+import type { ByteOrder, Comments, SignalValue } from "./types.js";
 import { BitStruct } from "./bitstruct.js";
 
 interface Codec {
@@ -14,7 +12,7 @@ interface SignalFormat {
   big: BitStruct;
   little: BitStruct;
 }
-type SignalValue = number | string;
+
 type SignalMap = Record<string, SignalValue>;
 
 export class Message {
@@ -228,20 +226,82 @@ export class Message {
     return Object.keys(this.codecs.multiplexers).length > 0;
   }
 
+  decode(data: Buffer, scaling: boolean = true) {
+    if (this.isContainer) {
+      throw new Error("Container messages not yet supported");
+    }
+
+    if (!this.codecs) {
+      throw new Error("Codec is not initialized");
+    }
+
+    return this._decode(this.codecs, data, scaling);
+  }
+
+  private _decode(node: Codec, data: Buffer, scaling: boolean) {
+    let decoded = this.unpackData(node, data, scaling);
+
+    let multiplexers = node.multiplexers;
+
+    for (let [signalName, codecMap] of Object.entries(multiplexers)) {
+      let mux = this.getMuxNumber(decoded, signalName);
+
+      if (codecMap[mux]) {
+        node = codecMap[mux];
+      } else {
+        let ids = Object.keys(codecMap).join(", ");
+        throw new Error(
+          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`
+        );
+      }
+
+      Object.assign(decoded, this._decode(node, data, scaling));
+    }
+
+    return decoded;
+  }
+
+  private unpackData(node: Codec, data: Buffer, scaling: boolean) {
+    let actualLength = data.length;
+    if (actualLength != this.length) {
+      throw new Error(
+        `Wrong data size: ${actualLength} instead of ${this.length} bytes`
+      );
+    }
+
+    let unpacked = {
+      ...node.formats.big.unpack(data),
+      ...node.formats.little.unpack(Buffer.from(data).reverse()),
+    };
+
+    let decoded: SignalMap = {};
+
+    for (let signal of node.signals) {
+      let value = unpacked[signal.name];
+
+      if (value === undefined) {
+        // TODO: should this not be an error?
+        continue;
+      }
+
+      if (scaling) {
+        decoded[signal.name] = signal.conversion.rawToScaled(value as number);
+      } else {
+        decoded[signal.name] = value as number;
+      }
+    }
+
+    return decoded;
+  }
+
   encode(
     data: SignalMap,
     scaling: boolean = true,
-    padding: boolean = false,
-    strict: boolean = true
+    padding: boolean = false
   ): Buffer {
     if (this.isContainer) {
       // TODO: handle container messages
       throw new Error("Container messages not yet supported");
-    }
-
-    if (strict) {
-      // TODO: implement strictness validations
-      // throw new Error("Strict option not yet supported");
     }
 
     if (!this.codecs) {
@@ -486,7 +546,7 @@ function sawtoothToNetworkBitnum(sawtoothBitnum: number): number {
 function bufferToBigInt(buffer: Buffer, littleEndian: boolean = false): bigint {
   if (littleEndian) {
     // Reverse the buffer for little endian
-    buffer = Buffer.from([...buffer].reverse());
+    buffer = Buffer.from(buffer).reverse();
   }
   return BigInt("0x" + buffer.toString("hex"));
 }

@@ -68,7 +68,6 @@ describe("signed integers", () => {
   test("packing signed integer into large buffer", () => {
     let struct = new BitStruct([{ name: "foo", type: "s", size: 64 }]);
     let packed = struct.pack({ foo: -100 });
-    console.log("packed", packed);
     expect(packed).toEqual(buffer("ffffffffffffff9c"));
     let unpacked = struct.unpack(packed);
     expect(unpacked).toEqual({ foo: -100 });

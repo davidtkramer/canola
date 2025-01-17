@@ -6,10 +6,7 @@
  * descriptions for the named value.
  */
 export class NamedSignalValue {
-  // The text intended for human consumption which the specified integer is mapped to
   public readonly name: string;
-
-  // The integer value that gets mapped
   public readonly value: number;
 
   /**
