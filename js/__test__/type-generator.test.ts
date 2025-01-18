@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { test, expect } from "vitest";
-import { Database } from "../parser/database.js";
+import { Database } from "../database.js";
 import { TypeGenerator } from '../type-generator.js'
 
 test("generates types for multiplexed messages", async () => {

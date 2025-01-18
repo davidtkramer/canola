@@ -206,6 +206,14 @@ export class Message<T extends SignalMap = SignalMap> {
     return nodes;
   }
 
+  getSignalById(id: string | number): Signal {
+    let signal = this.signalDict.get(id.toString());
+    if (signal === undefined) {
+      throw new Error(`Could not find signal with id '${id}'`)
+    }
+    return signal;
+  }
+
   getSignalByName<K extends UnionKeys<T>>(name: K): Signal {
     let signal = this.signalDict.get(name.toString());
     if (!signal) {
@@ -420,7 +428,7 @@ export class Message<T extends SignalMap = SignalMap> {
   }
 }
 
-function sortSignalsByStartBit(signals: Signal[]): Signal[] {
+function sortSignalsByStartBit(signals: Array<Signal>): Array<Signal> {
   return [...signals].sort((a, b) => startBit(a) - startBit(b));
 }
 

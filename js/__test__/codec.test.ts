@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { promises as fs } from "fs";
 import path from "path";
-import { Database } from "../parser/database.js";
+import { Database } from "../database.js";
 import { buffer } from "./utils.js";
 import { Messages } from "./types.js";
 

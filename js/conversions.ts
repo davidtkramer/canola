@@ -1,4 +1,3 @@
-import { NamedSignalValue } from "./named-signal-value.js";
 import type { Choices, SignalValue } from "./types.js";
 
 export abstract class BaseConversion {
@@ -42,7 +41,7 @@ export abstract class BaseConversion {
 
   abstract numericScaledToRaw(scaledValue: number): number;
 
-  choiceToNumber(choice: string | NamedSignalValue): number {
+  choiceToNumber(choice: string): number {
     throw new Error("Choice conversion not supported");
   }
 }

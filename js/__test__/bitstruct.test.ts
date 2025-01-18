@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { BitStruct } from "../parser/bitstruct.js";
+import { BitStruct } from "../bitstruct.js";
 import { buffer } from "./utils.js";
 
 test("packing and unpacking", () => {

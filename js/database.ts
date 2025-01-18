@@ -4,14 +4,14 @@ import { Message } from "./message.js";
 import { Signal } from "./signal.js";
 import { BaseConversion } from "./conversions.js";
 
-export interface Node {
+type Node = {
   id?: string;
   name?: string;
   comment?: string;
   comments?: Comments;
 }
 
-export interface Bus {
+type Bus = {
   name: string;
   comment?: string;
   comments?: Comments;
@@ -84,9 +84,21 @@ export class Database<T extends Record<string, any>> {
   }
 
   getMessageByName<K extends keyof T>(name: K): Message<T[K]> {
-    let message = this.messages.find((message) => message.name === name)
+    let message = this.messages.find(
+      (message): message is Message<T[K]> => message.name === name
+    );
     if (message === undefined) {
-      throw new Error(`Unable to find message with name ${String(name)}`);
+      throw new Error(`Unable to find message with name '${String(name)}'`);
+    }
+    return message;
+  }
+
+  getMessageById<K extends keyof T>(name: K): Message<T[K]> {
+    let message = this.messages.find(
+      (message): message is Message<T[K]> => message.name === name
+    );
+    if (message === undefined) {
+      throw new Error(`Unable to find message with name '${String(name)}'`);
     }
     return message;
   }
@@ -221,7 +233,7 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   let unit: string | undefined;
   let labels: Record<number, string> | undefined = undefined;
   let notes: string | undefined;
-  let receivers: string[] = [];
+  let receivers: Array<string> = [];
 
   // Signal XML attributes
   Object.entries(signal.attributes).forEach(([key, value]) => {

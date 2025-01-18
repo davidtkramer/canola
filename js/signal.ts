@@ -1,9 +1,4 @@
-import {
-  type ByteOrder,
-  type Comments,
-  type SignalValueType,
-} from "./types.js";
-import { NamedSignalValue } from "./named-signal-value.js";
+import type { ByteOrder, Comments, SignalValue } from "./types.js";
 import { BaseConversion, IdentityConversion } from "./conversions.js";
 
 /**
@@ -63,13 +58,13 @@ export class Signal {
   public rawInitial?: number;
 
   // The initial value of the signal in physical units
-  public initial?: SignalValueType;
+  public initial?: SignalValue;
 
   // The raw value representing that the signal is invalid
   public rawInvalid?: number;
 
   // The scaled value representing that the signal is invalid
-  public invalid?: SignalValueType;
+  public invalid?: SignalValue;
 
   // The unit of the signal as a string
   public unit?: string;
@@ -144,26 +139,17 @@ export class Signal {
     }
   }
 
-  /**
-   * Convert a raw value to a scaled value
-   */
   rawToScaled(
     rawValue: number,
     decodeChoices: boolean = true
-  ): SignalValueType {
+  ): SignalValue {
     return this.conversion.rawToScaled(rawValue, decodeChoices);
   }
 
-  /**
-   * Convert a scaled value to a raw value
-   */
-  scaledToRaw(scaledValue: SignalValueType): number {
+  scaledToRaw(scaledValue: SignalValue): number {
     return this.conversion.scaledToRaw(scaledValue);
   }
 
-  /**
-   * Get/set the scale factor
-   */
   get scale(): number {
     return this.conversion.scale;
   }
@@ -177,9 +163,6 @@ export class Signal {
     );
   }
 
-  /**
-   * Get/set the offset value
-   */
   get offset(): number {
     return this.conversion.offset;
   }
@@ -193,9 +176,6 @@ export class Signal {
     );
   }
 
-  /**
-   * Get/set the value choices mapping
-   */
   get choices() {
     return this.conversion.choices;
   }
@@ -209,9 +189,6 @@ export class Signal {
     );
   }
 
-  /**
-   * Get/set whether the signal uses floating point
-   */
   get isFloat(): boolean {
     return this.conversion.isFloat;
   }
@@ -225,9 +202,6 @@ export class Signal {
     );
   }
 
-  /**
-   * Get/set the signal comment
-   */
   get comment(): string | undefined {
     if (this.comments === undefined) {
       return undefined;
@@ -247,42 +221,11 @@ export class Signal {
     }
   }
 
-  /**
-   * Convert a choice string/value to its numeric representation
-   */
-  choiceToNumber(choice: string | NamedSignalValue): number {
+  choiceToNumber(choice: string): number {
     try {
       return this.conversion.choiceToNumber(choice);
     } catch (error) {
       throw new Error(`Choice ${choice} not found in Signal ${this.name}`);
     }
-  }
-
-  toString(): string {
-    const choices =
-      this.choices === undefined
-        ? "null"
-        : `{${Object.entries(this.choices)
-            .map(([value, text]) => `${value}: '${text}'`)
-            .join(", ")}}`;
-
-    return (
-      `signal('${this.name}', ` +
-      `${this.start}, ` +
-      `${this.length}, ` +
-      `'${this.byteOrder}', ` +
-      `${this.isSigned}, ` +
-      `${this.rawInitial}, ` +
-      `${this.conversion.scale}, ` +
-      `${this.conversion.offset}, ` +
-      `${this.minimum}, ` +
-      `${this.maximum}, ` +
-      `'${this.unit}', ` +
-      `${this.isMultiplexer}, ` +
-      `${this.multiplexerIds}, ` +
-      `${choices}, ` +
-      `${this.spn}, ` +
-      `${JSON.stringify(this.comments)})`
-    );
   }
 }

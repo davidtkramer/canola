@@ -14,12 +14,12 @@ import {
 } from "typescript";
 import fs from "fs";
 import path from "path";
-import { Signal } from "./parser/signal.js";
+import { Signal } from "./signal.js";
 import {
   Message,
   type SignalBranch,
   type SignalNode,
-} from "./parser/message.js";
+} from "./message.js";
 
 export class TypeGenerator {
   private sourceFile: SourceFile;
