@@ -227,7 +227,7 @@ export class Message<T extends SignalMap = SignalMap> {
     return Object.keys(this.codecs.multiplexers).length > 0;
   }
 
-  decode(data: Buffer, scaling: boolean = true) {
+  decode(data: Buffer, scaling: boolean = true): T {
     if (this.isContainer()) {
       throw new Error("Container messages not yet supported");
     }
@@ -236,7 +236,7 @@ export class Message<T extends SignalMap = SignalMap> {
       throw new Error("Codec is not initialized");
     }
 
-    return this._decode(this.codecs, data, scaling);
+    return this._decode(this.codecs, data, scaling) as T;
   }
 
   private _decode(node: Codec, data: Buffer, scaling: boolean) {

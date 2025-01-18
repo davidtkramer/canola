@@ -11,7 +11,7 @@ test("encodes and decodes multiplexed messages", async () => {
     "utf-8"
   );
   let db = Database.loadString<Messages>(file.replace(/>\s+</g, "><").trim());
-  let message = db.getMessageByName('ID3C2VCLEFT_switchStatus');
+  let message = db.getMessageByName("ID3C2VCLEFT_switchStatus");
 
   let data = {
     VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_1",
