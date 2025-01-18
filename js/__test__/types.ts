@@ -3198,7 +3198,7 @@ export type ID3C2VCLEFT_switchStatus_0 = {
     VCLEFT_frontOccupancySwitch: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCLEFT_rearLeftBuckleSwitch: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCLEFT_rearCenterOccupancySwitch: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
-    VCLEFT_rearLeftOccupancySwitchVCLEFT_rearLeftOccupancySwitch: number;
+    VCLEFT_rearLeftOccupancySwitch: number;
     VCLEFT_rearRightOccupancySwitch: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCLEFT_brakePressed: number;
     VCLEFT_rearHVACButtonPressed: number;

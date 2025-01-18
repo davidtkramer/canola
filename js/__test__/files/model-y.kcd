@@ -17783,7 +17783,7 @@
               <Label name="SWITCH_SNA" value="0" />
             </LabelSet>
           </Signal>
-          <Signal name="VCLEFT_rearLeftOccupancySwitchVCLEFT_rearLeftOccupancySwitch" offset="56" length="2">
+          <Signal name="VCLEFT_rearLeftOccupancySwitch" offset="56" length="2">
             <Consumer>
               <NodeRef id="1" />
             </Consumer>
