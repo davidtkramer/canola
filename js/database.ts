@@ -175,14 +175,14 @@ function loadMessageElement(
     if (element.name === "Signal") {
       signals.push(loadSignalElement(element, nodes));
     } else if (element.name === "Multiplex") {
-      const muxSignal = loadSignalElement(element, nodes);
+      let muxSignal = loadSignalElement(element, nodes);
       muxSignal.isMultiplexer = true;
       signals.push(muxSignal);
 
       findAllByName(element, "MuxGroup").forEach((muxGroup) => {
-        const muxId = parseInt(muxGroup.attributes.count || "");
+        let muxId = parseInt(muxGroup.attributes.count || "");
         findAllByName(muxGroup, "Signal").forEach((signal) => {
-          const muxedSignal = loadSignalElement(signal, nodes);
+          let muxedSignal = loadSignalElement(signal, nodes);
           muxedSignal.multiplexerIds = [muxId];
           muxedSignal.multiplexerSignal = muxSignal.name;
           signals.push(muxedSignal);
@@ -193,7 +193,7 @@ function loadMessageElement(
 
   // Calculate auto length if needed
   if (length === 0 && signals.length > 0) {
-    const lastSignal = [...signals]
+    let lastSignal = [...signals]
       .sort(
         (a, b) =>
           startBit(a.start, a.byteOrder) - startBit(b.start, b.byteOrder)
@@ -286,28 +286,28 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   }
 
   // Notes
-  const notesElement = findFirstByName(signal, "Notes");
+  let notesElement = findFirstByName(signal, "Notes");
   if (notesElement) {
     notes = notesElement.text;
   }
 
   // Label set
-  const labelSet = findFirstByName(signal, "LabelSet");
+  let labelSet = findFirstByName(signal, "LabelSet");
   if (labelSet) {
     labels = {};
     findAllByName(labelSet, "Label").forEach((label) => {
-      const labelValue = parseInt(label.attributes.value || "");
-      const labelName = label.attributes.name || "";
+      let labelValue = parseInt(label.attributes.value || "");
+      let labelName = label.attributes.name || "";
       labels![labelValue] = labelName;
     });
   }
 
   // Receivers
-  const consumer = findFirstByName(signal, "Consumer");
+  let consumer = findFirstByName(signal, "Consumer");
   if (consumer) {
     findAllByName(consumer, "NodeRef").forEach((receiver) => {
       if (receiver.attributes.id) {
-        const nodeName = getNodeNameById(nodes, receiver.attributes.id);
+        let nodeName = getNodeNameById(nodes, receiver.attributes.id);
         if (nodeName) {
           receivers.push(nodeName);
         }

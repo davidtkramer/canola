@@ -70,13 +70,13 @@ export class Signal {
   public unit?: string;
 
   // A list of all receiver nodes of this signal
-  public receivers: string[];
+  public receivers: Array<string>;
 
   // True if this is the multiplexer signal in a message
   public isMultiplexer: boolean;
 
   // The multiplexer ids list if part of a multiplexed message
-  public multiplexerIds?: number[];
+  public multiplexerIds?: Array<number>;
 
   // The multiplexer signal if part of a multiplexed message
   public multiplexerSignal?: string;
@@ -100,9 +100,9 @@ export class Signal {
     maximum?: number;
     unit?: string;
     comment?: string | Comments;
-    receivers?: string[];
+    receivers?: Array<string>;
     isMultiplexer?: boolean;
-    multiplexerIds?: number[];
+    multiplexerIds?: Array<number>;
     multiplexerSignal?: string;
     spn?: number;
   }) {

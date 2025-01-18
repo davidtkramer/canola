@@ -94,11 +94,11 @@ export class LinearIntegerConversion extends BaseConversion {
     return this.numericScaledToRaw(scaledValue);
   }
 
-  numericScaledToRaw(scaled_value: number): number {
+  numericScaledToRaw(scaledValue: number): number {
     // Try to avoid precision loss when possible
-    const raw = scaled_value - this.offset;
-    const quotient = Math.floor(raw / this.scale);
-    const remainder = raw % this.scale;
+    let raw = scaledValue - this.offset;
+    let quotient = Math.floor(raw / this.scale);
+    let remainder = raw % this.scale;
 
     if (remainder === 0) {
       return quotient;
@@ -132,7 +132,7 @@ export class LinearConversion extends BaseConversion {
   }
 
   numericScaledToRaw(scaledValue: number): number {
-    const raw = (scaledValue - this.offset) / this.scale;
+    let raw = (scaledValue - this.offset) / this.scale;
     return this.isFloat ? raw : Math.round(raw);
   }
 }
@@ -184,12 +184,12 @@ export class NamedSignalConversion extends BaseConversion {
     throw new TypeError("Invalid scaled value type");
   }
 
-  numericScaledToRaw(scaled_value: number): number {
-    return this.conversion.scaledToRaw(scaled_value);
+  numericScaledToRaw(scaledValue: number): number {
+    return this.conversion.scaledToRaw(scaledValue);
   }
 
   override choiceToNumber(choice: string): number {
-    const value = this.inverseChoices.get(choice);
+    let value = this.inverseChoices.get(choice);
     if (value === undefined) {
       throw new Error(`Choice "${choice}" not found`);
     }

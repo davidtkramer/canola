@@ -7,14 +7,14 @@ export function waitFor(callback, { timeout = 4000, interval = 50 } = {}) {
 
   return new Promise((resolve, reject) => {
     let lastError: any;
-    const timeoutId = setTimeout(handleTimeout, timeout);
+    let timeoutId = setTimeout(handleTimeout, timeout);
 
     checkCallback();
-    const intervalId = setInterval(checkCallback, interval);
+    let intervalId = setInterval(checkCallback, interval);
 
     function checkCallback() {
       try {
-        const result = callback();
+        let result = callback();
         clearTimeout(timeoutId);
         clearInterval(intervalId);
         resolve(result);
@@ -24,7 +24,7 @@ export function waitFor(callback, { timeout = 4000, interval = 50 } = {}) {
     }
 
     function handleTimeout() {
-      const error = lastError || new Error("Timed out in waitFor.");
+      let error = lastError || new Error("Timed out in waitFor.");
       clearTimeout(timeoutId);
       clearInterval(intervalId);
       reject(error);
@@ -33,7 +33,7 @@ export function waitFor(callback, { timeout = 4000, interval = 50 } = {}) {
 }
 
 export function sleep(timeout: number) {
-  const start = Date.now();
+  let start = Date.now();
   while (Date.now() - start < timeout) {
     // Busy wait
   }

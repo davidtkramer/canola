@@ -164,7 +164,7 @@ export class BitStruct {
   }
 
   private binaryToBytes(bits: string): Buffer {
-    const bytes = bits.match(/.{8}/g)!.map((byte) => parseInt(byte, 2));
+    let bytes = bits.match(/.{8}/g)!.map((byte) => parseInt(byte, 2));
     return Buffer.from(bytes);
   }
 }
