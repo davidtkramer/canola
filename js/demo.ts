@@ -4,7 +4,7 @@ import { Database } from './database.js';
 import type { DatabaseType } from './__test__/types.js';
 import { CanSocket } from './index.js';
 
-let file = fs.readFileSync(path.join(process.cwd(), './__test__/files/model-y.kcd'), 'utf-8');
+let file = fs.readFileSync(path.join(process.cwd(), './js/__test__/files/model-y.kcd'), 'utf-8');
 let db = Database.loadString<DatabaseType>(file.replace(/>\s+</g, '><').trim());
 
 let socket = new CanSocket('vcan0');
