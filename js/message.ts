@@ -13,7 +13,7 @@ interface SignalFormat {
   little: BitStruct;
 }
 
-type SignalMap = Record<string, SignalValue>;
+export type SignalMap = Record<string, SignalValue>;
 export type SignalBranch = Record<string, Record<number, Array<SignalNode>>>;
 export type SignalNode = string | SignalBranch;
 type UnionKeys<T> = T extends any ? keyof T : never;

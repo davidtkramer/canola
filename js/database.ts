@@ -1,8 +1,13 @@
-import { Message } from "./message.js";
-import { loadString } from "./kcd-parser.js";
-import type { Node, Bus } from "./types.js";
+import { Message, type SignalMap } from './message.js';
+import { loadString } from './kcd-parser.js';
+import type { Node, Bus } from './types.js';
 
-export class Database<T extends Record<string, any>> {
+type DefaultDatabaseType = {
+  ByName: Record<string, any>;
+  ById: Record<number, any>;
+};
+
+export class Database<T extends DefaultDatabaseType> {
   messages: Array<Message>;
   nodes: Array<Node>;
   buses: Array<Bus>;
@@ -12,7 +17,7 @@ export class Database<T extends Record<string, any>> {
     messages: Array<Message>,
     nodes: Array<Node>,
     buses: Array<Bus>,
-    version?: string
+    version?: string,
   ) {
     this.messages = messages;
     this.nodes = nodes;
@@ -20,17 +25,17 @@ export class Database<T extends Record<string, any>> {
     this.version = version;
   }
 
-  static loadString<T extends Record<string, any>>(
+  static loadString<T extends DefaultDatabaseType>(
     xmlString: string,
-    strict: boolean = true
+    strict: boolean = true,
   ): Database<T> {
     let { messages, nodes, buses, version } = loadString(xmlString, strict);
     return new Database<T>(messages, nodes, buses, version);
   }
 
-  getMessageByName<K extends keyof T>(name: K): Message<T[K]> {
+  getMessageByName<K extends keyof T['ByName']>(name: K): Message<T['ByName'][K]> {
     let message = this.messages.find(
-      (message): message is Message<T[K]> => message.name === name
+      (message): message is Message<T['ByName'][K]> => message.name === name,
     );
     if (message === undefined) {
       throw new Error(`Unable to find message with name '${String(name)}'`);
@@ -38,15 +43,45 @@ export class Database<T extends Record<string, any>> {
     return message;
   }
 
-  getMessageById<K extends keyof T>(name: K): Message<T[K]> {
+  getMessageById<K extends keyof T['ById'] & number>(id: K): Message<T['ById'][K]> {
     let message = this.messages.find(
-      (message): message is Message<T[K]> => message.name === name
+      (message): message is Message<T['ById'][K]> => message.frameId === id,
     );
     if (message === undefined) {
-      throw new Error(`Unable to find message with name '${String(name)}'`);
+      throw new Error(`Unable to find message with id '${id}'`);
     }
     return message;
+  }
+
+  encodeMessageByName<K extends keyof T['ByName']>(
+    name: K,
+    data: T['ByName'][K],
+  ): Buffer {
+    let message = this.getMessageByName(name);
+    return message.encode(data);
+  }
+
+  encodeMessageById<K extends keyof T['ById']>(
+    name: K,
+    data: T['ById'][K],
+  ): Buffer {
+    let message = this.getMessageByName(name);
+    return message.encode(data);
+  }
+
+  decodeMessageByName<K extends keyof T['ByName']>(
+    name: K,
+    data: Buffer,
+  ): Message<T['ByName'][K]> {
+    let message = this.getMessageByName(name);
+    return message.decode(data);
+  }
+
+  decodeMessageById<K extends number & keyof T['ById']>(
+    name: K,
+    data: Buffer,
+  ): Message<T['ById'][K]> {
+    let message = this.getMessageByName(name);
+    return message.decode(data);
   }
 }
-
-
