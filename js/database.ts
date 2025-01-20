@@ -57,31 +57,27 @@ export class Database<T extends DefaultDatabaseType> {
     name: K,
     data: T['ByName'][K],
   ): Buffer {
-    let message = this.getMessageByName(name);
-    return message.encode(data);
+    return this.getMessageByName(name).encode(data);
   }
 
-  encodeMessageById<K extends keyof T['ById']>(
-    name: K,
+  encodeMessageById<K extends number & keyof T['ById']>(
+    id: K,
     data: T['ById'][K],
   ): Buffer {
-    let message = this.getMessageByName(name);
-    return message.encode(data);
+    return this.getMessageById(id).encode(data);
   }
 
   decodeMessageByName<K extends keyof T['ByName']>(
     name: K,
     data: Buffer,
   ): Message<T['ByName'][K]> {
-    let message = this.getMessageByName(name);
-    return message.decode(data);
+    return this.getMessageByName(name).decode(data);
   }
 
   decodeMessageById<K extends number & keyof T['ById']>(
-    name: K,
+    id: K,
     data: Buffer,
   ): Message<T['ById'][K]> {
-    let message = this.getMessageByName(name);
-    return message.decode(data);
+    return this.getMessageById(id).decode(data);
   }
 }
