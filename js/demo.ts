@@ -7,7 +7,7 @@ import { CanSocket } from './index.js';
 let file = fs.readFileSync(path.join(process.cwd(), './js/__test__/files/model-y.kcd'), 'utf-8');
 let db = Database.loadString<DatabaseType>(file.replace(/>\s+</g, '><').trim());
 
-let socket = new CanSocket('vcan0');
+let socket = new CanSocket('can1');
 socket.on('message', (frame) => {
   switch (frame.id) {
     case 0x3C2:
