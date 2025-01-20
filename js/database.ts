@@ -70,14 +70,14 @@ export class Database<T extends DefaultDatabaseType> {
   decodeMessageByName<K extends keyof T['ByName']>(
     name: K,
     data: Buffer,
-  ): Message<T['ByName'][K]> {
+  ): T['ByName'][K] {
     return this.getMessageByName(name).decode(data);
   }
 
   decodeMessageById<K extends number & keyof T['ById']>(
     id: K,
     data: Buffer,
-  ): Message<T['ById'][K]> {
+  ): T['ById'][K] {
     return this.getMessageById(id).decode(data);
   }
 }
