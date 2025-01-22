@@ -323,7 +323,7 @@ export class Message<T extends SignalMap = SignalMap> {
       encoded |= paddingMask & paddingPattern;
     }
 
-    return bigIntToBuffer(encoded);
+    return bigIntToBuffer2(encoded, this.length);
   }
 
   private _encode(
@@ -335,7 +335,7 @@ export class Message<T extends SignalMap = SignalMap> {
     let paddingMask = node.formats.paddingMask;
     let multiplexers = node.multiplexers;
 
-    let allSignals = node.signals;
+    let allSignals = [...node.signals];
     for (let [signalName, codecMap] of Object.entries(multiplexers)) {
       let mux = this.getMuxNumber(data, signalName);
 
@@ -362,7 +362,7 @@ export class Message<T extends SignalMap = SignalMap> {
     return [encoded, paddingMask, allSignals] as const;
   }
 
-  private packData(node: Codec, signalMap: SignalMap, scaling: boolean) {
+  private packData(node: Codec, signalMap: SignalMap, scaling: boolean): bigint {
     if (node.signals.length === 0) {
       return 0n;
     }
@@ -507,8 +507,8 @@ function createEncodeDecodeFormats(
     return items;
   };
 
-  let little = createLittle();
   let big = createBig();
+  let little = createLittle();
 
   let littlePaddingMaskString = little
     .map((item: any) =>
@@ -560,4 +560,20 @@ function bufferToBigInt(
 
 function bigIntToBuffer(integer: bigint) {
   return Buffer.from(integer.toString(16).padStart(2, "0"), "hex");
+}
+
+function bigIntToBuffer2(integer: bigint, length: number): Buffer {
+  if (integer < 0 || integer >= 256 ** length) {
+    throw new Error("Integer out of range for the specified length");
+  }
+
+  const buffer = Buffer.alloc(length);
+  let remaining = integer;
+
+  for (let i = length - 1; i >= 0; i--) {
+    buffer[i] = Number(remaining & 0xffn);
+    remaining = remaining >> 8n;
+  }
+
+  return buffer;
 }

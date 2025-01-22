@@ -43,3 +43,16 @@ Run tests
 ```
 yarn test
 ```
+
+# Raspberry Pi Setup
+
+To auto-start can interface on boot, create the file `/etc/network/interfaces.d/can0` and add the following:
+
+```
+auto can0
+iface can0 inet manual
+    pre-up /sbin/ip link set can0 type can bitrate 500000
+    up /sbin/ip link set can0 up
+    down /sbin/ip link set can0 down
+
+```

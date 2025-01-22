@@ -4519,6 +4519,11 @@ export type ID401BrickVoltages_36 = {
 
 export type ID401BrickVoltages = ID401BrickVoltages_0 | ID401BrickVoltages_1 | ID401BrickVoltages_2 | ID401BrickVoltages_3 | ID401BrickVoltages_4 | ID401BrickVoltages_5 | ID401BrickVoltages_6 | ID401BrickVoltages_7 | ID401BrickVoltages_8 | ID401BrickVoltages_9 | ID401BrickVoltages_10 | ID401BrickVoltages_11 | ID401BrickVoltages_12 | ID401BrickVoltages_13 | ID401BrickVoltages_14 | ID401BrickVoltages_15 | ID401BrickVoltages_16 | ID401BrickVoltages_17 | ID401BrickVoltages_18 | ID401BrickVoltages_19 | ID401BrickVoltages_20 | ID401BrickVoltages_21 | ID401BrickVoltages_22 | ID401BrickVoltages_23 | ID401BrickVoltages_24 | ID401BrickVoltages_25 | ID401BrickVoltages_26 | ID401BrickVoltages_27 | ID401BrickVoltages_28 | ID401BrickVoltages_29 | ID401BrickVoltages_30 | ID401BrickVoltages_31 | ID401BrickVoltages_32 | ID401BrickVoltages_33 | ID401BrickVoltages_34 | ID401BrickVoltages_35 | ID401BrickVoltages_36;
 
+export type ID4F3SeatControl = {
+    frontLeftSeatTrackForward: number;
+    frontLeftSeatTrackBackward: number;
+};
+
 export type MessagesByName = {
     ID00CUI_status: ID00CUI_status;
     ID353UI_status: ID353UI_status;
@@ -4679,6 +4684,7 @@ export type MessagesByName = {
     ID7FFcarConfig: ID7FFcarConfig;
     ID332BattBrickMinMax: ID332BattBrickMinMax;
     ID401BrickVoltages: ID401BrickVoltages;
+    ID4F3SeatControl: ID4F3SeatControl;
 };
 
 export type MessagesById = {
@@ -4841,6 +4847,7 @@ export type MessagesById = {
     2047: ID7FFcarConfig;
     818: ID332BattBrickMinMax;
     1025: ID401BrickVoltages;
+    1267: ID4F3SeatControl;
 };
 
 export type DatabaseType = {

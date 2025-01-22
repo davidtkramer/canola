@@ -23680,5 +23680,22 @@
         </Consumer>
       </Signal>
     </Message>
+    <Message id="0x4F3" name="ID4F3SeatControl" length="3">
+      <Producer>
+        <NodeRef id="3" />
+      </Producer>
+      <Signal name="frontLeftSeatTrackForward" offset="2">
+        <Consumer>
+          <NodeRef id="1" />
+        </Consumer>
+        <Value min="0" max="1" />
+      </Signal>
+      <Signal name="frontLeftSeatTrackBackward" offset="3">
+        <Consumer>
+          <NodeRef id="1" />
+        </Consumer>
+        <Value min="0" max="1" />
+      </Signal>
+    </Message>
   </Bus>
 </NetworkDefinition>
