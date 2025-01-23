@@ -15,14 +15,16 @@ export class CanSocket extends EventEmitter<CanEventMap> {
 
   constructor(interfaceName: string) {
     super();
-    this.socket = new CanSocketNative(interfaceName, this.handleFrame);
+    this.socket = new CanSocketNative(interfaceName, this.handleFrames);
   }
 
   // CanSocketBase holds a ref to this method, which is bound
   // to 'this', so instances do not get gc'd until CanSocketBase
   // unrefs this method.
-  handleFrame = (frame: any) => {
-    this.emit("message", frame);
+  handleFrames = (frames: Array<CanFrame>) => {
+    for (let frame of frames) {
+      this.emit("message", frame);
+    }
   };
 
   write(id: number, data: Buffer) {

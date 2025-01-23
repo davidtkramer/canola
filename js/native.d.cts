@@ -9,7 +9,7 @@ export interface CanFilter {
 }
 export type CanSocketProxy = CanSocketNative
 export declare class CanSocketNative {
-  constructor(interfaceName: string, callback: (frame: { id: number, data: Buffer}) => void)
+  constructor(interfaceName: string, callback: (frame: Array<{ id: number, data: Buffer}>) => void)
   write(id: number, data: Buffer): void
   close(): void
   setFilters(filters: Array<CanFilter>): void

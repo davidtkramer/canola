@@ -53,7 +53,8 @@ impl CanSocketProxy {
   pub fn new(
     env: Env,
     interface_name: String,
-    #[napi(ts_arg_type = "(frame: { id: number, data: Buffer}) => void")] callback: JsFunction,
+    #[napi(ts_arg_type = "(frame: Array<{ id: number, data: Buffer}>) => void")]
+    callback: JsFunction,
   ) -> Result<Self> {
     Ok(Self {
       socket: CanSocket::new(env, interface_name, callback)?,
@@ -189,6 +190,8 @@ impl CanSocket {
     // Handle reads - keep reading until we get EAGAIN
     if events & uv_poll_event::UV_READABLE as i32 != 0 {
       log!("\nreading frames...");
+      let mut frames: Vec<can_frame> = Vec::new();
+
       loop {
         let mut frame: can_frame = unsafe { mem::zeroed() };
         match self.socket.read_exact(unsafe {
@@ -196,24 +199,25 @@ impl CanSocket {
         }) {
           Ok(_) => {
             log!("read frame");
-            self
-              .env
-              .run_in_scope(|| {
-                let data = self
-                  .env
-                  .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
-                  .into_raw();
+            frames.push(frame);
+            // self
+            //   .env
+            //   .run_in_scope(|| {
+            //     let data = self
+            //       .env
+            //       .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
+            //       .into_raw();
 
-                let mut obj = self.env.create_object()?;
-                obj.set("id", frame.can_id)?;
-                obj.set("data", data)?;
+            //     let mut obj = self.env.create_object()?;
+            //     obj.set("id", frame.can_id)?;
+            //     obj.set("data", data)?;
 
-                let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
-                callback.call(None, &[obj])?;
+            //     let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
+            //     callback.call(None, &[obj])?;
 
-                Ok(())
-              })
-              .unwrap();
+            //     Ok(())
+            //   })
+            //   .unwrap();
           }
           Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
             log!("read all available frames");
@@ -224,6 +228,32 @@ impl CanSocket {
             break;
           }
         }
+      }
+
+      if !frames.is_empty() {
+        self
+          .env
+          .run_in_scope(|| {
+            let mut frames_array = self.env.create_array(frames.len() as u32)?;
+
+            for (i, frame) in frames.iter().enumerate() {
+              let data = self
+                .env
+                .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
+                .into_raw();
+
+              let mut obj = self.env.create_object()?;
+              obj.set("id", frame.can_id)?;
+              obj.set("data", data)?;
+
+              frames_array.set(i as u32, obj)?;
+            }
+
+            let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
+            callback.call(None, &[frames_array.coerce_to_object()?])?;
+            Ok(())
+          })
+          .unwrap();
       }
     }
 
