@@ -40,7 +40,7 @@ export function sleep(timeout: number) {
 }
 
 export function buffer(data: string) {
-  return Buffer.from(data, "hex");
+  return Buffer.from(data.replaceAll(/\s/g, ''), "hex");
 }
 
 export function throttle(bytes: number) {
