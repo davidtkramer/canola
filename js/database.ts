@@ -1,4 +1,6 @@
-import { Message, type SignalMap } from './message.js';
+import fs from 'fs';
+import path from 'path';
+import { Message } from './message.js';
 import { loadString } from './kcd-parser.js';
 import type { Node, Bus } from './types.js';
 
@@ -23,6 +25,11 @@ export class Database<T extends DefaultDatabaseType> {
     this.nodes = nodes;
     this.buses = buses;
     this.version = version;
+  }
+
+  static loadFile<T extends DefaultDatabaseType>(filePath: string) {
+    let file = fs.readFileSync(path.join(process.cwd(), filePath), 'utf-8');
+    return Database.loadString<T>(file.replace(/>\s+</g, '><').trim());
   }
 
   static loadString<T extends DefaultDatabaseType>(

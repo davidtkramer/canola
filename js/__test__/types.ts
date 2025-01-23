@@ -3221,9 +3221,9 @@ export type ID3C2VCLEFT_switchStatus_1 = {
     VCLEFT_btnWindowAutoDownLR: number;
     VCLEFT_2RowSeatReclineSwitch: number;
     VCLEFT_2RowSeatCenterSwitch: number;
-    VCLEFT_2RowSeatLeftFoldFlatSwitc: number;
-    VCLEFT_2RowSeatRightFoldFlatSwit: number;
-    VCLEFT_2RowSeatBothFoldFlatSwitc: number;
+    VCLEFT_2RowSeatLeftFoldFlatSwitch: number;
+    VCLEFT_2RowSeatRightFoldFlatSwitch: number;
+    VCLEFT_2RowSeatBothFoldFlatSwitch: number;
     VCLEFT_swcLeftDoublePress: number;
     VCLEFT_swcRightDoublePress: number;
 };

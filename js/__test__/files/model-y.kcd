@@ -17947,19 +17947,19 @@
             </Consumer>
             <Value min="0" max="1" />
           </Signal>
-          <Signal name="VCLEFT_2RowSeatLeftFoldFlatSwitc" offset="38">
+          <Signal name="VCLEFT_2RowSeatLeftFoldFlatSwitch" offset="38">
             <Consumer>
               <NodeRef id="1" />
             </Consumer>
             <Value min="0" max="1" />
           </Signal>
-          <Signal name="VCLEFT_2RowSeatRightFoldFlatSwit" offset="39">
+          <Signal name="VCLEFT_2RowSeatRightFoldFlatSwitch" offset="39">
             <Consumer>
               <NodeRef id="1" />
             </Consumer>
             <Value min="0" max="1" />
           </Signal>
-          <Signal name="VCLEFT_2RowSeatBothFoldFlatSwitc" offset="40">
+          <Signal name="VCLEFT_2RowSeatBothFoldFlatSwitch" offset="40">
             <Consumer>
               <NodeRef id="1" />
             </Consumer>
