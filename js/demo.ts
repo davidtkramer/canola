@@ -26,11 +26,6 @@ socket.on('message', async (frame) => {
   }
 });
 
-process.on('SIGINT', () => {
-  socket.close();
-  process.exit(0);
-});
-
 function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
   let message = db.getMessageByName('ID4F3SeatControl');
   let data = message.encode({

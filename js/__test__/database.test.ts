@@ -30,9 +30,9 @@ test('encodes and decodes multiplexed messages', async () => {
     VCLEFT_btnWindowAutoDownLR: 0,
     VCLEFT_2RowSeatReclineSwitch: 0,
     VCLEFT_2RowSeatCenterSwitch: 0,
-    VCLEFT_2RowSeatLeftFoldFlatSwitc: 1,
-    VCLEFT_2RowSeatRightFoldFlatSwit: 0,
-    VCLEFT_2RowSeatBothFoldFlatSwitc: 0,
+    VCLEFT_2RowSeatLeftFoldFlatSwitch: 1,
+    VCLEFT_2RowSeatRightFoldFlatSwitch: 0,
+    VCLEFT_2RowSeatBothFoldFlatSwitch: 0,
     VCLEFT_swcLeftDoublePress: 0,
     VCLEFT_swcRightDoublePress: 0,
   };

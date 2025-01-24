@@ -21,7 +21,7 @@ export class CanSocket extends EventEmitter<CanEventMap> {
   // CanSocketBase holds a ref to this method, which is bound
   // to 'this', so instances do not get gc'd until CanSocketBase
   // unrefs this method.
-  handleFrame = (frame: any) => {
+  handleFrame = (frame: CanFrame) => {
     this.emit("message", frame);
   };
 
