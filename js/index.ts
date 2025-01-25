@@ -1,28 +1,32 @@
-import { EventEmitter } from "events";
-import { CanSocketNative, type CanFilter } from "./native.cjs";
+import { EventEmitter } from 'events';
+import { CanSocketNative, type CanFilter } from './native.cjs';
 
 export type CanFrame = {
-  id: number,
-  data: Buffer
-}
+  id: number;
+  data: Buffer;
+};
 
 type CanEventMap = {
-  message: [CanFrame]
-}
+  message: [CanFrame];
+};
 
 export class CanSocket extends EventEmitter<CanEventMap> {
   socket: CanSocketNative;
 
-  constructor(interfaceName: string) {
+  constructor(interfaceName: string, options?: { filters: Array<CanFilter> }) {
     super();
-    this.socket = new CanSocketNative(interfaceName, this.handleFrame);
+    this.socket = new CanSocketNative(
+      interfaceName,
+      options?.filters ?? [],
+      this.handleFrame,
+    );
   }
 
   // CanSocketBase holds a ref to this method, which is bound
   // to 'this', so instances do not get gc'd until CanSocketBase
   // unrefs this method.
-  handleFrame = (frame: CanFrame) => {
-    this.emit("message", frame);
+  handleFrame = (id: number, data: Buffer) => {
+    this.emit('message', { id, data });
   };
 
   write(id: number, data: Buffer) {

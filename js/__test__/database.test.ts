@@ -10,8 +10,7 @@ import {
 } from './types.js';
 
 test('encodes and decodes multiplexed messages', async () => {
-  let file = await fs.readFile(path.join(__dirname, './files/model-y.kcd'), 'utf-8');
-  let db = Database.loadString<DatabaseType>(file.replace(/>\s+</g, '><').trim());
+  let db = Database.loadFile<DatabaseType>('js/__test__/files/model-y.kcd');
   let message = db.getMessageByName('ID3C2VCLEFT_switchStatus');
 
   let data1: ID3C2VCLEFT_switchStatus = {
@@ -92,8 +91,7 @@ test('encodes and decodes multiplexed messages', async () => {
 });
 
 test('seat controls', async () => {
-  let file = await fs.readFile(path.join(__dirname, './files/model-y.kcd'), 'utf-8');
-  let db = Database.loadString<DatabaseType>(file.replace(/>\s+</g, '><').trim());
+  let db = Database.loadFile<DatabaseType>('js/__test__/files/model-y.kcd');
   let message = db.getMessageByName('ID4F3SeatControl');
 
   let encodedForward = message.encode({

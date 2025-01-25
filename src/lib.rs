@@ -53,10 +53,11 @@ impl CanSocketProxy {
   pub fn new(
     env: Env,
     interface_name: String,
-    #[napi(ts_arg_type = "(frame: { id: number, data: Buffer}) => void")] callback: JsFunction,
+    filters: Vec<CanFilter>,
+    #[napi(ts_arg_type = "(id: number, data: Buffer) => void")] callback: JsFunction,
   ) -> Result<Self> {
     Ok(Self {
-      socket: CanSocket::new(env, interface_name, callback)?,
+      socket: CanSocket::new(env, interface_name, filters, callback)?,
     })
   }
 
@@ -108,7 +109,12 @@ impl Drop for CanSocketProxy {
 }
 
 impl CanSocket {
-  pub fn new(env: Env, interface_name: String, callback: JsFunction) -> Result<*mut CanSocket> {
+  pub fn new(
+    env: Env,
+    interface_name: String,
+    filters: Vec<CanFilter>,
+    callback: JsFunction,
+  ) -> Result<*mut CanSocket> {
     let socket = CanSocket::create_raw_socket(&interface_name)?;
     let socket_fd = socket.as_raw_fd();
 
@@ -123,6 +129,12 @@ impl CanSocket {
     }));
     unsafe {
       (*handle).data = this as *mut _;
+    }
+
+    if !filters.is_empty() {
+      unsafe {
+        (*this).set_filters(filters)?;
+      }
     }
 
     let uv_loop = env.get_uv_event_loop()? as *mut uv_loop_s;
@@ -204,12 +216,8 @@ impl CanSocket {
                   .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
                   .into_raw();
 
-                let mut obj = self.env.create_object()?;
-                obj.set("id", frame.can_id)?;
-                obj.set("data", data)?;
-
                 let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
-                callback.call(None, &[obj])?;
+                callback.call2(frame.can_id, data)?;
 
                 Ok(())
               })
