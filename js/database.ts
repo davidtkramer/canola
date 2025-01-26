@@ -1,15 +1,17 @@
 import fs from 'fs';
 import path from 'path';
-import { Message } from './message.js';
+import { Message, type MessageType } from './message.js';
 import { loadString } from './kcd-parser.js';
 import type { Node, Bus } from './types.js';
 
-type DefaultDatabaseType = {
-  ByName: Record<string, any>;
-  ById: Record<number, any>;
+type ById<MU extends MessageType> = {
+  [K in MU['frameId']]: Extract<MU, { frameId: K }>;
+};
+type ByName<MU extends MessageType> = {
+  [K in MU['name']]: Extract<MU, { name: K }>;
 };
 
-export class Database<T extends DefaultDatabaseType> {
+export class Database<T extends MessageType> {
   messages: Array<Message>;
   nodes: Array<Node>;
   buses: Array<Bus>;
@@ -27,12 +29,12 @@ export class Database<T extends DefaultDatabaseType> {
     this.version = version;
   }
 
-  static loadFile<T extends DefaultDatabaseType>(filePath: string) {
+  static loadFile<T extends MessageType>(filePath: string) {
     let file = fs.readFileSync(path.join(process.cwd(), filePath), 'utf-8');
     return Database.loadString<T>(file.replace(/>\s+</g, '><').trim());
   }
 
-  static loadString<T extends DefaultDatabaseType>(
+  static loadString<T extends MessageType>(
     xmlString: string,
     strict: boolean = true,
   ): Database<T> {
@@ -40,9 +42,9 @@ export class Database<T extends DefaultDatabaseType> {
     return new Database<T>(messages, nodes, buses, version);
   }
 
-  getMessageByName<K extends keyof T['ByName']>(name: K): Message<T['ByName'][K]> {
+  getMessageByName<K extends T['name']>(name: K): Message<ByName<T>[K]> {
     let message = this.messages.find(
-      (message): message is Message<T['ByName'][K]> => message.name === name,
+      (message): message is Message<ByName<T>[K]> => message.name === name,
     );
     if (message === undefined) {
       throw new Error(`Unable to find message with name '${String(name)}'`);
@@ -50,9 +52,9 @@ export class Database<T extends DefaultDatabaseType> {
     return message;
   }
 
-  getMessageById<K extends keyof T['ById'] & number>(id: K): Message<T['ById'][K]> {
+  getMessageById<K extends T['frameId']>(id: K): Message<ById<T>[K]> {
     let message = this.messages.find(
-      (message): message is Message<T['ById'][K]> => message.frameId === id,
+      (message): message is Message<ById<T>[K]> => message.frameId === id,
     );
     if (message === undefined) {
       throw new Error(`Unable to find message with id '${id}'`);
@@ -60,31 +62,25 @@ export class Database<T extends DefaultDatabaseType> {
     return message;
   }
 
-  encodeMessageByName<K extends keyof T['ByName']>(
+  encodeMessageByName<K extends T['name']>(
     name: K,
-    data: T['ByName'][K],
+    data: ByName<T>[K]['signals'],
   ): Buffer {
     return this.getMessageByName(name).encode(data);
   }
 
-  encodeMessageById<K extends number & keyof T['ById']>(
-    id: K,
-    data: T['ById'][K],
-  ): Buffer {
+  encodeMessageById<K extends T['frameId']>(id: K, data: ById<T>[K]['signals']): Buffer {
     return this.getMessageById(id).encode(data);
   }
 
-  decodeMessageByName<K extends keyof T['ByName']>(
+  decodeMessageByName<K extends T['name']>(
     name: K,
     data: Buffer,
-  ): T['ByName'][K] {
+  ): ByName<T>[K]['signals'] {
     return this.getMessageByName(name).decode(data);
   }
 
-  decodeMessageById<K extends number & keyof T['ById']>(
-    id: K,
-    data: Buffer,
-  ): T['ById'][K] {
+  decodeMessageById<K extends T['frameId']>(id: K, data: Buffer): ById<T>[K]['signals'] {
     return this.getMessageById(id).decode(data);
   }
 }

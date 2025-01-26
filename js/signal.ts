@@ -1,5 +1,5 @@
-import type { ByteOrder, Comments, SignalValue } from "./types.js";
-import { BaseConversion, IdentityConversion } from "./conversions.js";
+import type { ByteOrder, Comments, SignalValue } from './types.js';
+import { BaseConversion, IdentityConversion } from './conversions.js';
 
 /**
  * A CAN signal with position, size, unit and other information.
@@ -112,7 +112,7 @@ export class Signal {
     this.maximum = params.maximum;
     this.start = params.start;
     this.length = params.length;
-    this.byteOrder = params.byteOrder ?? "little_endian";
+    this.byteOrder = params.byteOrder ?? 'little_endian';
     this.isSigned = params.isSigned ?? false;
     this.rawInitial = params.rawInitial;
     this.rawInvalid = params.rawInvalid;
@@ -132,17 +132,14 @@ export class Signal {
     }
 
     // Handle comments similar to Python implementation
-    if (typeof params.comment === "string") {
+    if (typeof params.comment === 'string') {
       this.comments = { _default: params.comment };
     } else {
       this.comments = params.comment;
     }
   }
 
-  rawToScaled(
-    rawValue: number,
-    decodeChoices: boolean = true
-  ): SignalValue {
+  rawToScaled(rawValue: number, decodeChoices: boolean = true): SignalValue {
     return this.conversion.rawToScaled(rawValue, decodeChoices);
   }
 
@@ -159,7 +156,7 @@ export class Signal {
       value,
       this.conversion.offset,
       this.conversion.choices,
-      this.conversion.isFloat
+      this.conversion.isFloat,
     );
   }
 
@@ -172,7 +169,7 @@ export class Signal {
       this.conversion.scale,
       value,
       this.conversion.choices,
-      this.conversion.isFloat
+      this.conversion.isFloat,
     );
   }
 
@@ -185,7 +182,7 @@ export class Signal {
       this.conversion.scale,
       this.conversion.offset,
       value,
-      this.conversion.isFloat
+      this.conversion.isFloat,
     );
   }
 
@@ -198,7 +195,7 @@ export class Signal {
       this.conversion.scale,
       this.conversion.offset,
       this.conversion.choices,
-      value
+      value,
     );
   }
 
@@ -206,11 +203,7 @@ export class Signal {
     if (this.comments === undefined) {
       return undefined;
     }
-    return (
-      this.comments["_default"] ??
-      this.comments["FOR-ALL"] ??
-      this.comments["EN"]
-    );
+    return this.comments['_default'] ?? this.comments['FOR-ALL'] ?? this.comments['EN'];
   }
 
   set comment(value: string | undefined) {

@@ -32,7 +32,8 @@
     "prepublishOnly": "napi prepublish -t npm",
     "test": "vitest run",
     "universal": "napi universal",
-    "version": "napi version"
+    "version": "napi version",
+    "format": "prettier --write \"js/**/*.{js,ts,jsx,tsx}\""
   },
   "packageManager": "yarn@4.5.3",
   "dependencies": {

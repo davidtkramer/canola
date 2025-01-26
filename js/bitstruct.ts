@@ -1,10 +1,10 @@
-type Endian = "big" | "little";
+type Endian = 'big' | 'little';
 type FormatItemPadding = {
-  type: "p";
+  type: 'p';
   size: number;
 };
 type FormatItemNumber = {
-  type: "u" | "s" | "f";
+  type: 'u' | 's' | 'f';
   size: number;
   name: string;
   endian?: Endian;
@@ -21,27 +21,27 @@ export class BitStruct {
   constructor(format: Format) {
     for (let item of format) {
       if (item.size == 0) {
-        let name = item.type === "p" ? "padding" : item.name;
+        let name = item.type === 'p' ? 'padding' : item.name;
         throw new Error(`Size cannot be zero in '${name}'`);
       }
 
       switch (item.type) {
-        case "u": {
-          let endian = item.endian ?? "big";
+        case 'u': {
+          let endian = item.endian ?? 'big';
           this.items.push(new UnsignedInteger(item.size, item.name, endian));
           break;
         }
-        case "s": {
-          let endian = item.endian ?? "big";
+        case 's': {
+          let endian = item.endian ?? 'big';
           this.items.push(new SignedInteger(item.size, item.name, endian));
           break;
         }
-        case "f": {
-          let endian = item.endian ?? "big";
+        case 'f': {
+          let endian = item.endian ?? 'big';
           this.items.push(new Float(item.size, item.name, endian));
           break;
         }
-        case "p": {
+        case 'p': {
           this.items.push(new ZeroPadding(item.size));
           break;
         }
@@ -54,10 +54,10 @@ export class BitStruct {
   }
 
   pack(data: Record<string, string | number | bigint>) {
-    let bits = "";
+    let bits = '';
 
     for (let item of this.items) {
-      if (item.kind === "p") {
+      if (item.kind === 'p') {
         bits += item.pack();
       } else {
         let value = data[item.name];
@@ -70,7 +70,7 @@ export class BitStruct {
 
     let tail = bits.length % 8;
     if (tail !== 0) {
-      bits += "0".repeat(8 - tail);
+      bits += '0'.repeat(8 - tail);
     }
 
     return this.binaryToBytes(bits);
@@ -79,20 +79,18 @@ export class BitStruct {
   unpack(
     data: Buffer,
     offset: number = 0,
-    allowTruncated = false
+    allowTruncated = false,
   ): Record<string, number | bigint> {
-    let bits = "";
+    let bits = '';
     for (let byte of data) {
-      bits += byte.toString(2).padStart(8, "0");
+      bits += byte.toString(2).padStart(8, '0');
     }
     if (offset != 0) {
       bits = bits.slice(offset);
     }
 
     if (!allowTruncated && this.size > bits.length) {
-      throw new Error(
-        `unpack requires at least ${this.size} bits (got ${bits.length})`
-      );
+      throw new Error(`unpack requires at least ${this.size} bits (got ${bits.length})`);
     }
 
     offset = 0;
@@ -104,11 +102,11 @@ export class BitStruct {
         return result;
       }
 
-      if (item.kind !== "p") {
-        let valueBits = "";
+      if (item.kind !== 'p') {
+        let valueBits = '';
 
-        let byteOrder = "big";
-        if (byteOrder === "big") {
+        let byteOrder = 'big';
+        if (byteOrder === 'big') {
           valueBits = bits.slice(offset, offset + item.size);
         } else {
           let valueBitsTmp = bits.slice(offset, offset + item.size);
@@ -123,8 +121,8 @@ export class BitStruct {
           valueBits += valueBitsTmp;
         }
 
-        if (item.endian === "little") {
-          valueBits = [...valueBits].reverse().join("");
+        if (item.endian === 'little') {
+          valueBits = [...valueBits].reverse().join('');
         }
 
         result[item.name] = item.unpack(valueBits);
@@ -139,16 +137,16 @@ export class BitStruct {
   private packValue(
     item: Exclude<FormatType, ZeroPadding>,
     value: string | number | bigint,
-    bits: string
+    bits: string,
   ): string {
     let valueBits = item.pack(value);
 
-    if (item.endian === "little") {
-      valueBits = [...valueBits].reverse().join("");
+    if (item.endian === 'little') {
+      valueBits = [...valueBits].reverse().join('');
     }
 
-    let byteOrder = "big"; // TODO: implement byte order option
-    if (byteOrder === "big") {
+    let byteOrder = 'big'; // TODO: implement byte order option
+    if (byteOrder === 'big') {
       bits += valueBits;
     } else {
       let alignedOffset = valueBits.length - (8 - (bits.length % 8));
@@ -172,7 +170,7 @@ export class BitStruct {
 type FormatType = UnsignedInteger | SignedInteger | Float | ZeroPadding;
 
 class UnsignedInteger {
-  kind: "u" = "u";
+  kind: 'u' = 'u';
   size: number;
   name: string;
   maximum: bigint;
@@ -190,7 +188,7 @@ class UnsignedInteger {
 
     if (value < 0n || value > this.maximum) {
       throw new Error(
-        `u${this.size} requires 0 <= integer <= ${this.maximum} (got ${data})`
+        `u${this.size} requires 0 <= integer <= ${this.maximum} (got ${data})`,
       );
     }
 
@@ -209,7 +207,7 @@ class UnsignedInteger {
 }
 
 class SignedInteger {
-  kind: "s" = "s";
+  kind: 's' = 's';
   name: string;
   minimum: bigint;
   maximum: bigint;
@@ -229,7 +227,7 @@ class SignedInteger {
 
     if (value < this.minimum || value > this.maximum) {
       throw new Error(
-        `s${this.size} requires ${this.minimum} <= integer <= ${this.maximum} (got ${data})`
+        `s${this.size} requires ${this.minimum} <= integer <= ${this.maximum} (got ${data})`,
       );
     }
 
@@ -245,7 +243,7 @@ class SignedInteger {
   unpack(bits: string): number | bigint {
     let value = BigInt(`0b${bits}`);
 
-    if (bits[0] === "1") {
+    if (bits[0] === '1') {
       value -= 1n << BigInt(bits.length);
     }
 
@@ -258,7 +256,7 @@ class SignedInteger {
 }
 
 class Float {
-  kind: "f" = "f";
+  kind: 'f' = 'f';
   name: string;
   endian: Endian;
   size: number;
@@ -271,11 +269,11 @@ class Float {
 
   pack(data: number | string | bigint): string {
     let value =
-      typeof data === "string"
+      typeof data === 'string'
         ? parseFloat(data)
-        : typeof data === "bigint"
-        ? Number(data)
-        : data;
+        : typeof data === 'bigint'
+          ? Number(data)
+          : data;
 
     let buffer = Buffer.alloc(this.size / 8);
 
@@ -284,14 +282,12 @@ class Float {
     } else if (this.size === 64) {
       buffer.writeDoubleBE(value, 0);
     } else {
-      throw new Error(
-        `Expected float size of 32 or 64 bits (got ${this.size})`
-      );
+      throw new Error(`Expected float size of 32 or 64 bits (got ${this.size})`);
     }
 
-    let result = "";
+    let result = '';
     for (let byte of buffer) {
-      result += byte.toString(2).padStart(8, "0");
+      result += byte.toString(2).padStart(8, '0');
     }
     return result;
   }
@@ -307,15 +303,13 @@ class Float {
     } else if (this.size === 64) {
       return buffer.readDoubleBE(0);
     } else {
-      throw new Error(
-        `Expected float size of 32 or 64 bits (got ${this.size})`
-      );
+      throw new Error(`Expected float size of 32 or 64 bits (got ${this.size})`);
     }
   }
 }
 
 class ZeroPadding {
-  kind: "p" = "p";
+  kind: 'p' = 'p';
   size: number;
 
   constructor(size: number) {
@@ -323,6 +317,6 @@ class ZeroPadding {
   }
 
   pack(): string {
-    return "0".repeat(this.size);
+    return '0'.repeat(this.size);
   }
 }

@@ -1,26 +1,23 @@
-import { parseXml, XmlElement, XmlNode } from "@rgrove/parse-xml";
-import type { Node, Bus, ByteOrder } from "./types.js";
-import { Message } from "./message.js";
-import { Signal } from "./signal.js";
-import { BaseConversion } from "./conversions.js";
+import { parseXml, XmlElement, XmlNode } from '@rgrove/parse-xml';
+import type { Node, Bus, ByteOrder } from './types.js';
+import { Message } from './message.js';
+import { Signal } from './signal.js';
+import { BaseConversion } from './conversions.js';
 
-export function loadString(
-  xmlString: string,
-  strict: boolean = true
-) {
+export function loadString(xmlString: string, strict: boolean = true) {
   let { root } = parseXml(xmlString);
 
   if (root === null) {
-    throw new Error("Document is empty");
+    throw new Error('Document is empty');
   }
 
-  if (root.name !== "NetworkDefinition") {
+  if (root.name !== 'NetworkDefinition') {
     throw new Error(
-      `Expected root element tag 'NetworkDefinition', but got ${root.name}`
+      `Expected root element tag 'NetworkDefinition', but got ${root.name}`,
     );
   }
 
-  let nodes = findAllByName(root, "Node").map((node) => ({
+  let nodes = findAllByName(root, 'Node').map((node) => ({
     id: node.attributes.id,
     name: node.attributes.name,
   }));
@@ -30,19 +27,19 @@ export function loadString(
   let version: string | undefined;
 
   // Version
-  let document = findFirstByName(root, "Document");
+  let document = findFirstByName(root, 'Document');
   if (document) {
     version = document.attributes.version;
   }
 
   // Process buses and messages
-  findAllByName(root, "Bus").forEach((bus) => {
+  findAllByName(root, 'Bus').forEach((bus) => {
     let busName = bus.name;
-    let busBaudrate = parseInt(bus.attributes.baudrate || "500000");
+    let busBaudrate = parseInt(bus.attributes.baudrate || '500000');
     buses.push({ name: busName, baudrate: busBaudrate });
 
     // Process messages in this bus
-    findAllByName(bus, "Message").forEach((message) => {
+    findAllByName(bus, 'Message').forEach((message) => {
       messages.push(loadMessageElement(message, busName, nodes, strict));
     });
   });
@@ -54,7 +51,7 @@ function loadMessageElement(
   message: XmlElement,
   busName: string,
   nodes: Array<Node>,
-  strict: boolean
+  strict: boolean,
 ): Message {
   // Default values
   let name: string | undefined;
@@ -69,23 +66,23 @@ function loadMessageElement(
   // Message XML attributes
   Object.entries(message.attributes).forEach(([key, value]) => {
     switch (key) {
-      case "name":
+      case 'name':
         name = value as string;
         break;
-      case "id":
+      case 'id':
         frameId = parseInt(value as string, 16);
         break;
-      case "format":
-        isExtendedFrame = value === "extended";
+      case 'format':
+        isExtendedFrame = value === 'extended';
         break;
-      case "length":
-        if (value === "auto") {
+      case 'length':
+        if (value === 'auto') {
           length = 0; // Will be calculated later
         } else {
           length = parseInt(value as string);
         }
         break;
-      case "interval":
+      case 'interval':
         interval = parseInt(value as string);
         break;
       default:
@@ -94,19 +91,19 @@ function loadMessageElement(
   });
 
   if (!name || frameId === undefined) {
-    throw new Error("Message must have name and frame ID");
+    throw new Error('Message must have name and frame ID');
   }
 
   // Notes
-  let notesElement = findFirstByName(message, "Notes");
+  let notesElement = findFirstByName(message, 'Notes');
   if (notesElement) {
     notes = notesElement.text;
   }
 
   // Senders
-  let producer = findFirstByName(message, "Producer");
+  let producer = findFirstByName(message, 'Producer');
   if (producer) {
-    findAllByName(producer, "NodeRef").forEach((sender) => {
+    findAllByName(producer, 'NodeRef').forEach((sender) => {
       if (sender.attributes.id) {
         let senderName = getNodeNameById(nodes, sender.attributes.id);
         if (senderName) {
@@ -118,16 +115,16 @@ function loadMessageElement(
 
   // Signals
   message.children.filter(isXmlElement).forEach((element) => {
-    if (element.name === "Signal") {
+    if (element.name === 'Signal') {
       signals.push(loadSignalElement(element, nodes));
-    } else if (element.name === "Multiplex") {
+    } else if (element.name === 'Multiplex') {
       let muxSignal = loadSignalElement(element, nodes);
       muxSignal.isMultiplexer = true;
       signals.push(muxSignal);
 
-      findAllByName(element, "MuxGroup").forEach((muxGroup) => {
-        let muxId = parseInt(muxGroup.attributes.count || "");
-        findAllByName(muxGroup, "Signal").forEach((signal) => {
+      findAllByName(element, 'MuxGroup').forEach((muxGroup) => {
+        let muxId = parseInt(muxGroup.attributes.count || '');
+        findAllByName(muxGroup, 'Signal').forEach((signal) => {
           let muxedSignal = loadSignalElement(signal, nodes);
           muxedSignal.multiplexerIds = [muxId];
           muxedSignal.multiplexerSignal = muxSignal.name;
@@ -140,13 +137,10 @@ function loadMessageElement(
   // Calculate auto length if needed
   if (length === 0 && signals.length > 0) {
     let lastSignal = [...signals]
-      .sort(
-        (a, b) =>
-          startBit(a.start, a.byteOrder) - startBit(b.start, b.byteOrder)
-      )
+      .sort((a, b) => startBit(a.start, a.byteOrder) - startBit(b.start, b.byteOrder))
       .pop()!;
     length = Math.ceil(
-      (startBit(lastSignal.start, lastSignal.byteOrder) + lastSignal.length) / 8
+      (startBit(lastSignal.start, lastSignal.byteOrder) + lastSignal.length) / 8,
     );
   }
 
@@ -169,7 +163,7 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   let name: string | undefined;
   let offset: number | undefined;
   let length = 1;
-  let byteOrder: ByteOrder = "little_endian";
+  let byteOrder: ByteOrder = 'little_endian';
   let isSigned = false;
   let isFloat = false;
   let minimum: number | undefined;
@@ -184,16 +178,16 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   // Signal XML attributes
   Object.entries(signal.attributes).forEach(([key, value]) => {
     switch (key) {
-      case "name":
+      case 'name':
         name = value as string;
         break;
-      case "offset":
+      case 'offset':
         offset = parseInt(value as string);
         break;
-      case "length":
+      case 'length':
         length = parseInt(value as string);
         break;
-      case "endianess":
+      case 'endianess':
         byteOrder = `${value}_endian` as ByteOrder;
         break;
       default:
@@ -202,28 +196,28 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   });
 
   // Value element
-  let value = findFirstByName(signal, "Value");
+  let value = findFirstByName(signal, 'Value');
   if (value) {
     Object.entries(value.attributes).forEach(([key, val]) => {
       switch (key) {
-        case "min":
+        case 'min':
           minimum = parseFloat(val as string);
           break;
-        case "max":
+        case 'max':
           maximum = parseFloat(val as string);
           break;
-        case "slope":
+        case 'slope':
           slope = parseFloat(val as string);
           break;
-        case "intercept":
+        case 'intercept':
           intercept = parseFloat(val as string);
           break;
-        case "unit":
+        case 'unit':
           unit = val as string;
           break;
-        case "type":
-          isSigned = val === "signed";
-          isFloat = val === "single" || val === "double";
+        case 'type':
+          isSigned = val === 'signed';
+          isFloat = val === 'single' || val === 'double';
           break;
         default:
           console.debug(`Ignoring unsupported signal value attribute '${key}'`);
@@ -232,26 +226,26 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   }
 
   // Notes
-  let notesElement = findFirstByName(signal, "Notes");
+  let notesElement = findFirstByName(signal, 'Notes');
   if (notesElement) {
     notes = notesElement.text;
   }
 
   // Label set
-  let labelSet = findFirstByName(signal, "LabelSet");
+  let labelSet = findFirstByName(signal, 'LabelSet');
   if (labelSet) {
     labels = {};
-    findAllByName(labelSet, "Label").forEach((label) => {
-      let labelValue = parseInt(label.attributes.value || "");
-      let labelName = label.attributes.name || "";
+    findAllByName(labelSet, 'Label').forEach((label) => {
+      let labelValue = parseInt(label.attributes.value || '');
+      let labelName = label.attributes.name || '';
       labels![labelValue] = labelName;
     });
   }
 
   // Receivers
-  let consumer = findFirstByName(signal, "Consumer");
+  let consumer = findFirstByName(signal, 'Consumer');
   if (consumer) {
-    findAllByName(consumer, "NodeRef").forEach((receiver) => {
+    findAllByName(consumer, 'NodeRef').forEach((receiver) => {
       if (receiver.attributes.id) {
         let nodeName = getNodeNameById(nodes, receiver.attributes.id);
         if (nodeName) {
@@ -262,7 +256,7 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
   }
 
   if (!name || offset === undefined) {
-    throw new Error("Signal must have name and offset");
+    throw new Error('Signal must have name and offset');
   }
 
   return new Signal({
@@ -281,34 +275,29 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
 }
 
 function startBit(offset: number, byteOrder: ByteOrder): number {
-  if (byteOrder === "big_endian") {
+  if (byteOrder === 'big_endian') {
     return 8 * Math.floor(offset / 8) + (7 - (offset % 8));
   } else {
     return offset;
   }
 }
 
-function getNodeNameById(
-  nodes: Array<Node>,
-  nodeId: string
-): string | undefined {
+function getNodeNameById(nodes: Array<Node>, nodeId: string): string | undefined {
   return nodes.find((node) => node.id === nodeId)?.name;
 }
 
 function findAllByName(parent: XmlElement, name: string) {
   return parent.children.filter(
-    (child) => isXmlElement(child) && (child as XmlElement).name === name
+    (child) => isXmlElement(child) && (child as XmlElement).name === name,
   ) as Array<XmlElement>;
 }
 
 function findFirstByName(parent: XmlElement, name: string) {
   return parent.children.find(
-    (child) => isXmlElement(child) && (child as XmlElement).name === name
+    (child) => isXmlElement(child) && (child as XmlElement).name === name,
   ) as XmlElement | undefined;
 }
 
-function isXmlElement(
-  element: XmlElement["children"][number]
-): element is XmlElement {
+function isXmlElement(element: XmlElement['children'][number]): element is XmlElement {
   return element.type === XmlNode.TYPE_ELEMENT;
 }

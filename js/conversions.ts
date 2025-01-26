@@ -1,4 +1,4 @@
-import type { Choices, SignalValue } from "./types.js";
+import type { Choices, SignalValue } from './types.js';
 
 export abstract class BaseConversion {
   abstract scale: number;
@@ -15,7 +15,7 @@ export abstract class BaseConversion {
     scale: number = 1,
     offset: number = 0,
     choices?: Choices,
-    isFloat: boolean = false
+    isFloat: boolean = false,
   ): BaseConversion {
     if (!choices) {
       if (scale === 1 && offset === 0) {
@@ -32,17 +32,14 @@ export abstract class BaseConversion {
     return new NamedSignalConversion(scale, offset, choices, isFloat);
   }
 
-  abstract rawToScaled(
-    rawValue: number,
-    decodeChoices?: boolean
-  ): SignalValue;
+  abstract rawToScaled(rawValue: number, decodeChoices?: boolean): SignalValue;
 
   abstract scaledToRaw(scaledValue: number | string): number;
 
   abstract numericScaledToRaw(scaledValue: number): number;
 
   choiceToNumber(choice: string): number {
-    throw new Error("Choice conversion not supported");
+    throw new Error('Choice conversion not supported');
   }
 }
 
@@ -60,10 +57,8 @@ export class IdentityConversion extends BaseConversion {
   }
 
   scaledToRaw(scaledValue: SignalValue): number {
-    if (typeof scaledValue !== "number") {
-      throw new TypeError(
-        `'scaled_value' must be number (is ${typeof scaledValue})`
-      );
+    if (typeof scaledValue !== 'number') {
+      throw new TypeError(`'scaled_value' must be number (is ${typeof scaledValue})`);
     }
     return this.numericScaledToRaw(scaledValue);
   }
@@ -77,7 +72,10 @@ export class LinearIntegerConversion extends BaseConversion {
   isFloat = false;
   choices?: Choices = undefined;
 
-  constructor(public scale: number, public offset: number) {
+  constructor(
+    public scale: number,
+    public offset: number,
+  ) {
     super();
   }
 
@@ -86,10 +84,8 @@ export class LinearIntegerConversion extends BaseConversion {
   }
 
   scaledToRaw(scaledValue: SignalValue): number {
-    if (typeof scaledValue !== "number") {
-      throw new TypeError(
-        `'scaled_value' must be number (is ${typeof scaledValue})`
-      );
+    if (typeof scaledValue !== 'number') {
+      throw new TypeError(`'scaled_value' must be number (is ${typeof scaledValue})`);
     }
     return this.numericScaledToRaw(scaledValue);
   }
@@ -113,7 +109,7 @@ export class LinearConversion extends BaseConversion {
   constructor(
     public scale: number,
     public offset: number,
-    public isFloat: boolean
+    public isFloat: boolean,
   ) {
     super();
   }
@@ -123,10 +119,8 @@ export class LinearConversion extends BaseConversion {
   }
 
   scaledToRaw(scaledValue: SignalValue): number {
-    if (typeof scaledValue !== "number") {
-      throw new TypeError(
-        `'scaled_value' must be number (is ${typeof scaledValue})`
-      );
+    if (typeof scaledValue !== 'number') {
+      throw new TypeError(`'scaled_value' must be number (is ${typeof scaledValue})`);
     }
     return this.numericScaledToRaw(scaledValue);
   }
@@ -145,27 +139,16 @@ export class NamedSignalConversion extends BaseConversion {
     public scale: number,
     public offset: number,
     public choices: Choices,
-    public isFloat: boolean
+    public isFloat: boolean,
   ) {
     super();
     this.inverseChoices = new Map(
-      Object.entries(this.choices).map(([value, text]) => [
-        String(text),
-        Number(value),
-      ])
+      Object.entries(this.choices).map(([value, text]) => [String(text), Number(value)]),
     );
-    this.conversion = BaseConversion.factory(
-      this.scale,
-      this.offset,
-      undefined,
-      isFloat
-    );
+    this.conversion = BaseConversion.factory(this.scale, this.offset, undefined, isFloat);
   }
 
-  rawToScaled(
-    rawValue: number,
-    decodeChoices: boolean = true
-  ): SignalValue {
+  rawToScaled(rawValue: number, decodeChoices: boolean = true): SignalValue {
     if (decodeChoices && this.choices && rawValue in this.choices) {
       return this.choices[rawValue]!;
     }
@@ -173,15 +156,15 @@ export class NamedSignalConversion extends BaseConversion {
   }
 
   scaledToRaw(scaledValue: SignalValue): number {
-    if (typeof scaledValue === "number") {
+    if (typeof scaledValue === 'number') {
       return this.conversion.scaledToRaw(scaledValue);
     }
 
-    if (typeof scaledValue === "string") {
+    if (typeof scaledValue === 'string') {
       return this.choiceToNumber(scaledValue);
     }
 
-    throw new TypeError("Invalid scaled value type");
+    throw new TypeError('Invalid scaled value type');
   }
 
   numericScaledToRaw(scaledValue: number): number {
@@ -201,7 +184,7 @@ function isInteger(value: number): boolean {
   if (Number.isInteger(value)) {
     return true;
   }
-  if (typeof value === "number") {
+  if (typeof value === 'number') {
     return false;
   }
   throw new TypeError(`Value must be number (is ${typeof value})`);

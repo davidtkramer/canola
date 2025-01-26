@@ -47,13 +47,13 @@ socket.on('message', (frame) => {
         notchedBitMask: 0,
         lastChangeAt: 0n,
         lastUnnotchedChangeAt: 0n,
-      })
+      });
     }
     message = {
       id: frame.id,
       hexId: frame.id.toString(16).padStart(4, '0'),
       bytes,
-      lastChange: 0n
+      lastChange: 0n,
     };
     messages.set(frame.id, message);
     return;

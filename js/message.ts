@@ -1,6 +1,6 @@
-import { Signal } from "./signal.js";
-import type { ByteOrder, Comments, SignalValue } from "./types.js";
-import { BitStruct } from "./bitstruct.js";
+import { Signal } from './signal.js';
+import type { ByteOrder, Comments, SignalValue } from './types.js';
+import { BitStruct } from './bitstruct.js';
 
 interface Codec {
   signals: Array<Signal>;
@@ -13,12 +13,17 @@ interface SignalFormat {
   little: BitStruct;
 }
 
+export type MessageType = {
+  frameId: number;
+  name: string;
+  signals: Record<string, number | string>;
+};
 export type SignalMap = Record<string, SignalValue>;
 export type SignalBranch = Record<string, Record<number, Array<SignalNode>>>;
 export type SignalNode = string | SignalBranch;
 type UnionKeys<T> = T extends any ? keyof T : never;
 
-export class Message<T extends SignalMap = SignalMap> {
+export class Message<T extends MessageType = MessageType> {
   public frameId: number;
   public headerId?: number;
   public headerByteOrder: ByteOrder;
@@ -65,27 +70,27 @@ export class Message<T extends SignalMap = SignalMap> {
     if (params.isExtendedFrame && frameIdBitLength > 29) {
       throw new Error(
         `Extended frame id 0x${params.frameId.toString(
-          16
-        )} is more than 29 bits in message ${name}`
+          16,
+        )} is more than 29 bits in message ${name}`,
       );
     } else if (!params.isExtendedFrame && frameIdBitLength > 11) {
       throw new Error(
         `Standard frame id 0x${params.frameId.toString(
-          16
-        )} is more than 11 bits in message ${name}`
+          16,
+        )} is more than 11 bits in message ${name}`,
       );
     }
 
     this.frameId = params.frameId;
     this.headerId = params.headerId;
-    this.headerByteOrder = params.headerByteOrder ?? "big_endian";
+    this.headerByteOrder = params.headerByteOrder ?? 'big_endian';
     this.isExtendedFrame = params.isExtendedFrame ?? false;
     this.isFd = params.isFd ?? false;
     this.name = params.name;
     this.length = params.length;
     this.unusedBitPattern = params.unusedBitPattern ?? 0x00;
     this.signals =
-      params.sortSignals ?? true
+      (params.sortSignals ?? true)
         ? sortSignalsByStartBit(params.signals)
         : params.signals;
     this.signalDict = new Map();
@@ -97,7 +102,7 @@ export class Message<T extends SignalMap = SignalMap> {
     this.strict = params.strict ?? true;
     this.protocol = params.protocol;
 
-    if (typeof params.comment === "string") {
+    if (typeof params.comment === 'string') {
       this.comments = { _default: params.comment };
     } else {
       this.comments = params.comment;
@@ -107,9 +112,7 @@ export class Message<T extends SignalMap = SignalMap> {
   }
 
   refresh(): void {
-    this.signalDict = new Map(
-      this.signals.map((signal) => [signal.name, signal])
-    );
+    this.signalDict = new Map(this.signals.map((signal) => [signal.name, signal]));
     this.codecs = this.createCodec();
     this.signalTree = this.createSignalTree(this.codecs);
 
@@ -157,7 +160,7 @@ export class Message<T extends SignalMap = SignalMap> {
         // signals.
         if (signal.conversion.choices) {
           Object.keys(signal.conversion.choices).forEach((key) =>
-            childrenIds.add(parseInt(key))
+            childrenIds.add(parseInt(key)),
           );
         }
 
@@ -194,7 +197,7 @@ export class Message<T extends SignalMap = SignalMap> {
               muxMap[parseInt(muxIndex)] = this.createSignalTree(muxCodec);
               return muxMap;
             },
-            {} as Record<number, Array<SignalNode>>
+            {} as Record<number, Array<SignalNode>>,
           ),
         };
         nodes.push(node);
@@ -209,17 +212,15 @@ export class Message<T extends SignalMap = SignalMap> {
   getSignalById(id: string | number): Signal {
     let signal = this.signalDict.get(id.toString());
     if (signal === undefined) {
-      throw new Error(`Could not find signal with id '${id}'`)
+      throw new Error(`Could not find signal with id '${id}'`);
     }
     return signal;
   }
 
-  getSignalByName<K extends UnionKeys<T>>(name: K): Signal {
+  getSignalByName<K extends UnionKeys<T['signals']>>(name: K): Signal {
     let signal = this.signalDict.get(name.toString());
     if (!signal) {
-      throw new Error(
-        `Signal ${name.toString()} not found in message ${this.name}`
-      );
+      throw new Error(`Signal ${name.toString()} not found in message ${this.name}`);
     }
     return signal;
   }
@@ -230,21 +231,21 @@ export class Message<T extends SignalMap = SignalMap> {
 
   isMultiplexed(): boolean {
     if (!this.codecs) {
-      throw new Error("Codec is not initialized");
+      throw new Error('Codec is not initialized');
     }
     return Object.keys(this.codecs.multiplexers).length > 0;
   }
 
-  decode(data: Buffer, scaling: boolean = true): T {
+  decode(data: Buffer, scaling: boolean = true): T['signals'] {
     if (this.isContainer()) {
-      throw new Error("Container messages not yet supported");
+      throw new Error('Container messages not yet supported');
     }
 
     if (!this.codecs) {
-      throw new Error("Codec is not initialized");
+      throw new Error('Codec is not initialized');
     }
 
-    return this._decode(this.codecs, data, scaling) as T;
+    return this._decode(this.codecs, data, scaling) as T['signals'];
   }
 
   private _decode(node: Codec, data: Buffer, scaling: boolean) {
@@ -258,9 +259,9 @@ export class Message<T extends SignalMap = SignalMap> {
       if (codecMap[mux]) {
         node = codecMap[mux];
       } else {
-        let ids = Object.keys(codecMap).join(", ");
+        let ids = Object.keys(codecMap).join(', ');
         throw new Error(
-          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`
+          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`,
         );
       }
 
@@ -273,9 +274,7 @@ export class Message<T extends SignalMap = SignalMap> {
   private unpackData(node: Codec, data: Buffer, scaling: boolean) {
     let actualLength = data.length;
     if (actualLength != this.length) {
-      throw new Error(
-        `Wrong data size: ${actualLength} instead of ${this.length} bytes`
-      );
+      throw new Error(`Wrong data size: ${actualLength} instead of ${this.length} bytes`);
     }
 
     let unpacked = {
@@ -303,14 +302,14 @@ export class Message<T extends SignalMap = SignalMap> {
     return decoded;
   }
 
-  encode(data: T, scaling: boolean = true, padding: boolean = false): Buffer {
+  encode(data: T['signals'], scaling: boolean = true, padding: boolean = false): Buffer {
     if (this.isContainer()) {
       // TODO: handle container messages
-      throw new Error("Container messages not yet supported");
+      throw new Error('Container messages not yet supported');
     }
 
     if (!this.codecs) {
-      throw new Error("Codec is not initialized");
+      throw new Error('Codec is not initialized');
     }
 
     let [encoded, paddingMask] = this._encode(this.codecs, data, scaling);
@@ -318,18 +317,18 @@ export class Message<T extends SignalMap = SignalMap> {
     if (padding) {
       let paddingPattern = Buffer.alloc(
         this.length,
-        this.unusedBitPattern
+        this.unusedBitPattern,
       ).readBigUInt64BE();
       encoded |= paddingMask & paddingPattern;
     }
 
-    return bigIntToBuffer2(encoded, this.length);
+    return bigIntToBuffer(encoded, this.length);
   }
 
   private _encode(
     node: Codec,
     data: SignalMap,
-    scaling: boolean
+    scaling: boolean,
   ): [bigint, bigint, Array<Signal>] {
     let encoded = this.packData(node, data, scaling);
     let paddingMask = node.formats.paddingMask;
@@ -342,17 +341,13 @@ export class Message<T extends SignalMap = SignalMap> {
       if (codecMap[mux]) {
         node = codecMap[mux];
       } else {
-        let ids = Object.keys(codecMap).join(", ");
+        let ids = Object.keys(codecMap).join(', ');
         throw new Error(
-          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`
+          `Expected multiplexer id in [${ids}] for multiplexer "${signalName}" but got ${mux}`,
         );
       }
 
-      let [muxEncoded, muxPaddingMask, muxSignals] = this._encode(
-        node,
-        data,
-        scaling
-      );
+      let [muxEncoded, muxPaddingMask, muxSignals] = this._encode(node, data, scaling);
       allSignals.push(...muxSignals);
 
       encoded |= muxEncoded;
@@ -367,16 +362,11 @@ export class Message<T extends SignalMap = SignalMap> {
       return 0n;
     }
 
-    let rawSignalValues = this.encodeSignalValues(
-      node.signals,
-      signalMap,
-      scaling
-    );
+    let rawSignalValues = this.encodeSignalValues(node.signals, signalMap, scaling);
     let bigPacked = node.formats.big.pack(rawSignalValues);
     let littlePacked = node.formats.little.pack(rawSignalValues);
 
-    let packedUnion =
-      bufferToBigInt(bigPacked) | bufferToBigInt(littlePacked, "little");
+    let packedUnion = bufferToBigInt(bigPacked) | bufferToBigInt(littlePacked, 'little');
 
     return packedUnion;
   }
@@ -384,7 +374,7 @@ export class Message<T extends SignalMap = SignalMap> {
   private encodeSignalValues(
     signals: Array<Signal>,
     signalMap: SignalMap,
-    scaling: boolean
+    scaling: boolean,
   ): Record<string, number> {
     let rawValues: Record<string, number> = {};
 
@@ -393,18 +383,16 @@ export class Message<T extends SignalMap = SignalMap> {
       let conversion = signal.conversion;
       let value = signalMap[name];
 
-      if (typeof value === "number") {
+      if (typeof value === 'number') {
         if (scaling) {
           rawValues[name] = conversion.numericScaledToRaw(value);
         } else {
           rawValues[name] = conversion.isFloat ? value : Math.round(value);
         }
-      } else if (typeof value === "string") {
+      } else if (typeof value === 'string') {
         rawValues[name] = conversion.choiceToNumber(value);
       } else {
-        throw new Error(
-          `Unable to encode signal '${name}' with type '${typeof value}'`
-        );
+        throw new Error(`Unable to encode signal '${name}' with type '${typeof value}'`);
       }
     }
 
@@ -414,8 +402,8 @@ export class Message<T extends SignalMap = SignalMap> {
   private getMuxNumber(data: SignalMap, signalName: string) {
     let mux = data[signalName]!;
 
-    if (typeof mux === "string") {
-      let signal = this.getSignalByName(signalName as UnionKeys<T>);
+    if (typeof mux === 'string') {
+      let signal = this.getSignalByName(signalName as UnionKeys<T['signals']>);
       mux = signal.conversion.choiceToNumber(mux);
     }
 
@@ -433,7 +421,7 @@ function sortSignalsByStartBit(signals: Array<Signal>): Array<Signal> {
 }
 
 function startBit(signal: Signal): number {
-  if (signal.byteOrder === "big_endian") {
+  if (signal.byteOrder === 'big_endian') {
     return 8 * Math.floor(signal.start / 8) + (7 - (signal.start % 8));
   }
   return signal.start;
@@ -441,7 +429,7 @@ function startBit(signal: Signal): number {
 
 function createEncodeDecodeFormats(
   signals: Array<Signal>,
-  numberOfBytes: number
+  numberOfBytes: number,
 ): SignalFormat {
   let formatLength = 8 * numberOfBytes;
 
@@ -449,23 +437,20 @@ function createEncodeDecodeFormats(
     let items: any = [];
     let start = 0;
 
-    let beSignals = signals.filter(
-      (signal) => signal.byteOrder == "big_endian"
-    );
+    let beSignals = signals.filter((signal) => signal.byteOrder == 'big_endian');
 
     let sortedSignals = beSignals.sort(
-      (a, b) =>
-        sawtoothToNetworkBitnum(a.start) - sawtoothToNetworkBitnum(b.start)
+      (a, b) => sawtoothToNetworkBitnum(a.start) - sawtoothToNetworkBitnum(b.start),
     );
 
     for (let signal of sortedSignals) {
       let paddingLength = startBit(signal) - start;
 
       if (paddingLength > 0) {
-        items.push({ type: "p", size: paddingLength });
+        items.push({ type: 'p', size: paddingLength });
       }
 
-      let type = signal.conversion.isFloat ? "f" : signal.isSigned ? "s" : "u";
+      let type = signal.conversion.isFloat ? 'f' : signal.isSigned ? 's' : 'u';
       items.push({ name: signal.name, type, size: signal.length });
 
       start = startBit(signal) + signal.length;
@@ -473,7 +458,7 @@ function createEncodeDecodeFormats(
 
     if (start < formatLength) {
       let length = formatLength - start;
-      items.push({ type: "p", size: length });
+      items.push({ type: 'p', size: length });
     }
 
     return items;
@@ -484,24 +469,24 @@ function createEncodeDecodeFormats(
     let end = formatLength;
 
     for (let signal of [...signals].reverse()) {
-      if (signal.byteOrder === "big_endian") {
+      if (signal.byteOrder === 'big_endian') {
         continue;
       }
 
       let paddingLength = end - (signal.start + signal.length);
 
       if (paddingLength > 0) {
-        items.push({ type: "p", size: paddingLength });
+        items.push({ type: 'p', size: paddingLength });
       }
 
-      let type = signal.conversion.isFloat ? "f" : signal.isSigned ? "s" : "u";
+      let type = signal.conversion.isFloat ? 'f' : signal.isSigned ? 's' : 'u';
       items.push({ name: signal.name, type, size: signal.length });
 
       end = signal.start;
     }
 
     if (end > 0) {
-      items.push({ type: "p", size: end });
+      items.push({ type: 'p', size: end });
     }
 
     return items;
@@ -512,24 +497,24 @@ function createEncodeDecodeFormats(
 
   let littlePaddingMaskString = little
     .map((item: any) =>
-      item.type === "p" ? "1".repeat(item.size) : "0".repeat(item.size)
+      item.type === 'p' ? '1'.repeat(item.size) : '0'.repeat(item.size),
     )
-    .join("");
-  let littlePaddingMask = BigInt("0b" + littlePaddingMaskString);
+    .join('');
+  let littlePaddingMask = BigInt('0b' + littlePaddingMaskString);
   if (formatLength > 0) {
     let struct = new BitStruct([
-      { name: "pad", type: "u", size: littlePaddingMaskString.length },
+      { name: 'pad', type: 'u', size: littlePaddingMaskString.length },
     ]);
     let packed = struct.pack({ pad: littlePaddingMask });
-    littlePaddingMask = bufferToBigInt(packed, "little");
+    littlePaddingMask = bufferToBigInt(packed, 'little');
   }
 
   let bigPaddingMaskString = big
     .map((item: any) =>
-      item.type === "p" ? "1".repeat(item.size) : "0".repeat(item.size)
+      item.type === 'p' ? '1'.repeat(item.size) : '0'.repeat(item.size),
     )
-    .join("");
-  let bigPaddingMask = BigInt("0b" + bigPaddingMaskString);
+    .join('');
+  let bigPaddingMask = BigInt('0b' + bigPaddingMaskString);
 
   return {
     paddingMask: littlePaddingMask & bigPaddingMask,
@@ -547,24 +532,17 @@ function sawtoothToNetworkBitnum(sawtoothBitnum: number): number {
   return 8 * Math.floor(sawtoothBitnum / 8) + (7 - (sawtoothBitnum % 8));
 }
 
-function bufferToBigInt(
-  buffer: Buffer,
-  endian: "big" | "little" = "big"
-): bigint {
-  if (endian === "little") {
+function bufferToBigInt(buffer: Buffer, endian: 'big' | 'little' = 'big'): bigint {
+  if (endian === 'little') {
     // Reverse the buffer for little endian
     buffer = Buffer.from(buffer).reverse();
   }
-  return BigInt("0x" + buffer.toString("hex"));
+  return BigInt('0x' + buffer.toString('hex'));
 }
 
-function bigIntToBuffer(integer: bigint) {
-  return Buffer.from(integer.toString(16).padStart(2, "0"), "hex");
-}
-
-function bigIntToBuffer2(integer: bigint, length: number): Buffer {
+function bigIntToBuffer(integer: bigint, length: number): Buffer {
   if (integer < 0 || integer >= 256 ** length) {
-    throw new Error("Integer out of range for the specified length");
+    throw new Error('Integer out of range for the specified length');
   }
 
   const buffer = Buffer.alloc(length);

@@ -1,4 +1,4 @@
-export type ID00CUI_status = {
+export type ID00CUI_status_Signals = {
     UI_touchActive: number;
     UI_audioActive: number;
     UI_bluetoothActive: number;
@@ -26,7 +26,13 @@ export type ID00CUI_status = {
     UI_cpuTemperature: number;
 };
 
-export type ID353UI_status = {
+export type ID00CUI_status = {
+    frameId: 12;
+    name: "ID00CUI_status";
+    signals: ID00CUI_status_Signals;
+};
+
+export type ID353UI_status_Signals = {
     UI_touchActive: number;
     UI_audioActive: number;
     UI_bluetoothActive: number;
@@ -54,12 +60,24 @@ export type ID353UI_status = {
     UI_cpuTemperature: number;
 };
 
-export type ID016DI_bmsRequest = {
+export type ID353UI_status = {
+    frameId: 851;
+    name: "ID353UI_status";
+    signals: ID353UI_status_Signals;
+};
+
+export type ID016DI_bmsRequest_Signals = {
     DI_bmsRequestInterfaceVersion: number;
     DI_bmsOpenContactorsRequest: number;
 };
 
-export type ID082UI_tripPlanning = {
+export type ID016DI_bmsRequest = {
+    frameId: 22;
+    name: "ID016DI_bmsRequest";
+    signals: ID016DI_bmsRequest_Signals;
+};
+
+export type ID082UI_tripPlanning_Signals = {
     UI_tripPlanningActive: number;
     UI_navToSupercharger: number;
     UI_requestActiveBatteryHeating: number;
@@ -68,7 +86,13 @@ export type ID082UI_tripPlanning = {
     UI_energyAtDestination: "TRIP_TOO_LONG" | "SNA";
 };
 
-export type ID101RCM_inertial1 = {
+export type ID082UI_tripPlanning = {
+    frameId: 130;
+    name: "ID082UI_tripPlanning";
+    signals: ID082UI_tripPlanning_Signals;
+};
+
+export type ID101RCM_inertial1_Signals = {
     RCM_yawRate: "SNA";
     RCM_pitchRate: "SNA";
     RCM_rollRate: "SNA";
@@ -79,7 +103,13 @@ export type ID101RCM_inertial1 = {
     RCM_inertial1Checksum: number;
 };
 
-export type ID111RCM_inertial2 = {
+export type ID101RCM_inertial1 = {
+    frameId: 257;
+    name: "ID101RCM_inertial1";
+    signals: ID101RCM_inertial1_Signals;
+};
+
+export type ID111RCM_inertial2_Signals = {
     RCM_longitudinalAccel: "SNA";
     RCM_lateralAccel: "SNA";
     RCM_verticalAccel: "SNA";
@@ -90,7 +120,13 @@ export type ID111RCM_inertial2 = {
     RCM_inertial2Checksum: number;
 };
 
-export type RCM_inertial2New = {
+export type ID111RCM_inertial2 = {
+    frameId: 273;
+    name: "ID111RCM_inertial2";
+    signals: ID111RCM_inertial2_Signals;
+};
+
+export type RCM_inertial2New_Signals = {
     RCM_longitudinalAccel: number;
     RCM_lateralAccel: number;
     RCM_verticalAccel: number;
@@ -101,7 +137,13 @@ export type RCM_inertial2New = {
     RCM_inertial2Checksum: number;
 };
 
-export type ID102VCLEFT_doorStatus = {
+export type RCM_inertial2New = {
+    frameId: 278;
+    name: "RCM_inertial2New";
+    signals: RCM_inertial2New_Signals;
+};
+
+export type ID102VCLEFT_doorStatus_Signals = {
     VCLEFT_frontLatchStatus: "LATCH_SNA" | "LATCH_OPENED" | "LATCH_CLOSED" | "LATCH_CLOSING" | "LATCH_OPENING" | "LATCH_AJAR" | "LATCH_TIMEOUT" | "LATCH_DEFAULT" | "LATCH_FAULT";
     VCLEFT_rearLatchStatus: "LATCH_SNA" | "LATCH_OPENED" | "LATCH_CLOSED" | "LATCH_CLOSING" | "LATCH_OPENING" | "LATCH_AJAR" | "LATCH_TIMEOUT" | "LATCH_DEFAULT" | "LATCH_FAULT";
     VCLEFT_frontLatchSwitch: number;
@@ -124,7 +166,13 @@ export type ID102VCLEFT_doorStatus = {
     VCLEFT_frontHandlePulledPersist: number;
 };
 
-export type ID103VCRIGHT_doorStatus = {
+export type ID102VCLEFT_doorStatus = {
+    frameId: 258;
+    name: "ID102VCLEFT_doorStatus";
+    signals: ID102VCLEFT_doorStatus_Signals;
+};
+
+export type ID103VCRIGHT_doorStatus_Signals = {
     VCRIGHT_frontLatchStatus: "LATCH_SNA" | "LATCH_OPENED" | "LATCH_CLOSED" | "LATCH_CLOSING" | "LATCH_OPENING" | "LATCH_AJAR" | "LATCH_TIMEOUT" | "LATCH_DEFAULT" | "LATCH_FAULT";
     VCRIGHT_rearLatchStatus: "LATCH_SNA" | "LATCH_OPENED" | "LATCH_CLOSED" | "LATCH_CLOSING" | "LATCH_OPENING" | "LATCH_AJAR" | "LATCH_TIMEOUT" | "LATCH_DEFAULT" | "LATCH_FAULT";
     VCRIGHT_frontLatchSwitch: number;
@@ -148,7 +196,13 @@ export type ID103VCRIGHT_doorStatus = {
     VCRIGHT_mirrorDipped: number;
 };
 
-export type ID113GTW_bmpDebug = {
+export type ID103VCRIGHT_doorStatus = {
+    frameId: 259;
+    name: "ID103VCRIGHT_doorStatus";
+    signals: ID103VCRIGHT_doorStatus_Signals;
+};
+
+export type ID113GTW_bmpDebug_Signals = {
     GTW_bmpState: "BMP_STATE_OFF" | "BMP_STATE_ON" | "BMP_STATE_ASLEEP" | "BMP_STATE_MIA" | "BMP_STATE_RESET" | "BMP_STATE_POWER_CYCLE" | "DUMMY";
     GTW_BMP_AWAKE_PIN: number;
     GTW_BMP_PGOOD_PIN: number;
@@ -161,7 +215,13 @@ export type ID113GTW_bmpDebug = {
     GTW_BMP_GTW_PMIC_ON: number;
 };
 
-export type ID119VCSEC_windowRequests = {
+export type ID113GTW_bmpDebug = {
+    frameId: 275;
+    name: "ID113GTW_bmpDebug";
+    signals: ID113GTW_bmpDebug_Signals;
+};
+
+export type ID119VCSEC_windowRequests_Signals = {
     VCSEC_windowRequestLF: number;
     VCSEC_windowRequestLR: number;
     VCSEC_windowRequestRF: number;
@@ -171,7 +231,13 @@ export type ID119VCSEC_windowRequests = {
     VCSEC_hvacRunScreenProtectOnly: number;
 };
 
-export type ID122VCLEFT_doorStatus2 = {
+export type ID119VCSEC_windowRequests = {
+    frameId: 281;
+    name: "ID119VCSEC_windowRequests";
+    signals: ID119VCSEC_windowRequests_Signals;
+};
+
+export type ID122VCLEFT_doorStatus2_Signals = {
     VCLEFT_frontLatchRelDuty: number;
     VCLEFT_rearLatchRelDuty: number;
     VCLEFT_vehicleInMotion: number;
@@ -186,7 +252,13 @@ export type ID122VCLEFT_doorStatus2 = {
     VCLEFT_mirrorFoldMaxCurrent: number;
 };
 
-export type ID123UI_alertMatrix1 = {
+export type ID122VCLEFT_doorStatus2 = {
+    frameId: 290;
+    name: "ID122VCLEFT_doorStatus2";
+    signals: ID122VCLEFT_doorStatus2_Signals;
+};
+
+export type ID123UI_alertMatrix1_Signals = {
     UI_a001_DriverDoorOpen: number;
     UI_a002_DoorOpen: number;
     UI_a003_TrunkOpen: number;
@@ -253,7 +325,13 @@ export type ID123UI_alertMatrix1 = {
     UI_a064_ModemFirmwareTestFailed: number;
 };
 
-export type ID142VCLEFT_liftgateStatus_0 = {
+export type ID123UI_alertMatrix1 = {
+    frameId: 291;
+    name: "ID123UI_alertMatrix1";
+    signals: ID123UI_alertMatrix1_Signals;
+};
+
+export type ID142VCLEFT_liftgateStatus_Signals_0 = {
     VCLEFT_liftgateStatusIndex: "LIFTGATE_STATUS_INDEX_0";
     VCLEFT_liftgateState: "PLG_STATE_INIT" | "PLG_STATE_OFF" | "PLG_STATE_BACKOFF" | "PLG_STATE_OPENING" | "PLG_STATE_CLOSING" | "PLG_STATE_CLOSED" | "PLG_STATE_LATCH_OPENING" | "PLG_STATE_LATCH_CLOSING" | "PLG_STATE_NOT_INSTALLED" | "PLG_STATE_UNKNOWN" | "PLG_STATE_LATCH_EXIT" | "PLG_STATE_END_OF_TRAVEL" | "PLG_STATE_LATCH_ENTRY";
     VCLEFT_liftgateRequestSource: "PLG_REQUEST_SOURCE_NONE" | "PLG_REQUEST_SOURCE_MCU_SWITCH" | "PLG_REQUEST_SOURCE_EXTERIOR" | "PLG_REQUEST_SOURCE_SHUTFACE" | "PLG_REQUEST_SOURCE_KEY_TRUNK_BUTTON" | "PLG_REQUEST_SOURCE_CLOSE_ALL" | "PLG_REQUEST_SOURCE_MCU_CLOSE" | "PLG_REQUEST_SOURCE_UDS";
@@ -265,7 +343,7 @@ export type ID142VCLEFT_liftgateStatus_0 = {
     VCLEFT_liftgateLatchRequest: "LATCH_REQUEST_NONE" | "LATCH_REQUEST_CINCH" | "LATCH_REQUEST_RELEASE" | "LATCH_REQUEST_FORCE_RELEASE" | "LATCH_REQUEST_RESET";
 };
 
-export type ID142VCLEFT_liftgateStatus_1 = {
+export type ID142VCLEFT_liftgateStatus_Signals_1 = {
     VCLEFT_liftgateStatusIndex: "LIFTGATE_STATUS_INDEX_1";
     VCLEFT_liftgateStrutDutyCycle: number;
     VCLEFT_liftgateStrutCurrent: number;
@@ -273,13 +351,19 @@ export type ID142VCLEFT_liftgateStatus_1 = {
     VCLEFT_liftgateSpeed: number;
 };
 
-export type ID142VCLEFT_liftgateStatus_2 = {
+export type ID142VCLEFT_liftgateStatus_Signals_2 = {
     VCLEFT_liftgateStatusIndex: "LIFTGATE_STATUS_INDEX_INVALID";
 };
 
-export type ID142VCLEFT_liftgateStatus = ID142VCLEFT_liftgateStatus_0 | ID142VCLEFT_liftgateStatus_1 | ID142VCLEFT_liftgateStatus_2;
+export type ID142VCLEFT_liftgateStatus_Signals = ID142VCLEFT_liftgateStatus_Signals_0 | ID142VCLEFT_liftgateStatus_Signals_1 | ID142VCLEFT_liftgateStatus_Signals_2;
 
-export type ID145ESP_status = {
+export type ID142VCLEFT_liftgateStatus = {
+    frameId: 322;
+    name: "ID142VCLEFT_liftgateStatus";
+    signals: ID142VCLEFT_liftgateStatus_Signals;
+};
+
+export type ID145ESP_status_Signals = {
     ESP_statusChecksum: number;
     ESP_statusCounter: number;
     ESP_espModeActive: "ESP_MODE_00_NORMAL" | "ESP_MODE_01" | "ESP_MODE_02" | "ESP_MODE_03";
@@ -306,7 +390,13 @@ export type ID145ESP_status = {
     ESP_brakeTorqueTarget: "SNA";
 };
 
-export type ID1D6DI_limits = {
+export type ID145ESP_status = {
+    frameId: 325;
+    name: "ID145ESP_status";
+    signals: ID145ESP_status_Signals;
+};
+
+export type ID1D6DI_limits_Signals = {
     DI_limitPCBTemp: number;
     DI_limitInverterTemp: number;
     DI_limitStatorTemp: number;
@@ -347,7 +437,13 @@ export type ID1D6DI_limits = {
     DI_limithvDcCableTemp: number;
 };
 
-export type ID20AHVP_contactorState = {
+export type ID1D6DI_limits = {
+    frameId: 470;
+    name: "ID1D6DI_limits";
+    signals: ID1D6DI_limits_Signals;
+};
+
+export type ID20AHVP_contactorState_Signals = {
     HVP_packContNegativeState: "CONTACTOR_STATE_SNA" | "CONTACTOR_STATE_OPEN" | "CONTACTOR_STATE_PRECHARGE" | "CONTACTOR_STATE_BLOCKED" | "CONTACTOR_STATE_PULLED_IN" | "CONTACTOR_STATE_OPENING" | "CONTACTOR_STATE_ECONOMIZED" | "CONTACTOR_STATE_WELDED";
     HVP_packContPositiveState: "CONTACTOR_STATE_SNA" | "CONTACTOR_STATE_OPEN" | "CONTACTOR_STATE_PRECHARGE" | "CONTACTOR_STATE_BLOCKED" | "CONTACTOR_STATE_PULLED_IN" | "CONTACTOR_STATE_OPENING" | "CONTACTOR_STATE_ECONOMIZED" | "CONTACTOR_STATE_WELDED";
     HVP_fcContPositiveAuxOpen: number;
@@ -372,7 +468,13 @@ export type ID20AHVP_contactorState = {
     HVP_fcLinkAllowedToEnergize: "FC_LINK_ENERGY_NONE" | "FC_LINK_ENERGY_AC" | "FC_LINK_ENERGY_DC";
 };
 
-export type ID20EPARK_sdiFront = {
+export type ID20AHVP_contactorState = {
+    frameId: 522;
+    name: "ID20AHVP_contactorState";
+    signals: ID20AHVP_contactorState_Signals;
+};
+
+export type ID20EPARK_sdiFront_Signals = {
     PARK_sdiSensor1RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
     PARK_sdiSensor2RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
     PARK_sdiSensor3RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
@@ -383,7 +485,13 @@ export type ID20EPARK_sdiFront = {
     PARK_sdiFrontChecksum: number;
 };
 
-export type ID219VCSEC_TPMSData_0 = {
+export type ID20EPARK_sdiFront = {
+    frameId: 526;
+    name: "ID20EPARK_sdiFront";
+    signals: ID20EPARK_sdiFront_Signals;
+};
+
+export type ID219VCSEC_TPMSData_Signals_0 = {
     VCSEC_TPMSDataIndex: "TPMS_DATA_SENSOR_0";
     VCSEC_TPMSPressure0: "SNA";
     VCSEC_TPMSTemperature0: "SNA";
@@ -391,7 +499,7 @@ export type ID219VCSEC_TPMSData_0 = {
     VCSEC_TPMSLocation0: "LOCATION_FL" | "LOCATION_FR" | "LOCATION_RL" | "LOCATION_RR" | "LOCATION_UNKNOWN";
 };
 
-export type ID219VCSEC_TPMSData_1 = {
+export type ID219VCSEC_TPMSData_Signals_1 = {
     VCSEC_TPMSDataIndex: "TPMS_DATA_SENSOR_1";
     VCSEC_TPMSPressure1: "SNA";
     VCSEC_TPMSTemperature1: "SNA";
@@ -399,7 +507,7 @@ export type ID219VCSEC_TPMSData_1 = {
     VCSEC_TPMSLocation1: "LOCATION_FL" | "LOCATION_FR" | "LOCATION_RL" | "LOCATION_RR" | "LOCATION_UNKNOWN";
 };
 
-export type ID219VCSEC_TPMSData_2 = {
+export type ID219VCSEC_TPMSData_Signals_2 = {
     VCSEC_TPMSDataIndex: "TPMS_DATA_SENSOR_2";
     VCSEC_TPMSPressure2: "SNA";
     VCSEC_TPMSTemperature2: "SNA";
@@ -407,7 +515,7 @@ export type ID219VCSEC_TPMSData_2 = {
     VCSEC_TPMSLocation2: "LOCATION_FL" | "LOCATION_FR" | "LOCATION_RL" | "LOCATION_RR" | "LOCATION_UNKNOWN";
 };
 
-export type ID219VCSEC_TPMSData_3 = {
+export type ID219VCSEC_TPMSData_Signals_3 = {
     VCSEC_TPMSDataIndex: "TPMS_DATA_SENSOR_3";
     VCSEC_TPMSPressure3: "SNA";
     VCSEC_TPMSTemperature3: "SNA";
@@ -415,9 +523,15 @@ export type ID219VCSEC_TPMSData_3 = {
     VCSEC_TPMSLocation3: "LOCATION_FL" | "LOCATION_FR" | "LOCATION_RL" | "LOCATION_RR" | "LOCATION_UNKNOWN";
 };
 
-export type ID219VCSEC_TPMSData = ID219VCSEC_TPMSData_0 | ID219VCSEC_TPMSData_1 | ID219VCSEC_TPMSData_2 | ID219VCSEC_TPMSData_3;
+export type ID219VCSEC_TPMSData_Signals = ID219VCSEC_TPMSData_Signals_0 | ID219VCSEC_TPMSData_Signals_1 | ID219VCSEC_TPMSData_Signals_2 | ID219VCSEC_TPMSData_Signals_3;
 
-export type ID204PCS_chgStatus = {
+export type ID219VCSEC_TPMSData = {
+    frameId: 537;
+    name: "ID219VCSEC_TPMSData";
+    signals: ID219VCSEC_TPMSData_Signals;
+};
+
+export type ID204PCS_chgStatus_Signals = {
     PCS_chgMainState: "PCS_CHG_STATE_INIT" | "PCS_CHG_STATE_IDLE" | "PCS_CHG_STATE_STARTUP" | "PCS_CHG_STATE_WAIT_FOR_LINE_VOLTAGE" | "PCS_CHG_STATE_QUALIFY_LINE_CONFIG" | "PCS_CHG_STATE_SYSTEM_CONFIG" | "PCS_CHG_STATE_ENABLE" | "PCS_CHG_STATE_SHUTDOWN" | "PCS_CHG_STATE_FAULTED" | "PCS_CHG_STATE_CLEAR_FAULTS";
     PCS_hvChargeStatus: "PCS_CHARGE_STANDBY" | "PCS_CHARGE_BLOCKED" | "PCS_CHARGE_ENABLED" | "PCS_CHARGE_FAULTED";
     PCS_gridConfig: "GRID_CONFIG_SNA" | "GRID_CONFIG_SINGLE_PHASE" | "GRID_CONFIG_THREE_PHASE" | "GRID_CONFIG_THREE_PHASE_DELTA";
@@ -434,7 +548,13 @@ export type ID204PCS_chgStatus = {
     PCS_hwVariantType: "PCS_48A_SINGLE_PHASE_VARIANT" | "PCS_32A_SINGLE_PHASE_VARIANT" | "PCS_THREE_PHASES_VARIANT" | "PCS_HW_VARIANT_TYPE_SNA";
 };
 
-export type ID22AHVP_pcsControl = {
+export type ID204PCS_chgStatus = {
+    frameId: 516;
+    name: "ID204PCS_chgStatus";
+    signals: ID204PCS_chgStatus_Signals;
+};
+
+export type ID22AHVP_pcsControl_Signals = {
     HVP_dcLinkVoltageRequest: number;
     HVP_pcsControlRequest: "SHUTDOWN" | "SUPPORT" | "PRECHARGE" | "DISCHARGE";
     HVP_pcsChargeHwEnabled: number;
@@ -442,7 +562,13 @@ export type ID22AHVP_pcsControl = {
     HVP_dcLinkVoltageFiltered: "SNA";
 };
 
-export type ID232BMS_contactorRequest = {
+export type ID22AHVP_pcsControl = {
+    frameId: 554;
+    name: "ID22AHVP_pcsControl";
+    signals: ID22AHVP_pcsControl_Signals;
+};
+
+export type ID232BMS_contactorRequest_Signals = {
     BMS_fcContactorRequest: "SET_REQUEST_SNA" | "SET_REQUEST_CLOSE" | "SET_REQUEST_OPEN" | "SET_REQUEST_OPEN_IMMEDIATELY" | "SET_REQUEST_CLOSE_NEGATIVE_ONLY" | "SET_REQUEST_CLOSE_POSITIVE_ONLY";
     BMS_packContactorRequest: "SET_REQUEST_SNA" | "SET_REQUEST_CLOSE" | "SET_REQUEST_OPEN" | "SET_REQUEST_OPEN_IMMEDIATELY" | "SET_REQUEST_CLOSE_NEGATIVE_ONLY" | "SET_REQUEST_CLOSE_POSITIVE_ONLY";
     BMS_gpoHasCompleted: number;
@@ -452,7 +578,13 @@ export type ID232BMS_contactorRequest = {
     BMS_fcLinkOkToEnergizeRequest: "FC_LINK_ENERGY_NONE" | "FC_LINK_ENERGY_AC" | "FC_LINK_ENERGY_DC";
 };
 
-export type ID273UI_vehicleControl = {
+export type ID232BMS_contactorRequest = {
+    frameId: 562;
+    name: "ID232BMS_contactorRequest";
+    signals: ID232BMS_contactorRequest_Signals;
+};
+
+export type ID273UI_vehicleControl_Signals = {
     UI_accessoryPowerRequest: number;
     UI_frontFogSwitch: number;
     UI_summonActive: number;
@@ -493,7 +625,13 @@ export type ID273UI_vehicleControl = {
     UI_rearWindowLockout: number;
 };
 
-export type ID27DCP_dcChargeLimits = {
+export type ID273UI_vehicleControl = {
+    frameId: 627;
+    name: "ID273UI_vehicleControl";
+    signals: ID273UI_vehicleControl_Signals;
+};
+
+export type ID27DCP_dcChargeLimits_Signals = {
     CP_evseMaxDcCurrentLimit: number;
     CP_evseMinDcCurrentLimit: number;
     CP_evseMaxDcVoltageLimit: number;
@@ -501,12 +639,24 @@ export type ID27DCP_dcChargeLimits = {
     CP_evseInstantDcCurrentLimit: number;
 };
 
-export type ID2BDCP_dcPowerLimits = {
+export type ID27DCP_dcChargeLimits = {
+    frameId: 637;
+    name: "ID27DCP_dcChargeLimits";
+    signals: ID27DCP_dcChargeLimits_Signals;
+};
+
+export type ID2BDCP_dcPowerLimits_Signals = {
     CP_evseInstantDcPowerLimit: number;
     CP_evseMaxDcPowerLimit: number;
 };
 
-export type ID42AVCSEC_TPMSConnectionData = {
+export type ID2BDCP_dcPowerLimits = {
+    frameId: 701;
+    name: "ID2BDCP_dcPowerLimits";
+    signals: ID2BDCP_dcPowerLimits_Signals;
+};
+
+export type ID42AVCSEC_TPMSConnectionData_Signals = {
     VCSEC_TPMSSensorState0: "SENSOR_NOT_PAIRED" | "SENSOR_WAIT_FOR_ADV" | "SENSOR_WAIT_FOR_CONN" | "SENSOR_CONNECTED" | "SENSOR_DISCONNECTING";
     VCSEC_TPMSRSSI0: number;
     VCSEC_TPMSConnectionTypeCurrent0: "CONNECTIONTYPE_FAST" | "CONNECTIONTYPE_SLOW" | "CONNECTIONTYPE_UNKNOWN";
@@ -525,7 +675,13 @@ export type ID42AVCSEC_TPMSConnectionData = {
     VCSEC_TPMSConnectionTypeDesired3: "CONNECTIONTYPE_FAST" | "CONNECTIONTYPE_SLOW" | "CONNECTIONTYPE_UNKNOWN";
 };
 
-export type ID22EPARK_sdiRear = {
+export type ID42AVCSEC_TPMSConnectionData = {
+    frameId: 1066;
+    name: "ID42AVCSEC_TPMSConnectionData";
+    signals: ID42AVCSEC_TPMSConnectionData_Signals;
+};
+
+export type ID22EPARK_sdiRear_Signals = {
     PARK_sdiSensor7RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
     PARK_sdiSensor8RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
     PARK_sdiSensor9RawDistData: "BLOCKED" | "NEAR_DETECTION" | "NO_OBJECT_DETECTED" | "SNA";
@@ -536,7 +692,13 @@ export type ID22EPARK_sdiRear = {
     PARK_sdiRearChecksum: number;
 };
 
-export type ID238UI_driverAssistMapData = {
+export type ID22EPARK_sdiRear = {
+    frameId: 558;
+    name: "ID22EPARK_sdiRear";
+    signals: ID22EPARK_sdiRear_Signals;
+};
+
+export type ID238UI_driverAssistMapData_Signals = {
     UI_mapSpeedLimitDependency: "NONE" | "SCHOOL" | "RAIN" | "SNOW" | "TIME" | "SEASON" | "LANE" | "SNA";
     UI_roadClass: "UNKNOWN_INVALID_SNA" | "CLASS_1_MAJOR" | "CLASS_2" | "CLASS_3" | "CLASS_4" | "CLASS_5" | "CLASS_6_MINOR";
     UI_inSuperchargerGeofence: number;
@@ -569,7 +731,13 @@ export type ID238UI_driverAssistMapData = {
     UI_mapDataChecksum: number;
 };
 
-export type ID239DAS_lanes = {
+export type ID238UI_driverAssistMapData = {
+    frameId: 568;
+    name: "ID238UI_driverAssistMapData";
+    signals: ID238UI_driverAssistMapData_Signals;
+};
+
+export type ID239DAS_lanes_Signals = {
     DAS_leftLaneExists: number;
     DAS_rightLaneExists: number;
     DAS_virtualLaneWidth: number;
@@ -585,7 +753,13 @@ export type ID239DAS_lanes = {
     DAS_lanesCounter: number;
 };
 
-export type ID24ADAS_visualDebug = {
+export type ID239DAS_lanes = {
+    frameId: 569;
+    name: "ID239DAS_lanes";
+    signals: ID239DAS_lanes_Signals;
+};
+
+export type ID24ADAS_visualDebug_Signals = {
     DAS_autosteerVehiclesUsage: "REJECTED_UNAVAILABLE" | "AVAILABLE" | "FUSED" | "BLACKLISTED";
     DAS_autosteerHPPUsage: "REJECTED_UNAVAILABLE" | "AVAILABLE" | "FUSED" | "BLACKLISTED";
     DAS_autosteerNavigationUsage: "REJECTED_UNAVAILABLE" | "AVAILABLE" | "FUSED" | "BLACKLISTED";
@@ -612,12 +786,24 @@ export type ID24ADAS_visualDebug = {
     DAS_rearLeftVehDetectedTrip: "VEHICLE_NOT_DETECTED" | "VEHICLE_DETECTED";
 };
 
-export type ID25BAPP_environment = {
+export type ID24ADAS_visualDebug = {
+    frameId: 586;
+    name: "ID24ADAS_visualDebug";
+    signals: ID24ADAS_visualDebug_Signals;
+};
+
+export type ID25BAPP_environment_Signals = {
     APP_environmentRainy: number;
     APP_environmentSnowy: number;
 };
 
-export type ID25DCP_status = {
+export type ID25BAPP_environment = {
+    frameId: 603;
+    name: "ID25BAPP_environment";
+    signals: ID25BAPP_environment_Signals;
+};
+
+export type ID25DCP_status_Signals = {
     CP_type: "CP_TYPE_US_TESLA" | "CP_TYPE_EURO_IEC" | "CP_TYPE_GB" | "CP_TYPE_IEC_CCS";
     CP_insertEnableLine: number;
     CP_chargeCablePresent: "CABLE_NOT_PRESENT" | "CABLE_PRESENT";
@@ -649,19 +835,37 @@ export type ID25DCP_status = {
     CP_coverClosed: number;
 };
 
-export type ID29DCP_dcChargeStatus = {
+export type ID25DCP_status = {
+    frameId: 605;
+    name: "ID25DCP_status";
+    signals: ID25DCP_status_Signals;
+};
+
+export type ID29DCP_dcChargeStatus_Signals = {
     CP_evseOutputDcCurrent: number;
     CP_evseOutputDcVoltage: number;
     CP_evseOutputDcCurrentStale: number;
 };
 
-export type ID2B4PCS_dcdcRailStatus = {
+export type ID29DCP_dcChargeStatus = {
+    frameId: 669;
+    name: "ID29DCP_dcChargeStatus";
+    signals: ID29DCP_dcChargeStatus_Signals;
+};
+
+export type ID2B4PCS_dcdcRailStatus_Signals = {
     PCS_dcdcLvBusVolt: number;
     PCS_dcdcHvBusVolt: number;
     PCS_dcdcLvOutputCurrent: number;
 };
 
-export type ID2B9DAS_control = {
+export type ID2B4PCS_dcdcRailStatus = {
+    frameId: 692;
+    name: "ID2B4PCS_dcdcRailStatus";
+    signals: ID2B4PCS_dcdcRailStatus_Signals;
+};
+
+export type ID2B9DAS_control_Signals = {
     DAS_setSpeed: "SNA";
     DAS_accState: "ACC_CANCEL_GENERIC" | "ACC_CANCEL_CAMERA_BLIND" | "ACC_CANCEL_RADAR_BLIND" | "ACC_HOLD" | "ACC_ON" | "APC_BACKWARD" | "APC_FORWARD" | "APC_COMPLETE" | "APC_ABORT" | "APC_PAUSE" | "APC_UNPARK_COMPLETE" | "APC_SELFPARK_START" | "ACC_CANCEL_PATH_NOT_CLEAR" | "ACC_CANCEL_GENERIC_SILENT" | "ACC_CANCEL_OUT_OF_CALIBRATION" | "FAULT_SNA";
     DAS_aebEvent: "AEB_NOT_ACTIVE" | "AEB_ACTIVE" | "AEB_FAULT" | "AEB_SNA";
@@ -673,7 +877,13 @@ export type ID2B9DAS_control = {
     DAS_controlChecksum: number;
 };
 
-export type ID2D3UI_solarData = {
+export type ID2B9DAS_control = {
+    frameId: 697;
+    name: "ID2B9DAS_control";
+    signals: ID2B9DAS_control_Signals;
+};
+
+export type ID2D3UI_solarData_Signals = {
     UI_solarAzimuthAngle: "SNA";
     UI_solarAzimuthAngleCarRef: "SNA";
     UI_isSunUp: "SUN_DOWN" | "SUN_UP" | "SUN_SNA";
@@ -683,7 +893,13 @@ export type ID2D3UI_solarData = {
     UI_minsToSunrise: number;
 };
 
-export type ID309DAS_object_0 = {
+export type ID2D3UI_solarData = {
+    frameId: 723;
+    name: "ID2D3UI_solarData";
+    signals: ID2D3UI_solarData_Signals;
+};
+
+export type ID309DAS_object_Signals_0 = {
     DAS_objectId: "LEAD_VEHICLES";
     DAS_leadVehType: "UNKNOWN" | "TRUCK" | "CAR" | "MOTORCYCLE" | "BICYCLE" | "PEDESTRIAN" | "IPSO";
     DAS_leadVehRelevantForControl: number;
@@ -699,7 +915,7 @@ export type ID309DAS_object_0 = {
     DAS_leadVeh2Id: "SNA";
 };
 
-export type ID309DAS_object_1 = {
+export type ID309DAS_object_Signals_1 = {
     DAS_objectId: "LEFT_VEHICLES";
     DAS_leftVehType: "UNKNOWN" | "TRUCK" | "CAR" | "MOTORCYCLE" | "BICYCLE" | "PEDESTRIAN";
     DAS_leftVehRelevantForControl: number;
@@ -715,7 +931,7 @@ export type ID309DAS_object_1 = {
     DAS_leftVeh2Id: "SNA";
 };
 
-export type ID309DAS_object_2 = {
+export type ID309DAS_object_Signals_2 = {
     DAS_objectId: "RIGHT_VEHICLES";
     DAS_rightVehType: "UNKNOWN" | "TRUCK" | "CAR" | "MOTORCYCLE" | "BICYCLE" | "PEDESTRIAN";
     DAS_rightVehRelevantForControl: number;
@@ -731,7 +947,7 @@ export type ID309DAS_object_2 = {
     DAS_rightVeh2Id: "SNA";
 };
 
-export type ID309DAS_object_3 = {
+export type ID309DAS_object_Signals_3 = {
     DAS_objectId: "CUTIN_VEHICLE";
     DAS_cutinVehType: "UNKNOWN" | "TRUCK" | "CAR" | "MOTORCYCLE" | "BICYCLE" | "PEDESTRIAN";
     DAS_cutinVehRelevantForControl: number;
@@ -741,7 +957,7 @@ export type ID309DAS_object_3 = {
     DAS_cutinVehId: "SNA";
 };
 
-export type ID309DAS_object_4 = {
+export type ID309DAS_object_Signals_4 = {
     DAS_objectId: "ROAD_SIGN";
     DAS_roadSignColor: "NONE" | "RED" | "YELLOW" | "GREEN" | "RED_YELLOW";
     DAS_roadSignId: "STOP_SIGN" | "TRAFFIC_LIGHT" | "SNA";
@@ -752,7 +968,7 @@ export type ID309DAS_object_4 = {
     DAS_roadSignOrientation: "UNKNOWN" | "VERTICAL_3_LIGHT" | "HORIZONTAL_3_LIGHT";
 };
 
-export type ID309DAS_object_5 = {
+export type ID309DAS_object_Signals_5 = {
     DAS_objectId: "VEHICLE_HEADINGS";
     DAS_leadVehHeading: "SNA";
     DAS_leadVeh2Heading: "SNA";
@@ -763,9 +979,15 @@ export type ID309DAS_object_5 = {
     DAS_cutinVehHeading: "SNA";
 };
 
-export type ID309DAS_object = ID309DAS_object_0 | ID309DAS_object_1 | ID309DAS_object_2 | ID309DAS_object_3 | ID309DAS_object_4 | ID309DAS_object_5;
+export type ID309DAS_object_Signals = ID309DAS_object_Signals_0 | ID309DAS_object_Signals_1 | ID309DAS_object_Signals_2 | ID309DAS_object_Signals_3 | ID309DAS_object_Signals_4 | ID309DAS_object_Signals_5;
 
-export type ID389DAS_status2 = {
+export type ID309DAS_object = {
+    frameId: 777;
+    name: "ID309DAS_object";
+    signals: ID309DAS_object_Signals;
+};
+
+export type ID389DAS_status2_Signals = {
     DAS_accSpeedLimit: "NONE" | "SNA";
     DAS_pmmObstacleSeverity: "PMM_NONE" | "PMM_IMMINENT_REAR" | "PMM_IMMINENT_FRONT" | "PMM_BRAKE_REQUEST" | "PMM_CRASH_REAR" | "PMM_CRASH_FRONT" | "PMM_ACCEL_LIMIT" | "PMM_SNA";
     DAS_pmmLoggingRequest: "FALSE" | "TRUE";
@@ -786,7 +1008,13 @@ export type ID389DAS_status2 = {
     DAS_status2Checksum: number;
 };
 
-export type ID399DAS_status = {
+export type ID389DAS_status2 = {
+    frameId: 905;
+    name: "ID389DAS_status2";
+    signals: ID389DAS_status2_Signals;
+};
+
+export type ID399DAS_status_Signals = {
     DAS_autopilotState: "DISABLED" | "UNAVAILABLE" | "AVAILABLE" | "ACTIVE_NOMINAL" | "ACTIVE_RESTRICTED" | "ACTIVE_NAV" | "ABORTING" | "ABORTED" | "FAULT" | "SNA";
     DAS_blindSpotRearLeft: "NO_WARNING" | "WARNING_LEVEL_1" | "WARNING_LEVEL_2" | "SNA";
     DAS_blindSpotRearRight: "NO_WARNING" | "WARNING_LEVEL_1" | "WARNING_LEVEL_2" | "SNA";
@@ -815,7 +1043,13 @@ export type ID399DAS_status = {
     DAS_statusChecksum: number;
 };
 
-export type ID39DIBST_status = {
+export type ID399DAS_status = {
+    frameId: 921;
+    name: "ID399DAS_status";
+    signals: ID399DAS_status_Signals;
+};
+
+export type ID39DIBST_status_Signals = {
     IBST_statusChecksum: number;
     IBST_statusCounter: number;
     IBST_iBoosterStatus: "IBOOSTER_OFF" | "IBOOSTER_INIT" | "IBOOSTER_FAILURE" | "IBOOSTER_DIAGNOSTIC" | "IBOOSTER_ACTIVE_GOOD_CHECK" | "IBOOSTER_READY" | "IBOOSTER_ACTUATION";
@@ -824,7 +1058,13 @@ export type ID39DIBST_status = {
     IBST_sInputRodDriver: number;
 };
 
-export type ID3A1VCFRONT_vehicleStatus = {
+export type ID39DIBST_status = {
+    frameId: 925;
+    name: "ID39DIBST_status";
+    signals: ID39DIBST_status_Signals;
+};
+
+export type ID3A1VCFRONT_vehicleStatus_Signals = {
     VCFRONT_bmsHvChargeEnable: number;
     VCFRONT_preconditionRequest: number;
     VCFRONT_APGlassHeaterState: "HEATER_STATE_SNA" | "HEATER_STATE_ON" | "HEATER_STATE_OFF" | "HEATER_STATE_OFF_UNAVAILABLE" | "HEATER_STATE_FAULT";
@@ -852,7 +1092,13 @@ export type ID3A1VCFRONT_vehicleStatus = {
     VCFRONT_vehicleStatusChecksum: number;
 };
 
-export type ID3D9UI_gpsVehicleSpeed = {
+export type ID3A1VCFRONT_vehicleStatus = {
+    frameId: 929;
+    name: "ID3A1VCFRONT_vehicleStatus";
+    signals: ID3A1VCFRONT_vehicleStatus_Signals;
+};
+
+export type ID3D9UI_gpsVehicleSpeed_Signals = {
     UI_gpsHDOP: number;
     UI_gpsVehicleHeading: number;
     UI_gpsVehicleSpeed: number;
@@ -866,7 +1112,13 @@ export type ID3D9UI_gpsVehicleSpeed = {
     UI_conditionalSpeedLimit: "SNA";
 };
 
-export type ID3E2VCLEFT_lightStatus = {
+export type ID3D9UI_gpsVehicleSpeed = {
+    frameId: 985;
+    name: "ID3D9UI_gpsVehicleSpeed";
+    signals: ID3D9UI_gpsVehicleSpeed_Signals;
+};
+
+export type ID3E2VCLEFT_lightStatus_Signals = {
     VCLEFT_brakeLightStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
     VCLEFT_tailLightStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
     VCLEFT_turnSignalStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
@@ -892,7 +1144,13 @@ export type ID3E2VCLEFT_lightStatus = {
     VCLEFT_tailLightOutageStatus: number;
 };
 
-export type ID3E9DAS_bodyControls = {
+export type ID3E2VCLEFT_lightStatus = {
+    frameId: 994;
+    name: "ID3E2VCLEFT_lightStatus";
+    signals: ID3E2VCLEFT_lightStatus_Signals;
+};
+
+export type ID3E9DAS_bodyControls_Signals = {
     DAS_headlightRequest: "DAS_HEADLIGHT_REQUEST_OFF" | "DAS_HEADLIGHT_REQUEST_ON" | "DAS_HEADLIGHT_REQUEST_INVALID";
     DAS_hazardLightRequest: "DAS_REQUEST_HAZARDS_OFF" | "DAS_REQUEST_HAZARDS_ON" | "DAS_REQUEST_HAZARDS_UNUSED" | "DAS_REQUEST_HAZARDS_SNA";
     DAS_wiperSpeed: "DAS_WIPER_SPEED_OFF" | "DAS_WIPER_SPEED_1" | "DAS_WIPER_SPEED_2" | "DAS_WIPER_SPEED_3" | "DAS_WIPER_SPEED_4" | "DAS_WIPER_SPEED_5" | "DAS_WIPER_SPEED_6" | "DAS_WIPER_SPEED_7" | "DAS_WIPER_SPEED_8" | "DAS_WIPER_SPEED_9" | "DAS_WIPER_SPEED_10" | "DAS_WIPER_SPEED_11" | "DAS_WIPER_SPEED_12" | "DAS_WIPER_SPEED_13" | "DAS_WIPER_SPEED_14" | "DAS_WIPER_SPEED_INVALID";
@@ -909,11 +1167,23 @@ export type ID3E9DAS_bodyControls = {
     DAS_bodyControlsChecksum: number;
 };
 
-export type ID3F3UI_odo = {
+export type ID3E9DAS_bodyControls = {
+    frameId: 1001;
+    name: "ID3E9DAS_bodyControls";
+    signals: ID3E9DAS_bodyControls_Signals;
+};
+
+export type ID3F3UI_odo_Signals = {
     UI_odometer: "SNA";
 };
 
-export type ID3F5VCFRONT_lighting = {
+export type ID3F3UI_odo = {
+    frameId: 1011;
+    name: "ID3F3UI_odo";
+    signals: ID3F3UI_odo_Signals;
+};
+
+export type ID3F5VCFRONT_lighting_Signals = {
     VCFRONT_indicatorLeftRequest: "TURN_SIGNAL_OFF" | "TURN_SIGNAL_ACTIVE_LOW" | "TURN_SIGNAL_ACTIVE_HIGH";
     VCFRONT_indicatorRightRequest: "TURN_SIGNAL_OFF" | "TURN_SIGNAL_ACTIVE_LOW" | "TURN_SIGNAL_ACTIVE_HIGH";
     VCFRONT_hazardLightRequest: "HAZARD_REQUEST_NONE" | "HAZARD_REQUEST_BUTTON" | "HAZARD_REQUEST_LOCK" | "HAZARD_REQUEST_UNLOCK" | "HAZARD_REQUEST_MISLOCK" | "HAZARD_REQUEST_CRASH" | "HAZARD_REQUEST_CAR_ALARM" | "HAZARD_REQUEST_DAS" | "HAZARD_REQUEST_UDS";
@@ -944,7 +1214,13 @@ export type ID3F5VCFRONT_lighting = {
     VCFRONT_lowBeamsCalibrated: number;
 };
 
-export type ID3F8UI_driverAssistControl = {
+export type ID3F5VCFRONT_lighting = {
+    frameId: 1013;
+    name: "ID3F5VCFRONT_lighting";
+    signals: ID3F5VCFRONT_lighting_Signals;
+};
+
+export type ID3F8UI_driverAssistControl_Signals = {
     UI_autopilotControlRequest: "LEGACY_LAT_CTRL" | "NEXT_GEN_CTRL";
     UI_ulcStalkConfirm: number;
     UI_summonHeartbeat: number;
@@ -989,7 +1265,13 @@ export type ID3F8UI_driverAssistControl = {
     UI_enableBrakeLightPulse: number;
 };
 
-export type ID3FDUI_autopilotControl_0 = {
+export type ID3F8UI_driverAssistControl = {
+    frameId: 1016;
+    name: "ID3F8UI_driverAssistControl";
+    signals: ID3F8UI_driverAssistControl_Signals;
+};
+
+export type ID3FDUI_autopilotControl_Signals_0 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_0";
     UI_hovEnabled: "HOV_OFF" | "HOV_ON";
     UI_donDisableAutoWiperDuration: "DON_DISABLE_AUTO_WIPER_DURATION_DEFAULT" | "DON_DISABLE_AUTO_WIPER_DURATION_5_S" | "DON_DISABLE_AUTO_WIPER_DURATION_15_S" | "DON_DISABLE_AUTO_WIPER_DURATION_30_S" | "DON_DISABLE_AUTO_WIPER_DURATION_60_S" | "DON_DISABLE_AUTO_WIPER_DURATION_120_S" | "DON_DISABLE_AUTO_WIPER_DURATION_OFF";
@@ -1007,7 +1289,7 @@ export type ID3FDUI_autopilotControl_0 = {
     UI_homelinkNearby: "HOMELINK_NOT_NEARBY" | "HOMELINK_NEARBY";
 };
 
-export type ID3FDUI_autopilotControl_1 = {
+export type ID3FDUI_autopilotControl_Signals_1 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_1";
     UI_driverMonitorConfirmation: number;
     UI_applyEceR79: number;
@@ -1034,33 +1316,39 @@ export type ID3FDUI_autopilotControl_1 = {
     UI_enableCabinCameraTelemetry: number;
 };
 
-export type ID3FDUI_autopilotControl_2 = {
+export type ID3FDUI_autopilotControl_Signals_2 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_2";
 };
 
-export type ID3FDUI_autopilotControl_3 = {
+export type ID3FDUI_autopilotControl_Signals_3 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_3";
 };
 
-export type ID3FDUI_autopilotControl_4 = {
+export type ID3FDUI_autopilotControl_Signals_4 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_4";
 };
 
-export type ID3FDUI_autopilotControl_5 = {
+export type ID3FDUI_autopilotControl_Signals_5 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_5";
 };
 
-export type ID3FDUI_autopilotControl_6 = {
+export type ID3FDUI_autopilotControl_Signals_6 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_6";
 };
 
-export type ID3FDUI_autopilotControl_7 = {
+export type ID3FDUI_autopilotControl_Signals_7 = {
     UI_autopilotControlIndex: "AUTOPILOT_CONTROL_7";
 };
 
-export type ID3FDUI_autopilotControl = ID3FDUI_autopilotControl_0 | ID3FDUI_autopilotControl_1 | ID3FDUI_autopilotControl_2 | ID3FDUI_autopilotControl_3 | ID3FDUI_autopilotControl_4 | ID3FDUI_autopilotControl_5 | ID3FDUI_autopilotControl_6 | ID3FDUI_autopilotControl_7;
+export type ID3FDUI_autopilotControl_Signals = ID3FDUI_autopilotControl_Signals_0 | ID3FDUI_autopilotControl_Signals_1 | ID3FDUI_autopilotControl_Signals_2 | ID3FDUI_autopilotControl_Signals_3 | ID3FDUI_autopilotControl_Signals_4 | ID3FDUI_autopilotControl_Signals_5 | ID3FDUI_autopilotControl_Signals_6 | ID3FDUI_autopilotControl_Signals_7;
 
-export type ID267DI_vehicleEstimates = {
+export type ID3FDUI_autopilotControl = {
+    frameId: 1021;
+    name: "ID3FDUI_autopilotControl";
+    signals: ID3FDUI_autopilotControl_Signals;
+};
+
+export type ID267DI_vehicleEstimates_Signals = {
     DI_mass: number;
     DI_tireFitment: "FITMENT_SQUARE" | "FITMENT_STAGGERED" | "FITMENT_SNA";
     DI_trailerDetected: "TRAILER_NOT_DETECTED" | "TRAILER_DETECTED";
@@ -1073,7 +1361,13 @@ export type ID267DI_vehicleEstimates = {
     DI_steeringAngleOffset: number;
 };
 
-export type ID282VCLEFT_hvacBlowerFeedback_0 = {
+export type ID267DI_vehicleEstimates = {
+    frameId: 615;
+    name: "ID267DI_vehicleEstimates";
+    signals: ID267DI_vehicleEstimates_Signals;
+};
+
+export type ID282VCLEFT_hvacBlowerFeedback_Signals_0 = {
     VCLEFT_blowerIndex: "HVAC_FEEDBACK_SIGNALS";
     VCLEFT_hvacBlowerEnabled: number;
     VCLEFT_hvacBlowerOutputDuty: "SNA";
@@ -1089,7 +1383,7 @@ export type ID282VCLEFT_hvacBlowerFeedback_0 = {
     VCLEFT_hvacBlowerSpiError: number;
 };
 
-export type ID282VCLEFT_hvacBlowerFeedback_1 = {
+export type ID282VCLEFT_hvacBlowerFeedback_Signals_1 = {
     VCLEFT_blowerIndex: "HVAC_VARS";
     VCLEFT_hvacBlowerRs: "SNA";
     VCLEFT_hvacBlowerIPhase0: "SNA";
@@ -1105,9 +1399,15 @@ export type ID282VCLEFT_hvacBlowerFeedback_1 = {
     VCLEFT_hvacBlowerRsOnlineActive: number;
 };
 
-export type ID282VCLEFT_hvacBlowerFeedback = ID282VCLEFT_hvacBlowerFeedback_0 | ID282VCLEFT_hvacBlowerFeedback_1;
+export type ID282VCLEFT_hvacBlowerFeedback_Signals = ID282VCLEFT_hvacBlowerFeedback_Signals_0 | ID282VCLEFT_hvacBlowerFeedback_Signals_1;
 
-export type ID2F3UI_hvacRequest = {
+export type ID282VCLEFT_hvacBlowerFeedback = {
+    frameId: 642;
+    name: "ID282VCLEFT_hvacBlowerFeedback";
+    signals: ID282VCLEFT_hvacBlowerFeedback_Signals;
+};
+
+export type ID2F3UI_hvacRequest_Signals = {
     UI_hvacReqTempSetpointLeft: "LO" | "HI";
     UI_hvacReqTempSetpointRight: "LO" | "HI";
     UI_hvacReqAirDistributionMode: "AUTO" | "MANUAL_FLOOR" | "MANUAL_PANEL" | "MANUAL_PANEL_FLOOR" | "MANUAL_DEFROST" | "MANUAL_DEFROST_FLOOR" | "MANUAL_DEFROST_PANEL" | "MANUAL_DEFROST_PANEL_FLOOR";
@@ -1121,7 +1421,13 @@ export type ID2F3UI_hvacRequest = {
     UI_hvacReqKeepClimateOn: "KEEP_CLIMATE_ON_REQ_OFF" | "KEEP_CLIMATE_ON_REQ_ON" | "KEEP_CLIMATE_ON_REQ_DOG" | "KEEP_CLIMATE_ON_REQ_PARTY";
 };
 
-export type ID313UI_trackModeSettings = {
+export type ID2F3UI_hvacRequest = {
+    frameId: 755;
+    name: "ID2F3UI_hvacRequest";
+    signals: ID2F3UI_hvacRequest_Signals;
+};
+
+export type ID313UI_trackModeSettings_Signals = {
     UI_trackModeRequest: "TRACK_MODE_REQUEST_IDLE" | "TRACK_MODE_REQUEST_ON" | "TRACK_MODE_REQUEST_OFF";
     UI_trackRotationTendency: number;
     UI_trackStabilityAssist: number;
@@ -1131,47 +1437,53 @@ export type ID313UI_trackModeSettings = {
     UI_trackModeSettingsChecksum: number;
 };
 
-export type ID335RearDIinfo_0 = {
+export type ID313UI_trackModeSettings = {
+    frameId: 787;
+    name: "ID313UI_trackModeSettings";
+    signals: ID313UI_trackModeSettings_Signals;
+};
+
+export type ID335RearDIinfo_Signals_0 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_0";
 };
 
-export type ID335RearDIinfo_1 = {
+export type ID335RearDIinfo_Signals_1 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_1";
 };
 
-export type ID335RearDIinfo_2 = {
+export type ID335RearDIinfo_Signals_2 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_2";
 };
 
-export type ID335RearDIinfo_3 = {
+export type ID335RearDIinfo_Signals_3 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_3";
 };
 
-export type ID335RearDIinfo_4 = {
+export type ID335RearDIinfo_Signals_4 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_4";
 };
 
-export type ID335RearDIinfo_5 = {
+export type ID335RearDIinfo_Signals_5 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_5";
 };
 
-export type ID335RearDIinfo_6 = {
+export type ID335RearDIinfo_Signals_6 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_6";
 };
 
-export type ID335RearDIinfo_7 = {
+export type ID335RearDIinfo_Signals_7 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_7";
 };
 
-export type ID335RearDIinfo_8 = {
+export type ID335RearDIinfo_Signals_8 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_8";
 };
 
-export type ID335RearDIinfo_9 = {
+export type ID335RearDIinfo_Signals_9 = {
     DIR_infoIndex: "DI_INFO_DEPRECATED_9";
 };
 
-export type ID335RearDIinfo_10 = {
+export type ID335RearDIinfo_Signals_10 = {
     DIR_infoIndex: "DI_INFO_BUILD_HWID_COMPONENTID";
     DIR_buildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     DIR_buildConfigurationId: number;
@@ -1179,7 +1491,7 @@ export type ID335RearDIinfo_10 = {
     DIR_componentId: number;
 };
 
-export type ID335RearDIinfo_11 = {
+export type ID335RearDIinfo_Signals_11 = {
     DIR_infoIndex: "DI_INFO_PCBAID_ASSYID_USAGEID";
     DIR_pcbaId: number;
     DIR_assemblyId: number;
@@ -1187,63 +1499,69 @@ export type ID335RearDIinfo_11 = {
     DIR_subUsageId: number;
 };
 
-export type ID335RearDIinfo_13 = {
+export type ID335RearDIinfo_Signals_13 = {
     DIR_infoIndex: "DI_INFO_APP_CRC";
     DIR_applicationCrc: number;
 };
 
-export type ID335RearDIinfo_14 = {
+export type ID335RearDIinfo_Signals_14 = {
     DIR_infoIndex: "DI_INFO_BOOTLOADER_SVN";
 };
 
-export type ID335RearDIinfo_15 = {
+export type ID335RearDIinfo_Signals_15 = {
     DIR_infoIndex: "DI_INFO_BOOTLOADER_CRC";
 };
 
-export type ID335RearDIinfo_16 = {
+export type ID335RearDIinfo_Signals_16 = {
     DIR_infoIndex: "DI_INFO_SUBCOMPONENT";
     DIR_oilPumpBuildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     DIR_oilPumpAppCrc: number;
     DIR_FPGA_version: "FPGA_VERSION_LOCAL_BUILD" | "FPGA_VERSION_SNA";
 };
 
-export type ID335RearDIinfo_17 = {
+export type ID335RearDIinfo_Signals_17 = {
     DIR_infoIndex: "DI_INFO_APP_GITHASH";
     DIR_appGitHash: number;
 };
 
-export type ID335RearDIinfo_18 = {
+export type ID335RearDIinfo_Signals_18 = {
     DIR_infoIndex: "DI_INFO_BOOTLOADER_GITHASH";
     DIR_bootGitHash: number;
 };
 
-export type ID335RearDIinfo_19 = {
+export type ID335RearDIinfo_Signals_19 = {
     DIR_infoIndex: "DI_INFO_VERSION_DEPRECATED";
     DIR_platformTyp: number;
 };
 
-export type ID335RearDIinfo_20 = {
+export type ID335RearDIinfo_Signals_20 = {
     DIR_infoIndex: "DI_INFO_UDS_PROTOCOL_BOOTCRC";
     DIR_infoBootLdUdsProtocolVersion: number;
     DIR_bootloaderCrc: number;
 };
 
-export type ID335RearDIinfo_23 = {
+export type ID335RearDIinfo_Signals_23 = {
     DIR_infoIndex: "DI_INFO_SUBCOMPONENT2";
 };
 
-export type ID335RearDIinfo_31 = {
+export type ID335RearDIinfo_Signals_31 = {
     DIR_infoIndex: "DI_INFO_SUBCOMPONENT_GITHASH";
     DIR_subcomponentGitHash: number;
 };
 
-export type ID335RearDIinfo_255 = {
+export type ID335RearDIinfo_Signals_255 = {
     DIR_infoIndex: "DI_INFO_END";
 };
 
-export type ID335RearDIinfo = ID335RearDIinfo_0 | ID335RearDIinfo_1 | ID335RearDIinfo_2 | ID335RearDIinfo_3 | ID335RearDIinfo_4 | ID335RearDIinfo_5 | ID335RearDIinfo_6 | ID335RearDIinfo_7 | ID335RearDIinfo_8 | ID335RearDIinfo_9 | ID335RearDIinfo_10 | ID335RearDIinfo_11 | ID335RearDIinfo_13 | ID335RearDIinfo_14 | ID335RearDIinfo_15 | ID335RearDIinfo_16 | ID335RearDIinfo_17 | ID335RearDIinfo_18 | ID335RearDIinfo_19 | ID335RearDIinfo_20 | ID335RearDIinfo_23 | ID335RearDIinfo_31 | ID335RearDIinfo_255;
+export type ID335RearDIinfo_Signals = ID335RearDIinfo_Signals_0 | ID335RearDIinfo_Signals_1 | ID335RearDIinfo_Signals_2 | ID335RearDIinfo_Signals_3 | ID335RearDIinfo_Signals_4 | ID335RearDIinfo_Signals_5 | ID335RearDIinfo_Signals_6 | ID335RearDIinfo_Signals_7 | ID335RearDIinfo_Signals_8 | ID335RearDIinfo_Signals_9 | ID335RearDIinfo_Signals_10 | ID335RearDIinfo_Signals_11 | ID335RearDIinfo_Signals_13 | ID335RearDIinfo_Signals_14 | ID335RearDIinfo_Signals_15 | ID335RearDIinfo_Signals_16 | ID335RearDIinfo_Signals_17 | ID335RearDIinfo_Signals_18 | ID335RearDIinfo_Signals_19 | ID335RearDIinfo_Signals_20 | ID335RearDIinfo_Signals_23 | ID335RearDIinfo_Signals_31 | ID335RearDIinfo_Signals_255;
 
-export type ID383VCRIGHT_thsStatus = {
+export type ID335RearDIinfo = {
+    frameId: 821;
+    name: "ID335RearDIinfo";
+    signals: ID335RearDIinfo_Signals;
+};
+
+export type ID383VCRIGHT_thsStatus_Signals = {
     VCRIGHT_thsActive: number;
     VCRIGHT_thsTemperature: "SNA";
     VCRIGHT_thsHumidity: "SNA";
@@ -1253,7 +1571,13 @@ export type ID383VCRIGHT_thsStatus = {
     VCRIGHT_estimatedThsSolarLoad: "SNA";
 };
 
-export type ID3B3UI_vehicleControl2 = {
+export type ID383VCRIGHT_thsStatus = {
+    frameId: 899;
+    name: "ID383VCRIGHT_thsStatus";
+    signals: ID383VCRIGHT_thsStatus_Signals;
+};
+
+export type ID3B3UI_vehicleControl2_Signals = {
     UI_gloveboxRequest: number;
     UI_trunkRequest: number;
     UI_UMCUpdateInhibit: number;
@@ -1280,7 +1604,13 @@ export type ID3B3UI_vehicleControl2 = {
     UI_conditionalLoggingEnabledVCSE: number;
 };
 
-export type ID3C3VCRIGHT_switchStatus = {
+export type ID3B3UI_vehicleControl2 = {
+    frameId: 947;
+    name: "ID3B3UI_vehicleControl2";
+    signals: ID3B3UI_vehicleControl2_Signals;
+};
+
+export type ID3C3VCRIGHT_switchStatus_Signals = {
     VCRIGHT_frontSeatTrackBack: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCRIGHT_frontSeatTrackForward: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCRIGHT_frontSeatTiltDown: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
@@ -1322,7 +1652,13 @@ export type ID3C3VCRIGHT_switchStatus = {
     VCRIGHT_2RowSeatReclineSwitch: number;
 };
 
-export type ID3E3VCRIGHT_lightStatus = {
+export type ID3C3VCRIGHT_switchStatus = {
+    frameId: 963;
+    name: "ID3C3VCRIGHT_switchStatus";
+    signals: ID3C3VCRIGHT_switchStatus_Signals;
+};
+
+export type ID3E3VCRIGHT_lightStatus_Signals = {
     VCRIGHT_brakeLightStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
     VCRIGHT_tailLightStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
     VCRIGHT_turnSignalStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
@@ -1331,47 +1667,53 @@ export type ID3E3VCRIGHT_lightStatus = {
     VCRIGHT_interiorTrunkLightStatus: "LIGHT_OFF" | "LIGHT_ON" | "LIGHT_FAULT" | "LIGHT_SNA";
 };
 
-export type ID656FrontDIinfo_0 = {
+export type ID3E3VCRIGHT_lightStatus = {
+    frameId: 995;
+    name: "ID3E3VCRIGHT_lightStatus";
+    signals: ID3E3VCRIGHT_lightStatus_Signals;
+};
+
+export type ID656FrontDIinfo_Signals_0 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_0";
 };
 
-export type ID656FrontDIinfo_1 = {
+export type ID656FrontDIinfo_Signals_1 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_1";
 };
 
-export type ID656FrontDIinfo_2 = {
+export type ID656FrontDIinfo_Signals_2 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_2";
 };
 
-export type ID656FrontDIinfo_3 = {
+export type ID656FrontDIinfo_Signals_3 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_3";
 };
 
-export type ID656FrontDIinfo_4 = {
+export type ID656FrontDIinfo_Signals_4 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_4";
 };
 
-export type ID656FrontDIinfo_5 = {
+export type ID656FrontDIinfo_Signals_5 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_5";
 };
 
-export type ID656FrontDIinfo_6 = {
+export type ID656FrontDIinfo_Signals_6 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_6";
 };
 
-export type ID656FrontDIinfo_7 = {
+export type ID656FrontDIinfo_Signals_7 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_7";
 };
 
-export type ID656FrontDIinfo_8 = {
+export type ID656FrontDIinfo_Signals_8 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_8";
 };
 
-export type ID656FrontDIinfo_9 = {
+export type ID656FrontDIinfo_Signals_9 = {
     DIF_infoIndex: "DI_INFO_DEPRECATED_9";
 };
 
-export type ID656FrontDIinfo_10 = {
+export type ID656FrontDIinfo_Signals_10 = {
     DIF_infoIndex: "DI_INFO_BUILD_HWID_COMPONENTID";
     DIF_buildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     DIF_buildConfigurationId: number;
@@ -1379,7 +1721,7 @@ export type ID656FrontDIinfo_10 = {
     DIF_componentId: number;
 };
 
-export type ID656FrontDIinfo_11 = {
+export type ID656FrontDIinfo_Signals_11 = {
     DIF_infoIndex: "DI_INFO_PCBAID_ASSYID_USAGEID";
     DIF_pcbaId: number;
     DIF_assemblyId: number;
@@ -1387,103 +1729,109 @@ export type ID656FrontDIinfo_11 = {
     DIF_subUsageId: number;
 };
 
-export type ID656FrontDIinfo_13 = {
+export type ID656FrontDIinfo_Signals_13 = {
     DIF_infoIndex: "DI_INFO_APP_CRC";
     DIF_applicationCrc: number;
 };
 
-export type ID656FrontDIinfo_14 = {
+export type ID656FrontDIinfo_Signals_14 = {
     DIF_infoIndex: "DI_INFO_BOOTLOADER_SVN";
 };
 
-export type ID656FrontDIinfo_15 = {
+export type ID656FrontDIinfo_Signals_15 = {
     DIF_infoIndex: "DI_INFO_BOOTLOADER_CRC";
 };
 
-export type ID656FrontDIinfo_16 = {
+export type ID656FrontDIinfo_Signals_16 = {
     DIF_infoIndex: "DI_INFO_SUBCOMPONENT";
     DIF_oilPumpBuildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     DIF_oilPumpAppCrc: number;
     DIF_FPGA_version: "FPGA_VERSION_LOCAL_BUILD" | "FPGA_VERSION_SNA";
 };
 
-export type ID656FrontDIinfo_17 = {
+export type ID656FrontDIinfo_Signals_17 = {
     DIF_infoIndex: "DI_INFO_APP_GITHASH";
     DIF_appGitHash: number;
 };
 
-export type ID656FrontDIinfo_18 = {
+export type ID656FrontDIinfo_Signals_18 = {
     DIF_infoIndex: "DI_INFO_BOOTLOADER_GITHASH";
     DIF_bootGitHash: number;
 };
 
-export type ID656FrontDIinfo_19 = {
+export type ID656FrontDIinfo_Signals_19 = {
     DIF_infoIndex: "DI_INFO_VERSION_DEPRECATED";
     DIF_platformTyp: number;
 };
 
-export type ID656FrontDIinfo_20 = {
+export type ID656FrontDIinfo_Signals_20 = {
     DIF_infoIndex: "DI_INFO_UDS_PROTOCOL_BOOTCRC";
     DIF_infoBootLdUdsProtocolVersion: number;
     DIF_bootloaderCrc: number;
 };
 
-export type ID656FrontDIinfo_23 = {
+export type ID656FrontDIinfo_Signals_23 = {
     DIF_infoIndex: "DI_INFO_SUBCOMPONENT2";
 };
 
-export type ID656FrontDIinfo_31 = {
+export type ID656FrontDIinfo_Signals_31 = {
     DIF_infoIndex: "DI_INFO_SUBCOMPONENT_GITHASH";
     DIF_subcomponentGitHash: number;
 };
 
-export type ID656FrontDIinfo_255 = {
+export type ID656FrontDIinfo_Signals_255 = {
     DIF_infoIndex: "DI_INFO_END";
 };
 
-export type ID656FrontDIinfo = ID656FrontDIinfo_0 | ID656FrontDIinfo_1 | ID656FrontDIinfo_2 | ID656FrontDIinfo_3 | ID656FrontDIinfo_4 | ID656FrontDIinfo_5 | ID656FrontDIinfo_6 | ID656FrontDIinfo_7 | ID656FrontDIinfo_8 | ID656FrontDIinfo_9 | ID656FrontDIinfo_10 | ID656FrontDIinfo_11 | ID656FrontDIinfo_13 | ID656FrontDIinfo_14 | ID656FrontDIinfo_15 | ID656FrontDIinfo_16 | ID656FrontDIinfo_17 | ID656FrontDIinfo_18 | ID656FrontDIinfo_19 | ID656FrontDIinfo_20 | ID656FrontDIinfo_23 | ID656FrontDIinfo_31 | ID656FrontDIinfo_255;
+export type ID656FrontDIinfo_Signals = ID656FrontDIinfo_Signals_0 | ID656FrontDIinfo_Signals_1 | ID656FrontDIinfo_Signals_2 | ID656FrontDIinfo_Signals_3 | ID656FrontDIinfo_Signals_4 | ID656FrontDIinfo_Signals_5 | ID656FrontDIinfo_Signals_6 | ID656FrontDIinfo_Signals_7 | ID656FrontDIinfo_Signals_8 | ID656FrontDIinfo_Signals_9 | ID656FrontDIinfo_Signals_10 | ID656FrontDIinfo_Signals_11 | ID656FrontDIinfo_Signals_13 | ID656FrontDIinfo_Signals_14 | ID656FrontDIinfo_Signals_15 | ID656FrontDIinfo_Signals_16 | ID656FrontDIinfo_Signals_17 | ID656FrontDIinfo_Signals_18 | ID656FrontDIinfo_Signals_19 | ID656FrontDIinfo_Signals_20 | ID656FrontDIinfo_Signals_23 | ID656FrontDIinfo_Signals_31 | ID656FrontDIinfo_Signals_255;
 
-export type ID300BMS_info_0 = {
+export type ID656FrontDIinfo = {
+    frameId: 1622;
+    name: "ID656FrontDIinfo";
+    signals: ID656FrontDIinfo_Signals;
+};
+
+export type ID300BMS_info_Signals_0 = {
     BMS_infoIndex: "INFO_DEPRECATED_0";
 };
 
-export type ID300BMS_info_1 = {
+export type ID300BMS_info_Signals_1 = {
     BMS_infoIndex: "INFO_DEPRECATED_1";
 };
 
-export type ID300BMS_info_2 = {
+export type ID300BMS_info_Signals_2 = {
     BMS_infoIndex: "INFO_DEPRECATED_2";
 };
 
-export type ID300BMS_info_3 = {
+export type ID300BMS_info_Signals_3 = {
     BMS_infoIndex: "INFO_DEPRECATED_3";
 };
 
-export type ID300BMS_info_4 = {
+export type ID300BMS_info_Signals_4 = {
     BMS_infoIndex: "INFO_DEPRECATED_4";
 };
 
-export type ID300BMS_info_5 = {
+export type ID300BMS_info_Signals_5 = {
     BMS_infoIndex: "INFO_DEPRECATED_5";
 };
 
-export type ID300BMS_info_6 = {
+export type ID300BMS_info_Signals_6 = {
     BMS_infoIndex: "INFO_DEPRECATED_6";
 };
 
-export type ID300BMS_info_7 = {
+export type ID300BMS_info_Signals_7 = {
     BMS_infoIndex: "INFO_DEPRECATED_7";
 };
 
-export type ID300BMS_info_8 = {
+export type ID300BMS_info_Signals_8 = {
     BMS_infoIndex: "INFO_DEPRECATED_8";
 };
 
-export type ID300BMS_info_9 = {
+export type ID300BMS_info_Signals_9 = {
     BMS_infoIndex: "INFO_DEPRECATED_9";
 };
 
-export type ID300BMS_info_10 = {
+export type ID300BMS_info_Signals_10 = {
     BMS_infoIndex: "INFO_BUILD_HWID_COMPONENTID";
     BMS_buildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     BMS_buildConfigId: number;
@@ -1491,7 +1839,7 @@ export type ID300BMS_info_10 = {
     BMS_componentId: number;
 };
 
-export type ID300BMS_info_11 = {
+export type ID300BMS_info_Signals_11 = {
     BMS_infoIndex: "INFO_PCBAID_ASSYID_USAGEID";
     BMS_pcbaId: number;
     BMS_assemblyId: number;
@@ -1499,79 +1847,85 @@ export type ID300BMS_info_11 = {
     BMS_subUsageId: number;
 };
 
-export type ID300BMS_info_13 = {
+export type ID300BMS_info_Signals_13 = {
     BMS_infoIndex: "INFO_APP_CRC";
     BMS_platformType: number;
     BMS_appCrc: number;
 };
 
-export type ID300BMS_info_14 = {
+export type ID300BMS_info_Signals_14 = {
     BMS_infoIndex: "INFO_BOOTLOADER_SVN";
 };
 
-export type ID300BMS_info_15 = {
+export type ID300BMS_info_Signals_15 = {
     BMS_infoIndex: "INFO_BOOTLOADER_CRC";
 };
 
-export type ID300BMS_info_16 = {
+export type ID300BMS_info_Signals_16 = {
     BMS_infoIndex: "INFO_SUBCOMPONENT";
 };
 
-export type ID300BMS_info_17 = {
+export type ID300BMS_info_Signals_17 = {
     BMS_infoIndex: "INFO_APP_GITHASH";
     BMS_appGitHash: number;
 };
 
-export type ID300BMS_info_18 = {
+export type ID300BMS_info_Signals_18 = {
     BMS_infoIndex: "INFO_BOOTLOADER_GITHASH";
     BMS_bootGitHash: number;
 };
 
-export type ID300BMS_info_19 = {
+export type ID300BMS_info_Signals_19 = {
     BMS_infoIndex: "INFO_VERSION_DEPRECATED";
 };
 
-export type ID300BMS_info_20 = {
+export type ID300BMS_info_Signals_20 = {
     BMS_infoIndex: "INFO_UDS_PROTOCOL_BOOTCRC";
     BMS_bootUdsProtoVersion: number;
     BMS_bootCrc: number;
 };
 
-export type ID300BMS_info_22 = {
+export type ID300BMS_info_Signals_22 = {
     BMS_infoIndex: "INFO_VARIANTCRC";
 };
 
-export type ID300BMS_info_25 = {
+export type ID300BMS_info_Signals_25 = {
     BMS_infoIndex: "INFO_PACKAGE_PN_1_7";
 };
 
-export type ID300BMS_info_26 = {
+export type ID300BMS_info_Signals_26 = {
     BMS_infoIndex: "INFO_PACKAGE_PN_8_14";
 };
 
-export type ID300BMS_info_27 = {
+export type ID300BMS_info_Signals_27 = {
     BMS_infoIndex: "INFO_PACKAGE_PN_15_20";
 };
 
-export type ID300BMS_info_29 = {
+export type ID300BMS_info_Signals_29 = {
     BMS_infoIndex: "INFO_PACKAGE_SN_1_7";
 };
 
-export type ID300BMS_info_30 = {
+export type ID300BMS_info_Signals_30 = {
     BMS_infoIndex: "INFO_PACKAGE_SN_8_14";
 };
 
-export type ID300BMS_info_31 = {
+export type ID300BMS_info_Signals_31 = {
     BMS_infoIndex: "INFO_SUBCOMPONENT_GITHASH";
 };
 
-export type ID300BMS_info_255 = {
+export type ID300BMS_info_Signals_255 = {
     BMS_infoIndex: "INFO_END";
 };
 
-export type ID300BMS_info = ID300BMS_info_0 | ID300BMS_info_1 | ID300BMS_info_2 | ID300BMS_info_3 | ID300BMS_info_4 | ID300BMS_info_5 | ID300BMS_info_6 | ID300BMS_info_7 | ID300BMS_info_8 | ID300BMS_info_9 | ID300BMS_info_10 | ID300BMS_info_11 | ID300BMS_info_13 | ID300BMS_info_14 | ID300BMS_info_15 | ID300BMS_info_16 | ID300BMS_info_17 | ID300BMS_info_18 | ID300BMS_info_19 | ID300BMS_info_20 | ID300BMS_info_22 | ID300BMS_info_25 | ID300BMS_info_26 | ID300BMS_info_27 | ID300BMS_info_29 | ID300BMS_info_30 | ID300BMS_info_31 | ID300BMS_info_255;
+export type ID300BMS_info_Signals = ID300BMS_info_Signals_0 | ID300BMS_info_Signals_1 | ID300BMS_info_Signals_2 | ID300BMS_info_Signals_3 | ID300BMS_info_Signals_4 | ID300BMS_info_Signals_5 | ID300BMS_info_Signals_6 | ID300BMS_info_Signals_7 | ID300BMS_info_Signals_8 | ID300BMS_info_Signals_9 | ID300BMS_info_Signals_10 | ID300BMS_info_Signals_11 | ID300BMS_info_Signals_13 | ID300BMS_info_Signals_14 | ID300BMS_info_Signals_15 | ID300BMS_info_Signals_16 | ID300BMS_info_Signals_17 | ID300BMS_info_Signals_18 | ID300BMS_info_Signals_19 | ID300BMS_info_Signals_20 | ID300BMS_info_Signals_22 | ID300BMS_info_Signals_25 | ID300BMS_info_Signals_26 | ID300BMS_info_Signals_27 | ID300BMS_info_Signals_29 | ID300BMS_info_Signals_30 | ID300BMS_info_Signals_31 | ID300BMS_info_Signals_255;
 
-export type ID212BMS_status = {
+export type ID300BMS_info = {
+    frameId: 768;
+    name: "ID300BMS_info";
+    signals: ID300BMS_info_Signals;
+};
+
+export type ID212BMS_status_Signals = {
     BMS_hvacPowerRequest: number;
     BMS_notEnoughPowerForDrive: number;
     BMS_notEnoughPowerForSupport: number;
@@ -1596,7 +1950,13 @@ export type ID212BMS_status = {
     BMS_smStateRequest: "BMS_STANDBY" | "BMS_DRIVE" | "BMS_SUPPORT" | "BMS_CHARGE" | "BMS_FEIM" | "BMS_CLEAR_FAULT" | "BMS_FAULT" | "BMS_WELD" | "BMS_TEST" | "BMS_SNA" | "BMS_DIAG";
 };
 
-export type ID31CCC_chgStatus = {
+export type ID212BMS_status = {
+    frameId: 530;
+    name: "ID212BMS_status";
+    signals: ID212BMS_status_Signals;
+};
+
+export type ID31CCC_chgStatus_Signals = {
     CC_currentLimit: "SNA";
     CC_pilotState: "CC_PILOT_STATE_READY" | "CC_PILOT_STATE_IDLE" | "CC_PILOT_STATE_FAULTED" | "CC_PILOT_STATE_SNA";
     CC_numPhases: "SNA";
@@ -1608,7 +1968,13 @@ export type ID31CCC_chgStatus = {
     CC_line3Voltage: "SNA";
 };
 
-export type ID23DCP_chargeStatus = {
+export type ID31CCC_chgStatus = {
+    frameId: 796;
+    name: "ID31CCC_chgStatus";
+    signals: ID31CCC_chgStatus_Signals;
+};
+
+export type ID23DCP_chargeStatus_Signals = {
     CP_hvChargeStatus: "CP_CHARGE_INACTIVE" | "CP_CHARGE_CONNECTED" | "CP_CHARGE_STANDBY" | "CP_EXT_EVSE_TEST_ACTIVE" | "CP_EVSE_TEST_PASSED" | "CP_CHARGE_ENABLED" | "CP_CHARGE_FAULTED";
     CP_chargeShutdownRequest: "NO_SHUTDOWN_REQUESTED" | "GRACEFUL_SHUTDOWN_REQUESTED" | "EMERGENCY_SHUTDOWN_REQUESTED";
     CP_acChargeCurrentLimit: number;
@@ -1617,7 +1983,13 @@ export type ID23DCP_chargeStatus = {
     CP_vehiclePrechargeRequired: number;
 };
 
-export type ID13DCP_chargeStatus = {
+export type ID23DCP_chargeStatus = {
+    frameId: 573;
+    name: "ID23DCP_chargeStatus";
+    signals: ID23DCP_chargeStatus_Signals;
+};
+
+export type ID13DCP_chargeStatus_Signals = {
     CP_hvChargeStatus: "CP_CHARGE_INACTIVE" | "CP_CHARGE_CONNECTED" | "CP_CHARGE_STANDBY" | "CP_EXT_EVSE_TEST_ACTIVE" | "CP_EVSE_TEST_PASSED" | "CP_CHARGE_ENABLED" | "CP_CHARGE_FAULTED";
     CP_chargeShutdownRequest: "NO_SHUTDOWN_REQUESTED" | "GRACEFUL_SHUTDOWN_REQUESTED" | "EMERGENCY_SHUTDOWN_REQUESTED";
     CP_acChargeCurrentLimit: number;
@@ -1628,7 +2000,13 @@ export type ID13DCP_chargeStatus = {
     CP_evseChargeType: "NO_CHARGER_PRESENT" | "DC_CHARGER_PRESENT" | "AC_CHARGER_PRESENT";
 };
 
-export type ID43DCP_chargeStatusLog = {
+export type ID13DCP_chargeStatus = {
+    frameId: 317;
+    name: "ID13DCP_chargeStatus";
+    signals: ID13DCP_chargeStatus_Signals;
+};
+
+export type ID43DCP_chargeStatusLog_Signals = {
     CP_hvChargeStatus_log: "CP_CHARGE_INACTIVE" | "CP_CHARGE_CONNECTED" | "CP_CHARGE_STANDBY" | "CP_EXT_EVSE_TEST_ACTIVE" | "CP_EVSE_TEST_PASSED" | "CP_CHARGE_ENABLED" | "CP_CHARGE_FAULTED";
     CP_chargeShutdownRequest_log: "NO_SHUTDOWN_REQUESTED" | "GRACEFUL_SHUTDOWN_REQUESTED" | "EMERGENCY_SHUTDOWN_REQUESTED";
     CP_acChargeCurrentLimit_log: number;
@@ -1639,7 +2017,13 @@ export type ID43DCP_chargeStatusLog = {
     CP_evseChargeType_log: "NO_CHARGER_PRESENT" | "DC_CHARGER_PRESENT" | "AC_CHARGER_PRESENT";
 };
 
-export type ID21DCP_evseStatus = {
+export type ID43DCP_chargeStatusLog = {
+    frameId: 1085;
+    name: "ID43DCP_chargeStatusLog";
+    signals: ID43DCP_chargeStatusLog_Signals;
+};
+
+export type ID21DCP_evseStatus_Signals = {
     CP_evseAccept: number;
     CP_evseRequest: number;
     CP_proximity: "CHG_PROXIMITY_SNA" | "CHG_PROXIMITY_DISCONNECTED" | "CHG_PROXIMITY_UNLATCHED" | "CHG_PROXIMITY_LATCHED";
@@ -1661,19 +2045,31 @@ export type ID21DCP_evseStatus = {
     CP_iecComboState: "IEC_COMBO_INACTIVE" | "IEC_COMBO_CONNECTED" | "IEC_COMBO_V2G_SESSION_SETUP" | "IEC_COMBO_SERVICE_DISCOVERY" | "IEC_COMBO_PAYMENT_SELECTION" | "IEC_COMBO_CHARGE_PARAM_DISCOVERY" | "IEC_COMBO_CABLE_CHECK" | "IEC_COMBO_PRECHARGE" | "IEC_COMBO_ENABLED" | "IEC_COMBO_SHUTDOWN" | "IEC_COMBO_END_OF_CHARGE" | "IEC_COMBO_FAULT" | "IEC_COMBO_WAIT_RESTART";
 };
 
-export type ID743VCRIGHT_recallStatus = {
+export type ID21DCP_evseStatus = {
+    frameId: 541;
+    name: "ID21DCP_evseStatus";
+    signals: ID21DCP_evseStatus_Signals;
+};
+
+export type ID743VCRIGHT_recallStatus_Signals = {
     VCRIGHT_systemRecallStatus: "RECALL_SNA" | "RECALL_IN_PROGRESS" | "RECALL_COMPLETE" | "RECALL_INTERRUPTED";
     VCRIGHT_seatRecallStatus: "RECALL_SNA" | "RECALL_IN_PROGRESS" | "RECALL_COMPLETE" | "RECALL_INTERRUPTED";
     VCRIGHT_mirrorRecallStatus: "RECALL_SNA" | "RECALL_IN_PROGRESS" | "RECALL_COMPLETE" | "RECALL_INTERRUPTED";
 };
 
-export type ID75DCP_sensorData_0 = {
+export type ID743VCRIGHT_recallStatus = {
+    frameId: 1859;
+    name: "ID743VCRIGHT_recallStatus";
+    signals: ID743VCRIGHT_recallStatus_Signals;
+};
+
+export type ID75DCP_sensorData_Signals_0 = {
     CP_sensorDataSelect: "CP_SENSOR_DOOR_COUNTS";
     CP_doorCountsFiltered: number;
     CP_doorCountsDebounced: number;
 };
 
-export type ID75DCP_sensorData_1 = {
+export type ID75DCP_sensorData_Signals_1 = {
     CP_sensorDataSelect: "CP_SENSOR_PIN_TEMP";
     CP_pinTemperature1: number;
     CP_pinTemperature2: number;
@@ -1681,32 +2077,32 @@ export type ID75DCP_sensorData_1 = {
     CP_boardTemperature: number;
 };
 
-export type ID75DCP_sensorData_2 = {
+export type ID75DCP_sensorData_Signals_2 = {
     CP_sensorDataSelect: "CP_SENSOR_DOOR";
     CP_doorPot: number;
     CP_doorI: number;
     CP_doorLastRequestMaxI: number;
 };
 
-export type ID75DCP_sensorData_3 = {
+export type ID75DCP_sensorData_Signals_3 = {
     CP_sensorDataSelect: "CP_SENSOR_LATCH";
     CP_latchI: number;
     CP_latch2I: number;
 };
 
-export type ID75DCP_sensorData_4 = {
+export type ID75DCP_sensorData_Signals_4 = {
     CP_sensorDataSelect: "CP_SENSOR_INDUCTIVE_DOOR";
     CP_inductiveSensor_raw: number;
 };
 
-export type ID75DCP_sensorData_5 = {
+export type ID75DCP_sensorData_Signals_5 = {
     CP_sensorDataSelect: "CP_SENSOR_SAFETY";
     CP_faultLineV: number;
     CP_backCoverCounts: number;
     CP_backCover2Counts: number;
 };
 
-export type ID75DCP_sensorData_6 = {
+export type ID75DCP_sensorData_Signals_6 = {
     CP_sensorDataSelect: "CP_SENSOR_UHF";
     CP_UHF_chipState: number;
     CP_UHF_rssi: number;
@@ -1716,12 +2112,12 @@ export type ID75DCP_sensorData_6 = {
     CP_UHF_selfTestRssi: number;
 };
 
-export type ID75DCP_sensorData_7 = {
+export type ID75DCP_sensorData_Signals_7 = {
     CP_sensorDataSelect: "CP_SENSOR_RAILS";
     CP_refVoltage: number;
 };
 
-export type ID75DCP_sensorData_8 = {
+export type ID75DCP_sensorData_Signals_8 = {
     CP_sensorDataSelect: "CP_SENSOR_PROX";
     CP_proximityV: number;
     CP_proximityV_intervalMin10s: number;
@@ -1730,7 +2126,7 @@ export type ID75DCP_sensorData_8 = {
     CP_proxEn: number;
 };
 
-export type ID75DCP_sensorData_9 = {
+export type ID75DCP_sensorData_Signals_9 = {
     CP_sensorDataSelect: "CP_SENSOR_PILOT";
     CP_pilotPulseWidth: number;
     CP_pilotPeriod: number;
@@ -1738,7 +2134,7 @@ export type ID75DCP_sensorData_9 = {
     CP_pilotHighValue: number;
 };
 
-export type ID75DCP_sensorData_10 = {
+export type ID75DCP_sensorData_Signals_10 = {
     CP_sensorDataSelect: "CP_SENSOR_PILOT2";
     CP_pilotLowValue_intervalMax10s: number;
     CP_pilotLowValue_intervalMin10s: number;
@@ -1746,13 +2142,13 @@ export type ID75DCP_sensorData_10 = {
     CP_pilotHighValue_intervalMin10s: number;
 };
 
-export type ID75DCP_sensorData_11 = {
+export type ID75DCP_sensorData_Signals_11 = {
     CP_sensorDataSelect: "CP_SENSOR_PROX_GB";
     CP_proximityV_GBCC1: number;
     CP_proximityV_GBCC2: number;
 };
 
-export type ID75DCP_sensorData_12 = {
+export type ID75DCP_sensorData_Signals_12 = {
     CP_sensorDataSelect: "CP_SENSOR_INLET_HARNESS_ID";
     CP_inlet1HarnessIdState: "HARNESS_PEDIGREE_UNKNOWN_SNA" | "HARNESS_PEDIGREE_INVALID" | "HARNESS_PEDIGREE_VALID";
     CP_inlet1HarnessIdValue: number;
@@ -1762,9 +2158,15 @@ export type ID75DCP_sensorData_12 = {
     CP_inlet2HarnessV: number;
 };
 
-export type ID75DCP_sensorData = ID75DCP_sensorData_0 | ID75DCP_sensorData_1 | ID75DCP_sensorData_2 | ID75DCP_sensorData_3 | ID75DCP_sensorData_4 | ID75DCP_sensorData_5 | ID75DCP_sensorData_6 | ID75DCP_sensorData_7 | ID75DCP_sensorData_8 | ID75DCP_sensorData_9 | ID75DCP_sensorData_10 | ID75DCP_sensorData_11 | ID75DCP_sensorData_12;
+export type ID75DCP_sensorData_Signals = ID75DCP_sensorData_Signals_0 | ID75DCP_sensorData_Signals_1 | ID75DCP_sensorData_Signals_2 | ID75DCP_sensorData_Signals_3 | ID75DCP_sensorData_Signals_4 | ID75DCP_sensorData_Signals_5 | ID75DCP_sensorData_Signals_6 | ID75DCP_sensorData_Signals_7 | ID75DCP_sensorData_Signals_8 | ID75DCP_sensorData_Signals_9 | ID75DCP_sensorData_Signals_10 | ID75DCP_sensorData_Signals_11 | ID75DCP_sensorData_Signals_12;
 
-export type ID287PTCcabinHeatSensorStatus = {
+export type ID75DCP_sensorData = {
+    frameId: 1885;
+    name: "ID75DCP_sensorData";
+    signals: ID75DCP_sensorData_Signals;
+};
+
+export type ID287PTCcabinHeatSensorStatus_Signals = {
     PTC_leftTempIGBT: number;
     PTC_tempOCP: number;
     PTC_rightTempIGBT: number;
@@ -1774,7 +2176,13 @@ export type ID287PTCcabinHeatSensorStatus = {
     PTC_rightCurrentHV: number;
 };
 
-export type ID333UI_chargeRequest = {
+export type ID287PTCcabinHeatSensorStatus = {
+    frameId: 647;
+    name: "ID287PTCcabinHeatSensorStatus";
+    signals: ID287PTCcabinHeatSensorStatus_Signals;
+};
+
+export type ID333UI_chargeRequest_Signals = {
     UI_openChargePortDoorRequest: number;
     UI_closeChargePortDoorRequest: number;
     UI_chargeEnableRequest: number;
@@ -1788,7 +2196,13 @@ export type ID333UI_chargeRequest = {
     UI_cpInletHeaterRequest: number;
 };
 
-export type ID334UI_powertrainControl = {
+export type ID333UI_chargeRequest = {
+    frameId: 819;
+    name: "ID333UI_chargeRequest";
+    signals: ID333UI_chargeRequest_Signals;
+};
+
+export type ID334UI_powertrainControl_Signals = {
     UI_systemPowerLimit: "SNA";
     UI_pedalMap: "CHILL" | "SPORT" | "PERFORMANCE";
     UI_systemTorqueLimit: "SNA";
@@ -1805,7 +2219,13 @@ export type ID334UI_powertrainControl = {
     UI_powertrainControlChecksum: number;
 };
 
-export type ID33AUI_rangeSOC = {
+export type ID334UI_powertrainControl = {
+    frameId: 820;
+    name: "ID334UI_powertrainControl";
+    signals: ID334UI_powertrainControl_Signals;
+};
+
+export type ID33AUI_rangeSOC_Signals = {
     UI_Range: number;
     UI_idealRange: number;
     UI_ratedWHpM: number;
@@ -1813,7 +2233,13 @@ export type ID33AUI_rangeSOC = {
     UI_uSOE: number;
 };
 
-export type ID241VCFRONT_coolant = {
+export type ID33AUI_rangeSOC = {
+    frameId: 826;
+    name: "ID33AUI_rangeSOC";
+    signals: ID33AUI_rangeSOC_Signals;
+};
+
+export type ID241VCFRONT_coolant_Signals = {
     VCFRONT_coolantFlowBatActual: number;
     VCFRONT_coolantFlowBatTarget: number;
     VCFRONT_coolantFlowBatReason: "NONE" | "COOLANT_AIR_PURGE" | "NO_FLOW_REQ" | "OVERRIDE_BATT" | "ACTIVE_MANAGER_BATT" | "PASSIVE_MANAGER_BATT" | "BMS_FLOW_REQ" | "DAS_FLOW_REQ" | "OVERRIDE_PT" | "ACTIVE_MANAGER_PT" | "PASSIVE_MANAGER_PT" | "PCS_FLOW_REQ" | "DI_FLOW_REQ" | "DIS_FLOW_REQ" | "HP_FLOW_REQ";
@@ -1826,12 +2252,24 @@ export type ID241VCFRONT_coolant = {
     VCFRONT_coolantAirPurgeBatState: "AIR_PURGE_STATE_INACTIVE" | "AIR_PURGE_STATE_ACTIVE" | "AIR_PURGE_STATE_COMPLETE" | "AIR_PURGE_STATE_INTERRUPTED" | "AIR_PURGE_STATE_PENDING";
 };
 
-export type ID3BBUI_power = {
+export type ID241VCFRONT_coolant = {
+    frameId: 577;
+    name: "ID241VCFRONT_coolant";
+    signals: ID241VCFRONT_coolant_Signals;
+};
+
+export type ID3BBUI_power_Signals = {
     UI_powerExpected: number;
     UI_powerIdeal: number;
 };
 
-export type ID5D5RearDItemps = {
+export type ID3BBUI_power = {
+    frameId: 955;
+    name: "ID3BBUI_power";
+    signals: ID3BBUI_power_Signals;
+};
+
+export type ID5D5RearDItemps_Signals = {
     DI_ph1Temp: number;
     DI_ph2Temp: number;
     DI_ph3Temp: number;
@@ -1839,7 +2277,13 @@ export type ID5D5RearDItemps = {
     DI_IGBTJunctTemp: "SNA";
 };
 
-export type ID556FrontDItemps = {
+export type ID5D5RearDItemps = {
+    frameId: 1493;
+    name: "ID5D5RearDItemps";
+    signals: ID5D5RearDItemps_Signals;
+};
+
+export type ID556FrontDItemps_Signals = {
     DIF_ph1Temp: number;
     DIF_ph2Temp: number;
     DIF_ph3Temp: number;
@@ -1849,21 +2293,39 @@ export type ID556FrontDItemps = {
     DIF_lashCheckCount: number;
 };
 
-export type ID557FrontThermalControl = {
+export type ID556FrontDItemps = {
+    frameId: 1366;
+    name: "ID556FrontDItemps";
+    signals: ID556FrontDItemps_Signals;
+};
+
+export type ID557FrontThermalControl_Signals = {
     DIS_passiveInletTempReq: number;
     DIS_activeInletTempReq: number;
     DIS_coolantFlowReq: number;
     DIS_oilFlowReq: number;
 };
 
-export type ID5D7RearThermalControl = {
+export type ID557FrontThermalControl = {
+    frameId: 1367;
+    name: "ID557FrontThermalControl";
+    signals: ID557FrontThermalControl_Signals;
+};
+
+export type ID5D7RearThermalControl_Signals = {
     DI_passiveInletTempReq: number;
     DI_activeInletTempReq: number;
     DI_coolantFlowReq: number;
     DI_oilFlowReq: number;
 };
 
-export type ID7D5DIR_debug_32 = {
+export type ID5D7RearThermalControl = {
+    frameId: 1495;
+    name: "ID5D7RearThermalControl";
+    signals: ID5D7RearThermalControl_Signals;
+};
+
+export type ID7D5DIR_debug_Signals_32 = {
     DIR_debugSelector: 32;
     DIR_offsetA: number;
     DIR_motorIA: number;
@@ -1871,7 +2333,7 @@ export type ID7D5DIR_debug_32 = {
     DIR_motorIC: number;
 };
 
-export type ID7D5DIR_debug_33 = {
+export type ID7D5DIR_debug_Signals_33 = {
     DIR_debugSelector: 33;
     DIR_offsetB: number;
     DIR_statorIDref: number;
@@ -1879,7 +2341,7 @@ export type ID7D5DIR_debug_33 = {
     DIR_torquePerAmp: number;
 };
 
-export type ID7D5DIR_debug_34 = {
+export type ID7D5DIR_debug_Signals_34 = {
     DIR_debugSelector: 34;
     DIR_rsScale: number;
     DIR_statorIQref: number;
@@ -1887,7 +2349,7 @@ export type ID7D5DIR_debug_34 = {
     DIR_motorV: number;
 };
 
-export type ID7D5DIR_debug_35 = {
+export type ID7D5DIR_debug_Signals_35 = {
     DIR_debugSelector: 35;
     DIR_tqScaleDifferential: number;
     DIR_statorFluxRef: number;
@@ -1895,7 +2357,7 @@ export type ID7D5DIR_debug_35 = {
     DIR_systemTorqueCommand: number;
 };
 
-export type ID7D5DIR_debug_36 = {
+export type ID7D5DIR_debug_Signals_36 = {
     DIR_debugSelector: 36;
     DIR_lmScale: number;
     DIR_statorVQ: number;
@@ -1903,7 +2365,7 @@ export type ID7D5DIR_debug_36 = {
     DIR_peakFlux: number;
 };
 
-export type ID7D5DIR_debug_37 = {
+export type ID7D5DIR_debug_Signals_37 = {
     DIR_debugSelector: 37;
     DIR_gainScale: number;
     DIR_dcCableCurrentEst: number;
@@ -1911,7 +2373,7 @@ export type ID7D5DIR_debug_37 = {
     DIR_internalAngleFilt: number;
 };
 
-export type ID7D5DIR_debug_38 = {
+export type ID7D5DIR_debug_Signals_38 = {
     DIR_debugSelector: 38;
     DIR_ssmState: "SSM_STATE_START" | "SSM_STATE_UNAVAILABLE" | "SSM_STATE_IDLE" | "SSM_STATE_STANDBY" | "SSM_STATE_ENABLE" | "SSM_STATE_ABORT" | "SSM_STATE_WAIT_FOR_RETRY" | "SSM_STATE_RETRY" | "SSM_STATE_FAULT";
     DIR_usmState: "USM_STATE_START" | "USM_STATE_STANDBY" | "USM_STATE_RETRY" | "USM_STATE_ABORT" | "USM_STATE_ENABLE" | "USM_STATE_FAULT" | "USM_STATE_UNAVAILABLE" | "USM_STATE_WAIT_FOR_RETRY";
@@ -1920,7 +2382,7 @@ export type ID7D5DIR_debug_38 = {
     DIR_motorIBavg: number;
 };
 
-export type ID7D5DIR_debug_39 = {
+export type ID7D5DIR_debug_Signals_39 = {
     DIR_debugSelector: 39;
     DIR_tqSatThermal: number;
     DIR_pwrSatMaxDischargePower: number;
@@ -1931,7 +2393,7 @@ export type ID7D5DIR_debug_39 = {
     DIR_pwrSatMinBusVoltage: number;
 };
 
-export type ID7D5DIR_debug_40 = {
+export type ID7D5DIR_debug_Signals_40 = {
     DIR_debugSelector: 40;
     DIR_pwrSatDischargeCurrent: number;
     DIR_tcMaxRequest: "SNA";
@@ -1942,7 +2404,7 @@ export type ID7D5DIR_debug_40 = {
     DIR_tqScaleShift: number;
 };
 
-export type ID7D5DIR_debug_41 = {
+export type ID7D5DIR_debug_Signals_41 = {
     DIR_debugSelector: 41;
     DIR_veMassInvRaw: number;
     DIR_veResForce: number;
@@ -1950,7 +2412,7 @@ export type ID7D5DIR_debug_41 = {
     DIR_wasteCurrentLimit: number;
 };
 
-export type ID7D5DIR_debug_42 = {
+export type ID7D5DIR_debug_Signals_42 = {
     DIR_debugSelector: 42;
     DIR_pwrSatChargeCurrent: number;
     DIR_fluxState: "DI_FLUXSTATE_START" | "DI_FLUXSTATE_TEST" | "DI_FLUXSTATE_STANDBY" | "DI_FLUXSTATE_FLUX_UP" | "DI_FLUXSTATE_FLUX_DOWN" | "DI_FLUXSTATE_ENABLED" | "DI_FLUXSTATE_ICONTROL" | "DI_FLUXSTATE_VCONTROL" | "DI_FLUXSTATE_FAULT" | "DI_FLUXSTATE_STATIONARY_WASTE";
@@ -1961,13 +2423,13 @@ export type ID7D5DIR_debug_42 = {
     DIR_brakeSwitchNC: number;
 };
 
-export type ID7D5DIR_debug_43 = {
+export type ID7D5DIR_debug_Signals_43 = {
     DIR_debugSelector: 43;
     DIR_rotorOffsetEst: number;
     DIR_rotorOffsetMean: number;
 };
 
-export type ID7D5DIR_debug_46 = {
+export type ID7D5DIR_debug_Signals_46 = {
     DIR_debugSelector: 46;
     DIR_oilPumpMotorSpeed: number;
     DIR_oilPumpPhaseVoltage: "SNA";
@@ -1975,14 +2437,14 @@ export type ID7D5DIR_debug_46 = {
     DIR_oilPumpPressureExpectedMin: "SNA";
 };
 
-export type ID7D5DIR_debug_47 = {
+export type ID7D5DIR_debug_Signals_47 = {
     DIR_debugSelector: 47;
     DIR_rotorFlux: number;
     DIR_dcCableHeat: number;
     DIR_magnetTempEst: "SNA";
 };
 
-export type ID7D5DIR_debug_48 = {
+export type ID7D5DIR_debug_Signals_48 = {
     DIR_debugSelector: 48;
     DIR_resolverOffsetCos: number;
     DIR_resolverOffsetSin: number;
@@ -1994,7 +2456,7 @@ export type ID7D5DIR_debug_48 = {
     DIR_resolverClaMIA: number;
 };
 
-export type ID7D5DIR_debug_49 = {
+export type ID7D5DIR_debug_Signals_49 = {
     DIR_debugSelector: 49;
     DIR_soptTimeToTrip: number;
     DIR_soptTripDelay: number;
@@ -2002,7 +2464,7 @@ export type ID7D5DIR_debug_49 = {
     DIR_soptMaxCurrentMagSqrd: number;
 };
 
-export type ID7D5DIR_debug_50 = {
+export type ID7D5DIR_debug_Signals_50 = {
     DIR_debugSelector: 50;
     DIR_gateDriveSupplyState: "PSTG_GD_SUPPLY_DOWN" | "PSTG_GD_SUPPLY_RISING" | "PSTG_GD_SUPPLY_UP" | "PSTG_GD_SUPPLY_FALLING";
     DIR_gateDriveState: "PSTG_GD_STATE_INIT" | "PSTG_GD_STATE_SELFTEST" | "PSTG_GD_STATE_CONFIGURING" | "PSTG_GD_STATE_CONFIGURED" | "PSTG_GD_STATE_NOT_CONFIGURED";
@@ -2010,7 +2472,7 @@ export type ID7D5DIR_debug_50 = {
     DIR_sysHeatPowerOptimal: number;
 };
 
-export type ID7D5DIR_debug_52 = {
+export type ID7D5DIR_debug_Signals_52 = {
     DIR_debugSelector: 52;
     DIR_resolverCosRmsSquared: number;
     DIR_resolverSinRmsSquared: number;
@@ -2019,7 +2481,7 @@ export type ID7D5DIR_debug_52 = {
     DIR_resolverErrorRmsSquared: number;
 };
 
-export type ID7D5DIR_debug_63 = {
+export type ID7D5DIR_debug_Signals_63 = {
     DIR_debugSelector: 63;
     DIR_rotorOffsetLearningState: "ROL_STATE_INIT" | "ROL_STATE_WAIT" | "ROL_STATE_ACCELERATE" | "ROL_STATE_SHIFT" | "ROL_STATE_MEASURE" | "ROL_STATE_CORRECT" | "ROL_STATE_VERIFY" | "ROL_STATE_WRITE" | "ROL_STATE_DONE" | "ROL_NUM_STATES";
     DIR_statorVDFiltered: number;
@@ -2027,7 +2489,7 @@ export type ID7D5DIR_debug_63 = {
     DIR_pwmState: "PWMSTATE_SVPWM" | "PWMSTATE_DPWM2" | "PWMSTATE_OPWM1" | "PWMSTATE_OPWM2";
 };
 
-export type ID7D5DIR_debug_64 = {
+export type ID7D5DIR_debug_Signals_64 = {
     DIR_debugSelector: 64;
     DIR_dcCapTemp: number;
     DIR_busbarTemp: number;
@@ -2036,7 +2498,7 @@ export type ID7D5DIR_debug_64 = {
     DIR_statorTemp2: number;
 };
 
-export type ID7D5DIR_debug_66 = {
+export type ID7D5DIR_debug_Signals_66 = {
     DIR_debugSelector: 66;
     DIR_cpu10HzMin: number;
     DIR_cpu10HzAvg: number;
@@ -2046,7 +2508,7 @@ export type ID7D5DIR_debug_66 = {
     DIR_module10HzStack: number;
 };
 
-export type ID7D5DIR_debug_67 = {
+export type ID7D5DIR_debug_Signals_67 = {
     DIR_debugSelector: 67;
     DIR_cpu1kHzMin: number;
     DIR_cpu1kHzAvg: number;
@@ -2055,7 +2517,7 @@ export type ID7D5DIR_debug_67 = {
     DIR_controlStack: number;
 };
 
-export type ID7D5DIR_debug_68 = {
+export type ID7D5DIR_debug_Signals_68 = {
     DIR_debugSelector: 68;
     DIR_systemStack: number;
     DIR_idleStack: number;
@@ -2066,13 +2528,13 @@ export type ID7D5DIR_debug_68 = {
     DIR_immobilizerStack: number;
 };
 
-export type ID7D5DIR_debug_69 = {
+export type ID7D5DIR_debug_Signals_69 = {
     DIR_debugSelector: 69;
     DIR_hwFaultCount: number;
     DIR_driveUnitOdometer: number;
 };
 
-export type ID7D5DIR_debug_70 = {
+export type ID7D5DIR_debug_Signals_70 = {
     DIR_debugSelector: 70;
     DIR_phaseOutBusbarTemp: number;
     DIR_phaseOutBusbarWeldTemp: number;
@@ -2083,35 +2545,41 @@ export type ID7D5DIR_debug_70 = {
     DIR_posDcBusbarTemp: number;
 };
 
-export type ID7D5DIR_debug_72 = {
+export type ID7D5DIR_debug_Signals_72 = {
     DIR_debugSelector: 72;
     DIR_statorEndWindingTemp: number;
     DIR_rotorMaxMagnetTemp: number;
 };
 
-export type ID7D5DIR_debug_128 = {
+export type ID7D5DIR_debug_Signals_128 = {
     DIR_debugSelector: 128;
     DIR_motorType: "DI_MOTOR_SNA" | "DI_MOTOR_ROADSTER_BASE" | "DI_MOTOR_ROADSTER_SPORT" | "DI_MOTOR_M7M3" | "DI_MOTOR_M7M4" | "DI_MOTOR_M7M5" | "DI_MOTOR_M8A" | "DI_MOTOR_M7M6" | "DI_MOTOR_F1A" | "DI_MOTOR_SSR1A" | "DI_MOTOR_F1AC" | "DI_MOTOR_F2AB" | "DI_MOTOR_F2AC" | "DI_MOTOR_F2AD" | "DI_MOTOR_F2AE" | "DI_MOTOR_F2APMSRM" | "DI_MOTOR_PM216A" | "DI_MOTOR_IM100A" | "DI_MOTOR_PM216B" | "DI_MOTOR_IM100B" | "DI_MOTOR_IM216A" | "DI_MOTOR_PM216C" | "DI_MOTOR_IM130C" | "DI_MOTOR_PM216D" | "DI_MOTOR_IM130D" | "DI_MOTOR_IM130D_AL" | "DI_MOTOR_F2AE_AL" | "DI_MOTOR_IM130D_AL_POSCO" | "DI_MOTOR_PM275B" | "DI_MOTOR_PM350B" | "DI_MOTOR_PM216CSR" | "DI_MOTOR_PM216CSR_N42" | "DI_MOTOR_PM228B";
     DIR_cpu1HzMin: number;
     DIR_cpu1HzAvg: number;
 };
 
-export type ID7D5DIR_debug_131 = {
+export type ID7D5DIR_debug_Signals_131 = {
     DIR_debugSelector: 131;
     DIR_cpuIDWord0: number;
     DIR_crc: number;
 };
 
-export type ID7D5DIR_debug_132 = {
+export type ID7D5DIR_debug_Signals_132 = {
     DIR_debugSelector: 132;
     DIR_cpuIDWord1: number;
     DIR_cpuIDWord2: number;
     DIR_cpuIDWord3: number;
 };
 
-export type ID7D5DIR_debug = ID7D5DIR_debug_32 | ID7D5DIR_debug_33 | ID7D5DIR_debug_34 | ID7D5DIR_debug_35 | ID7D5DIR_debug_36 | ID7D5DIR_debug_37 | ID7D5DIR_debug_38 | ID7D5DIR_debug_39 | ID7D5DIR_debug_40 | ID7D5DIR_debug_41 | ID7D5DIR_debug_42 | ID7D5DIR_debug_43 | ID7D5DIR_debug_46 | ID7D5DIR_debug_47 | ID7D5DIR_debug_48 | ID7D5DIR_debug_49 | ID7D5DIR_debug_50 | ID7D5DIR_debug_52 | ID7D5DIR_debug_63 | ID7D5DIR_debug_64 | ID7D5DIR_debug_66 | ID7D5DIR_debug_67 | ID7D5DIR_debug_68 | ID7D5DIR_debug_69 | ID7D5DIR_debug_70 | ID7D5DIR_debug_72 | ID7D5DIR_debug_128 | ID7D5DIR_debug_131 | ID7D5DIR_debug_132;
+export type ID7D5DIR_debug_Signals = ID7D5DIR_debug_Signals_32 | ID7D5DIR_debug_Signals_33 | ID7D5DIR_debug_Signals_34 | ID7D5DIR_debug_Signals_35 | ID7D5DIR_debug_Signals_36 | ID7D5DIR_debug_Signals_37 | ID7D5DIR_debug_Signals_38 | ID7D5DIR_debug_Signals_39 | ID7D5DIR_debug_Signals_40 | ID7D5DIR_debug_Signals_41 | ID7D5DIR_debug_Signals_42 | ID7D5DIR_debug_Signals_43 | ID7D5DIR_debug_Signals_46 | ID7D5DIR_debug_Signals_47 | ID7D5DIR_debug_Signals_48 | ID7D5DIR_debug_Signals_49 | ID7D5DIR_debug_Signals_50 | ID7D5DIR_debug_Signals_52 | ID7D5DIR_debug_Signals_63 | ID7D5DIR_debug_Signals_64 | ID7D5DIR_debug_Signals_66 | ID7D5DIR_debug_Signals_67 | ID7D5DIR_debug_Signals_68 | ID7D5DIR_debug_Signals_69 | ID7D5DIR_debug_Signals_70 | ID7D5DIR_debug_Signals_72 | ID7D5DIR_debug_Signals_128 | ID7D5DIR_debug_Signals_131 | ID7D5DIR_debug_Signals_132;
 
-export type ID757DIF_debug_32 = {
+export type ID7D5DIR_debug = {
+    frameId: 2005;
+    name: "ID7D5DIR_debug";
+    signals: ID7D5DIR_debug_Signals;
+};
+
+export type ID757DIF_debug_Signals_32 = {
     DIF_debugSelector: 32;
     DIF_offsetA: number;
     DIF_motorIA: number;
@@ -2119,7 +2587,7 @@ export type ID757DIF_debug_32 = {
     DIF_motorIC: number;
 };
 
-export type ID757DIF_debug_33 = {
+export type ID757DIF_debug_Signals_33 = {
     DIF_debugSelector: 33;
     DIF_offsetB: number;
     DIF_statorIDref: number;
@@ -2127,7 +2595,7 @@ export type ID757DIF_debug_33 = {
     DIF_torquePerAmp: number;
 };
 
-export type ID757DIF_debug_34 = {
+export type ID757DIF_debug_Signals_34 = {
     DIF_debugSelector: 34;
     DIF_rsScale: number;
     DIF_statorIQref: number;
@@ -2135,7 +2603,7 @@ export type ID757DIF_debug_34 = {
     DIF_motorV: number;
 };
 
-export type ID757DIF_debug_35 = {
+export type ID757DIF_debug_Signals_35 = {
     DIF_debugSelector: 35;
     DIF_tqScaleDifferential: number;
     DIF_statorFluxRef: number;
@@ -2143,7 +2611,7 @@ export type ID757DIF_debug_35 = {
     DIF_systemTorqueCommand: number;
 };
 
-export type ID757DIF_debug_36 = {
+export type ID757DIF_debug_Signals_36 = {
     DIF_debugSelector: 36;
     DIF_lmScale: number;
     DIF_statorVQ: number;
@@ -2151,7 +2619,7 @@ export type ID757DIF_debug_36 = {
     DIF_peakFlux: number;
 };
 
-export type ID757DIF_debug_37 = {
+export type ID757DIF_debug_Signals_37 = {
     DIF_debugSelector: 37;
     DIF_gainScale: number;
     DIF_dcCableCurrentEst: number;
@@ -2159,7 +2627,7 @@ export type ID757DIF_debug_37 = {
     DIF_internalAngleFilt: number;
 };
 
-export type ID757DIF_debug_38 = {
+export type ID757DIF_debug_Signals_38 = {
     DIF_debugSelector: 38;
     DIF_ssmState: "SSM_STATE_START" | "SSM_STATE_UNAVAILABLE" | "SSM_STATE_IDLE" | "SSM_STATE_STANDBY" | "SSM_STATE_ENABLE" | "SSM_STATE_ABORT" | "SSM_STATE_WAIT_FOR_RETRY" | "SSM_STATE_RETRY" | "SSM_STATE_FAULT";
     DIF_usmState: "USM_STATE_START" | "USM_STATE_STANDBY" | "USM_STATE_RETRY" | "USM_STATE_ABORT" | "USM_STATE_ENABLE" | "USM_STATE_FAULT" | "USM_STATE_UNAVAILABLE" | "USM_STATE_WAIT_FOR_RETRY";
@@ -2168,7 +2636,7 @@ export type ID757DIF_debug_38 = {
     DIF_motorIBavg: number;
 };
 
-export type ID757DIF_debug_39 = {
+export type ID757DIF_debug_Signals_39 = {
     DIF_debugSelector: 39;
     DIF_tqSatThermal: number;
     DIF_pwrSatMaxDischargePower: number;
@@ -2179,7 +2647,7 @@ export type ID757DIF_debug_39 = {
     DIF_pwrSatMinBusVoltage: number;
 };
 
-export type ID757DIF_debug_40 = {
+export type ID757DIF_debug_Signals_40 = {
     DIF_debugSelector: 40;
     DIF_pwrSatDischargeCurrent: number;
     DIF_tcMaxRequest: "SNA";
@@ -2190,7 +2658,7 @@ export type ID757DIF_debug_40 = {
     DIF_tqScaleShift: number;
 };
 
-export type ID757DIF_debug_41 = {
+export type ID757DIF_debug_Signals_41 = {
     DIF_debugSelector: 41;
     DIF_veMassInvRaw: number;
     DIF_veResForce: number;
@@ -2198,7 +2666,7 @@ export type ID757DIF_debug_41 = {
     DIF_wasteCurrentLimit: number;
 };
 
-export type ID757DIF_debug_42 = {
+export type ID757DIF_debug_Signals_42 = {
     DIF_debugSelector: 42;
     DIF_pwrSatChargeCurrent: number;
     DIF_fluxState: "DI_FLUXSTATE_START" | "DI_FLUXSTATE_TEST" | "DI_FLUXSTATE_STANDBY" | "DI_FLUXSTATE_FLUX_UP" | "DI_FLUXSTATE_FLUX_DOWN" | "DI_FLUXSTATE_ENABLED" | "DI_FLUXSTATE_ICONTROL" | "DI_FLUXSTATE_VCONTROL" | "DI_FLUXSTATE_FAULT" | "DI_FLUXSTATE_STATIONARY_WASTE";
@@ -2209,13 +2677,13 @@ export type ID757DIF_debug_42 = {
     DIF_brakeSwitchNC: number;
 };
 
-export type ID757DIF_debug_43 = {
+export type ID757DIF_debug_Signals_43 = {
     DIF_debugSelector: 43;
     DIF_rotorOffsetEst: number;
     DIF_rotorOffsetMean: number;
 };
 
-export type ID757DIF_debug_46 = {
+export type ID757DIF_debug_Signals_46 = {
     DIF_debugSelector: 46;
     DIF_oilPumpMotorSpeed: number;
     DIF_oilPumpPhaseVoltage: "SNA";
@@ -2223,14 +2691,14 @@ export type ID757DIF_debug_46 = {
     DIF_oilPumpPressureExpectedMin: "SNA";
 };
 
-export type ID757DIF_debug_47 = {
+export type ID757DIF_debug_Signals_47 = {
     DIF_debugSelector: 47;
     DIF_rotorFlux: number;
     DIF_dcCableHeat: number;
     DIF_magnetTempEst: "SNA";
 };
 
-export type ID757DIF_debug_48 = {
+export type ID757DIF_debug_Signals_48 = {
     DIF_debugSelector: 48;
     DIF_resolverOffsetCos: number;
     DIF_resolverOffsetSin: number;
@@ -2242,7 +2710,7 @@ export type ID757DIF_debug_48 = {
     DIF_resolverClaMIA: number;
 };
 
-export type ID757DIF_debug_49 = {
+export type ID757DIF_debug_Signals_49 = {
     DIF_debugSelector: 49;
     DIF_soptTimeToTrip: number;
     DIF_soptTripDelay: number;
@@ -2250,7 +2718,7 @@ export type ID757DIF_debug_49 = {
     DIF_soptMaxCurrentMagSqrd: number;
 };
 
-export type ID757DIF_debug_50 = {
+export type ID757DIF_debug_Signals_50 = {
     DIF_debugSelector: 50;
     DIF_gateDriveSupplyState: "PSTG_GD_SUPPLY_DOWN" | "PSTG_GD_SUPPLY_RISING" | "PSTG_GD_SUPPLY_UP" | "PSTG_GD_SUPPLY_FALLING";
     DIF_gateDriveState: "PSTG_GD_STATE_INIT" | "PSTG_GD_STATE_SELFTEST" | "PSTG_GD_STATE_CONFIGURING" | "PSTG_GD_STATE_CONFIGURED" | "PSTG_GD_STATE_NOT_CONFIGURED";
@@ -2258,7 +2726,7 @@ export type ID757DIF_debug_50 = {
     DIF_sysHeatPowerOptimal: number;
 };
 
-export type ID757DIF_debug_52 = {
+export type ID757DIF_debug_Signals_52 = {
     DIF_debugSelector: 52;
     DIF_resolverCosRmsSquared: number;
     DIF_resolverSinRmsSquared: number;
@@ -2267,7 +2735,7 @@ export type ID757DIF_debug_52 = {
     DIF_resolverErrorRmsSquared: number;
 };
 
-export type ID757DIF_debug_63 = {
+export type ID757DIF_debug_Signals_63 = {
     DIF_debugSelector: 63;
     DIF_rotorOffsetLearningState: "ROL_STATE_INIT" | "ROL_STATE_WAIT" | "ROL_STATE_ACCELERATE" | "ROL_STATE_SHIFT" | "ROL_STATE_MEASURE" | "ROL_STATE_CORRECT" | "ROL_STATE_VERIFY" | "ROL_STATE_WRITE" | "ROL_STATE_DONE" | "ROL_NUM_STATES";
     DIF_statorVDFiltered: number;
@@ -2275,7 +2743,7 @@ export type ID757DIF_debug_63 = {
     DIF_pwmState: "PWMSTATE_SVPWM" | "PWMSTATE_DPWM2" | "PWMSTATE_OPWM1" | "PWMSTATE_OPWM2";
 };
 
-export type ID757DIF_debug_64 = {
+export type ID757DIF_debug_Signals_64 = {
     DIF_debugSelector: 64;
     DIF_dcCapTemp: number;
     DIF_busbarTemp: number;
@@ -2284,7 +2752,7 @@ export type ID757DIF_debug_64 = {
     DIF_statorTemp2: number;
 };
 
-export type ID757DIF_debug_66 = {
+export type ID757DIF_debug_Signals_66 = {
     DIF_debugSelector: 66;
     DIF_cpu10HzMin: number;
     DIF_cpu10HzAvg: number;
@@ -2294,7 +2762,7 @@ export type ID757DIF_debug_66 = {
     DIF_module10HzStack: number;
 };
 
-export type ID757DIF_debug_67 = {
+export type ID757DIF_debug_Signals_67 = {
     DIF_debugSelector: 67;
     DIF_cpu1kHzMin: number;
     DIF_cpu1kHzAvg: number;
@@ -2303,7 +2771,7 @@ export type ID757DIF_debug_67 = {
     DIF_controlStack: number;
 };
 
-export type ID757DIF_debug_68 = {
+export type ID757DIF_debug_Signals_68 = {
     DIF_debugSelector: 68;
     DIF_systemStack: number;
     DIF_idleStack: number;
@@ -2314,13 +2782,13 @@ export type ID757DIF_debug_68 = {
     DIF_immobilizerStack: number;
 };
 
-export type ID757DIF_debug_69 = {
+export type ID757DIF_debug_Signals_69 = {
     DIF_debugSelector: 69;
     DIF_hwFaultCount: number;
     DIF_driveUnitOdometer: number;
 };
 
-export type ID757DIF_debug_70 = {
+export type ID757DIF_debug_Signals_70 = {
     DIF_debugSelector: 70;
     DIF_phaseOutBusbarTemp: number;
     DIF_phaseOutBusbarWeldTemp: number;
@@ -2331,35 +2799,41 @@ export type ID757DIF_debug_70 = {
     DIF_posDcBusbarTemp: number;
 };
 
-export type ID757DIF_debug_72 = {
+export type ID757DIF_debug_Signals_72 = {
     DIF_debugSelector: 72;
     DIF_statorEndWindingTemp: number;
     DIF_rotorMaxMagnetTemp: number;
 };
 
-export type ID757DIF_debug_128 = {
+export type ID757DIF_debug_Signals_128 = {
     DIF_debugSelector: 128;
     DIF_motorType: "DI_MOTOR_SNA" | "DI_MOTOR_ROADSTER_BASE" | "DI_MOTOR_ROADSTER_SPORT" | "DI_MOTOR_M7M3" | "DI_MOTOR_M7M4" | "DI_MOTOR_M7M5" | "DI_MOTOR_M8A" | "DI_MOTOR_M7M6" | "DI_MOTOR_F1A" | "DI_MOTOR_SSR1A" | "DI_MOTOR_F1AC" | "DI_MOTOR_F2AB" | "DI_MOTOR_F2AC" | "DI_MOTOR_F2AD" | "DI_MOTOR_F2AE" | "DI_MOTOR_F2APMSRM" | "DI_MOTOR_PM216A" | "DI_MOTOR_IM100A" | "DI_MOTOR_PM216B" | "DI_MOTOR_IM100B" | "DI_MOTOR_IM216A" | "DI_MOTOR_PM216C" | "DI_MOTOR_IM130C" | "DI_MOTOR_PM216D" | "DI_MOTOR_IM130D" | "DI_MOTOR_IM130D_AL" | "DI_MOTOR_F2AE_AL" | "DI_MOTOR_IM130D_AL_POSCO" | "DI_MOTOR_PM275B" | "DI_MOTOR_PM350B" | "DI_MOTOR_PM216CSR" | "DI_MOTOR_PM216CSR_N42" | "DI_MOTOR_PM228B";
     DIF_cpu1HzMin: number;
     DIF_cpu1HzAvg: number;
 };
 
-export type ID757DIF_debug_131 = {
+export type ID757DIF_debug_Signals_131 = {
     DIF_debugSelector: 131;
     DIF_cpuIDWord0: number;
     DIF_crc: number;
 };
 
-export type ID757DIF_debug_132 = {
+export type ID757DIF_debug_Signals_132 = {
     DIF_debugSelector: 132;
     DIF_cpuIDWord1: number;
     DIF_cpuIDWord2: number;
     DIF_cpuIDWord3: number;
 };
 
-export type ID757DIF_debug = ID757DIF_debug_32 | ID757DIF_debug_33 | ID757DIF_debug_34 | ID757DIF_debug_35 | ID757DIF_debug_36 | ID757DIF_debug_37 | ID757DIF_debug_38 | ID757DIF_debug_39 | ID757DIF_debug_40 | ID757DIF_debug_41 | ID757DIF_debug_42 | ID757DIF_debug_43 | ID757DIF_debug_46 | ID757DIF_debug_47 | ID757DIF_debug_48 | ID757DIF_debug_49 | ID757DIF_debug_50 | ID757DIF_debug_52 | ID757DIF_debug_63 | ID757DIF_debug_64 | ID757DIF_debug_66 | ID757DIF_debug_67 | ID757DIF_debug_68 | ID757DIF_debug_69 | ID757DIF_debug_70 | ID757DIF_debug_72 | ID757DIF_debug_128 | ID757DIF_debug_131 | ID757DIF_debug_132;
+export type ID757DIF_debug_Signals = ID757DIF_debug_Signals_32 | ID757DIF_debug_Signals_33 | ID757DIF_debug_Signals_34 | ID757DIF_debug_Signals_35 | ID757DIF_debug_Signals_36 | ID757DIF_debug_Signals_37 | ID757DIF_debug_Signals_38 | ID757DIF_debug_Signals_39 | ID757DIF_debug_Signals_40 | ID757DIF_debug_Signals_41 | ID757DIF_debug_Signals_42 | ID757DIF_debug_Signals_43 | ID757DIF_debug_Signals_46 | ID757DIF_debug_Signals_47 | ID757DIF_debug_Signals_48 | ID757DIF_debug_Signals_49 | ID757DIF_debug_Signals_50 | ID757DIF_debug_Signals_52 | ID757DIF_debug_Signals_63 | ID757DIF_debug_Signals_64 | ID757DIF_debug_Signals_66 | ID757DIF_debug_Signals_67 | ID757DIF_debug_Signals_68 | ID757DIF_debug_Signals_69 | ID757DIF_debug_Signals_70 | ID757DIF_debug_Signals_72 | ID757DIF_debug_Signals_128 | ID757DIF_debug_Signals_131 | ID757DIF_debug_Signals_132;
 
-export type ID2B6DI_chassisControlStatus = {
+export type ID757DIF_debug = {
+    frameId: 1879;
+    name: "ID757DIF_debug";
+    signals: ID757DIF_debug_Signals;
+};
+
+export type ID2B6DI_chassisControlStatus_Signals = {
     DI_vdcTelltaleFlash: number;
     DI_vdcTelltaleOn: number;
     DI_tcTelltaleFlash: number;
@@ -2370,7 +2844,13 @@ export type ID2B6DI_chassisControlStatus = {
     DI_vehicleHoldTelltaleOn: number;
 };
 
-export type ID284UIvehicleModes = {
+export type ID2B6DI_chassisControlStatus = {
+    frameId: 694;
+    name: "ID2B6DI_chassisControlStatus";
+    signals: ID2B6DI_chassisControlStatus_Signals;
+};
+
+export type ID284UIvehicleModes_Signals = {
     UIfactoryMode284: number;
     UItransportMode284: number;
     UIshowroomMode284: number;
@@ -2385,7 +2865,13 @@ export type ID284UIvehicleModes = {
     UIgameMode284: number;
 };
 
-export type ID221VCFRONT_LVPowerState_0 = {
+export type ID284UIvehicleModes = {
+    frameId: 644;
+    name: "ID284UIvehicleModes";
+    signals: ID284UIvehicleModes_Signals;
+};
+
+export type ID221VCFRONT_LVPowerState_Signals_0 = {
     VCFRONT_LVPowerStateIndex: "Mux0";
     VCFRONT_parkLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCFRONT_espLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
@@ -2410,7 +2896,7 @@ export type ID221VCFRONT_LVPowerState_0 = {
     VCFRONT_uiHiCurrentLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
 };
 
-export type ID221VCFRONT_LVPowerState_1 = {
+export type ID221VCFRONT_LVPowerState_Signals_1 = {
     VCFRONT_LVPowerStateIndex: "Mux1";
     VCFRONT_cpLVRequest: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCFRONT_epasLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
@@ -2420,9 +2906,15 @@ export type ID221VCFRONT_LVPowerState_1 = {
     VCFRONT_CMPDLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
 };
 
-export type ID221VCFRONT_LVPowerState = ID221VCFRONT_LVPowerState_0 | ID221VCFRONT_LVPowerState_1;
+export type ID221VCFRONT_LVPowerState_Signals = ID221VCFRONT_LVPowerState_Signals_0 | ID221VCFRONT_LVPowerState_Signals_1;
 
-export type ID225VCRIGHT_LVPowerState = {
+export type ID221VCFRONT_LVPowerState = {
+    frameId: 545;
+    name: "ID221VCFRONT_LVPowerState";
+    signals: ID221VCFRONT_LVPowerState_Signals;
+};
+
+export type ID225VCRIGHT_LVPowerState_Signals = {
     VCRIGHT_ptcLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCRIGHT_ocsLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCRIGHT_amplifierLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
@@ -2437,7 +2929,13 @@ export type ID225VCRIGHT_LVPowerState = {
     VCRIGHT_vehiclePowerStateDBG: "VEHICLE_POWER_STATE_OFF" | "VEHICLE_POWER_STATE_CONDITIONING" | "VEHICLE_POWER_STATE_ACCESSORY" | "VEHICLE_POWER_STATE_DRIVE";
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_0 = {
+export type ID225VCRIGHT_LVPowerState = {
+    frameId: 549;
+    name: "ID225VCRIGHT_LVPowerState";
+    signals: ID225VCRIGHT_LVPowerState_Signals;
+};
+
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_0 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_VCRIGHT";
     VCFRONT_rightControllerState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_rightControllerFault: number;
@@ -2447,7 +2945,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_0 = {
     VCFRONT_rightControllerCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_1 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_1 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_VCLEFT";
     VCFRONT_leftControllerState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_leftControllerFault: number;
@@ -2457,7 +2955,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_1 = {
     VCFRONT_leftControllerCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_2 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_2 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_PCS";
     VCFRONT_PCSState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_PCSFault: number;
@@ -2467,7 +2965,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_2 = {
     VCFRONT_PCSCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_3 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_3 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_IBOOSTER";
     VCFRONT_iBoosterState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_iBoosterFault: number;
@@ -2477,7 +2975,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_3 = {
     VCFRONT_iBoosterCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_4 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_4 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_EPAS3P";
     VCFRONT_EPAS3PState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_EPAS3PFault: number;
@@ -2487,7 +2985,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_4 = {
     VCFRONT_EPAS3PCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_5 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_5 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_EPAS3S";
     VCFRONT_EPAS3SState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_EPAS3SFault: number;
@@ -2497,7 +2995,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_5 = {
     VCFRONT_EPAS3SCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_6 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_6 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_ESP_MOTOR";
     VCFRONT_ESPMotorState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_ESPMotorFault: number;
@@ -2507,7 +3005,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_6 = {
     VCFRONT_ESPMotorCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_7 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_7 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_ESP_VALVE";
     VCFRONT_ESPValveState: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_ESPValveFault: number;
@@ -2516,7 +3014,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_7 = {
     VCFRONT_ESPValveCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_8 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_8 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_AUTOPILOT_1";
     VCFRONT_autopilot1State: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_autopilot1Fault: number;
@@ -2525,7 +3023,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_8 = {
     VCFRONT_autopilot1Current: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_9 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_9 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_AUTOPILOT_2";
     VCFRONT_autopilot2State: "EFUSE_STATE_OFF" | "EFUSE_STATE_ON" | "EFUSE_STATE_LOCKED_OUT";
     VCFRONT_autopilot2Fault: number;
@@ -2534,7 +3032,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_9 = {
     VCFRONT_autopilot2Current: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_10 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_10 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_SLEEP_BYPASS";
     VCFRONT_sleepBypassState: number;
     VCFRONT_sleepBypassFault: number;
@@ -2542,7 +3040,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_10 = {
     VCFRONT_sleepBypassCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_11 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_11 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_UI";
     VCFRONT_uiAudioState: number;
     VCFRONT_uiAudioFault: number;
@@ -2552,7 +3050,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_11 = {
     VCFRONT_uiCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_12 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_12 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_HEADLAMPS";
     VCFRONT_headlampLeftState: number;
     VCFRONT_headlampLeftFault: number;
@@ -2566,7 +3064,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_12 = {
     VCFRONT_headlampRightTemperature: "SNA";
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_13 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_13 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_VBAT_FUSED_HIGH_CURRENT";
     VCFRONT_vbatFusedHighState: number;
     VCFRONT_vbatFusedHighFault: number;
@@ -2576,7 +3074,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_13 = {
     VCFRONT_vbatFusedHighCurrent: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_14 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_14 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_PUMPS";
     VCFRONT_pump1AndFanState: number;
     VCFRONT_pump1AndFanCurrent: number;
@@ -2586,7 +3084,7 @@ export type ID2F1VCFRONT_eFuseDebugStatus_14 = {
     VCFRONT_pump2AndAirCompVoltage: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_15 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_15 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_RAILS_A_B";
     VCFRONT_railA_12v: number;
     VCFRONT_railB_12v: number;
@@ -2594,26 +3092,32 @@ export type ID2F1VCFRONT_eFuseDebugStatus_15 = {
     VCFRONT_railB_5v: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_16 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_16 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_MISC_RAILS";
     VCFRONT_eFuseLockoutVoltage: number;
     VCFRONT_ChargePumpVoltage: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_17 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_17 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_LV_BATTERY_DEBUG";
     VCFRONT_chargedIBSAmpHours: number;
     VCFRONT_dischargedIBSAmpHours: number;
     VCFRONT_IBSUnfilteredTemperature: number;
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus_18 = {
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals_18 = {
     VCFRONT_eFuseDebugStatusIndex: "VCF_DBG_STS_INVALID";
 };
 
-export type ID2F1VCFRONT_eFuseDebugStatus = ID2F1VCFRONT_eFuseDebugStatus_0 | ID2F1VCFRONT_eFuseDebugStatus_1 | ID2F1VCFRONT_eFuseDebugStatus_2 | ID2F1VCFRONT_eFuseDebugStatus_3 | ID2F1VCFRONT_eFuseDebugStatus_4 | ID2F1VCFRONT_eFuseDebugStatus_5 | ID2F1VCFRONT_eFuseDebugStatus_6 | ID2F1VCFRONT_eFuseDebugStatus_7 | ID2F1VCFRONT_eFuseDebugStatus_8 | ID2F1VCFRONT_eFuseDebugStatus_9 | ID2F1VCFRONT_eFuseDebugStatus_10 | ID2F1VCFRONT_eFuseDebugStatus_11 | ID2F1VCFRONT_eFuseDebugStatus_12 | ID2F1VCFRONT_eFuseDebugStatus_13 | ID2F1VCFRONT_eFuseDebugStatus_14 | ID2F1VCFRONT_eFuseDebugStatus_15 | ID2F1VCFRONT_eFuseDebugStatus_16 | ID2F1VCFRONT_eFuseDebugStatus_17 | ID2F1VCFRONT_eFuseDebugStatus_18;
+export type ID2F1VCFRONT_eFuseDebugStatus_Signals = ID2F1VCFRONT_eFuseDebugStatus_Signals_0 | ID2F1VCFRONT_eFuseDebugStatus_Signals_1 | ID2F1VCFRONT_eFuseDebugStatus_Signals_2 | ID2F1VCFRONT_eFuseDebugStatus_Signals_3 | ID2F1VCFRONT_eFuseDebugStatus_Signals_4 | ID2F1VCFRONT_eFuseDebugStatus_Signals_5 | ID2F1VCFRONT_eFuseDebugStatus_Signals_6 | ID2F1VCFRONT_eFuseDebugStatus_Signals_7 | ID2F1VCFRONT_eFuseDebugStatus_Signals_8 | ID2F1VCFRONT_eFuseDebugStatus_Signals_9 | ID2F1VCFRONT_eFuseDebugStatus_Signals_10 | ID2F1VCFRONT_eFuseDebugStatus_Signals_11 | ID2F1VCFRONT_eFuseDebugStatus_Signals_12 | ID2F1VCFRONT_eFuseDebugStatus_Signals_13 | ID2F1VCFRONT_eFuseDebugStatus_Signals_14 | ID2F1VCFRONT_eFuseDebugStatus_Signals_15 | ID2F1VCFRONT_eFuseDebugStatus_Signals_16 | ID2F1VCFRONT_eFuseDebugStatus_Signals_17 | ID2F1VCFRONT_eFuseDebugStatus_Signals_18;
 
-export type ID242VCLEFT_LVPowerState = {
+export type ID2F1VCFRONT_eFuseDebugStatus = {
+    frameId: 753;
+    name: "ID2F1VCFRONT_eFuseDebugStatus";
+    signals: ID2F1VCFRONT_eFuseDebugStatus_Signals;
+};
+
+export type ID242VCLEFT_LVPowerState_Signals = {
     VCLEFT_rcmLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCLEFT_tpmsLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
     VCLEFT_sccmLVState: "LV_OFF" | "LV_ON" | "LV_GOING_DOWN" | "LV_FAULT";
@@ -2624,7 +3128,13 @@ export type ID242VCLEFT_LVPowerState = {
     VCLEFT_vehiclePowerStateDBG: "VEHICLE_POWER_STATE_OFF" | "VEHICLE_POWER_STATE_CONDITIONING" | "VEHICLE_POWER_STATE_ACCESSORY" | "VEHICLE_POWER_STATE_DRIVE";
 };
 
-export type ID243VCRIGHT_hvacStatus_0 = {
+export type ID242VCLEFT_LVPowerState = {
+    frameId: 578;
+    name: "ID242VCLEFT_LVPowerState";
+    signals: ID242VCLEFT_LVPowerState_Signals;
+};
+
+export type ID243VCRIGHT_hvacStatus_Signals_0 = {
     VCRIGHT_hvacStatusIndex: "STATUS_UI";
     VCRIGHT_hvacQdotLeft: number;
     VCRIGHT_hvacQdotRight: number;
@@ -2641,7 +3151,7 @@ export type ID243VCRIGHT_hvacStatus_0 = {
     VCRIGHT_hvacOverheatProtActive: number;
 };
 
-export type ID243VCRIGHT_hvacStatus_1 = {
+export type ID243VCRIGHT_hvacStatus_Signals_1 = {
     VCRIGHT_hvacStatusIndex: "STATUS_VCFRONT";
     VCRIGHT_hvacMassflowRefrigSystem: number;
     VCRIGHT_hvacRecircDoorPercent: number;
@@ -2653,20 +3163,26 @@ export type ID243VCRIGHT_hvacStatus_1 = {
     VCRIGHT_hvacDuctTargetRight: "SNA";
 };
 
-export type ID243VCRIGHT_hvacStatus_2 = {
+export type ID243VCRIGHT_hvacStatus_Signals_2 = {
     VCRIGHT_hvacStatusIndex: "STATUS_VCFRONT2";
     VCRIGHT_tempDuctLeftUpper: "SNA";
     VCRIGHT_tempDuctRightUpper: "SNA";
     VCRIGHT_hvacEvapInletTempEstimat: "SNA";
 };
 
-export type ID243VCRIGHT_hvacStatus_3 = {
+export type ID243VCRIGHT_hvacStatus_Signals_3 = {
     VCRIGHT_hvacStatusIndex: "END";
 };
 
-export type ID243VCRIGHT_hvacStatus = ID243VCRIGHT_hvacStatus_0 | ID243VCRIGHT_hvacStatus_1 | ID243VCRIGHT_hvacStatus_2 | ID243VCRIGHT_hvacStatus_3;
+export type ID243VCRIGHT_hvacStatus_Signals = ID243VCRIGHT_hvacStatus_Signals_0 | ID243VCRIGHT_hvacStatus_Signals_1 | ID243VCRIGHT_hvacStatus_Signals_2 | ID243VCRIGHT_hvacStatus_Signals_3;
 
-export type ID20CVCRIGHT_hvacRequest = {
+export type ID243VCRIGHT_hvacStatus = {
+    frameId: 579;
+    name: "ID243VCRIGHT_hvacStatus";
+    signals: ID243VCRIGHT_hvacStatus_Signals;
+};
+
+export type ID20CVCRIGHT_hvacRequest_Signals = {
     VCRIGHT_wattsDemandEvap: number;
     VCRIGHT_hvacEvapEnabled: number;
     VCRIGHT_conditioningRequest: number;
@@ -2682,7 +3198,13 @@ export type ID20CVCRIGHT_hvacRequest = {
     VCRIGHT_hvacUnavailable: number;
 };
 
-export type ID2E1VCFRONT_status_0 = {
+export type ID20CVCRIGHT_hvacRequest = {
+    frameId: 524;
+    name: "ID20CVCRIGHT_hvacRequest";
+    signals: ID20CVCRIGHT_hvacRequest_Signals;
+};
+
+export type ID2E1VCFRONT_status_Signals_0 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_BODY_CONTROLS";
     VCFRONT_frunkLatchStatus: "LATCH_SNA" | "LATCH_OPENED" | "LATCH_CLOSED" | "LATCH_CLOSING" | "LATCH_OPENING" | "LATCH_AJAR" | "LATCH_TIMEOUT" | "LATCH_DEFAULT" | "LATCH_FAULT";
     VCFRONT_wiperSpeed: "WIPER_SPEED_SNA" | "WIPER_SPEED_OFF" | "WIPER_SPEED_1" | "WIPER_SPEED_2" | "WIPER_SPEED_3" | "WIPER_SPEED_4" | "WIPER_SPEED_5" | "WIPER_SPEED_LOW" | "WIPER_SPEED_HIGH";
@@ -2707,7 +3229,7 @@ export type ID2E1VCFRONT_status_0 = {
     VCFRONT_isActiveHeatingBattery: number;
 };
 
-export type ID2E1VCFRONT_status_1 = {
+export type ID2E1VCFRONT_status_Signals_1 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_VEHICLE_STATE";
     VCFRONT_iBoosterWakeLine: number;
     VCFRONT_epasWakeLine: number;
@@ -2718,7 +3240,7 @@ export type ID2E1VCFRONT_status_1 = {
     VCFRONT_sleepCurrent: number;
 };
 
-export type ID2E1VCFRONT_status_2 = {
+export type ID2E1VCFRONT_status_Signals_2 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_HOMELINK";
     VCFRONT_homelinkV2Response0: number;
     VCFRONT_homelinkV2Response1: number;
@@ -2728,7 +3250,7 @@ export type ID2E1VCFRONT_status_2 = {
     VCFRONT_homelinkCommStatus: "HOMELINK_COMM_STATUS_SNA" | "HOMELINK_COMM_STATUS_OFF" | "HOMELINK_COMM_STATUS_ON" | "HOMELINK_COMM_STATUS_FAULT";
 };
 
-export type ID2E1VCFRONT_status_3 = {
+export type ID2E1VCFRONT_status_Signals_3 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_REFRIGERANT_SYSTEM";
     VCFRONT_maxEvapHeatRejection: number;
     VCFRONT_minEvapHeatRejection: number;
@@ -2747,7 +3269,7 @@ export type ID2E1VCFRONT_status_3 = {
     VCFRONT_refrigFillRoutineStatus: "NOT_READY" | "MOVING_TO_FILL_POSITION" | "READY_TO_FILL" | "FAULTED";
 };
 
-export type ID2E1VCFRONT_status_4 = {
+export type ID2E1VCFRONT_status_Signals_4 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_LV_BATTERY";
     VCFRONT_tempCompTargetVoltage: number;
     VCFRONT_chargeNeeded: number;
@@ -2762,7 +3284,7 @@ export type ID2E1VCFRONT_status_4 = {
     VCFRONT_shortedCellFaultCounter: number;
 };
 
-export type ID2E1VCFRONT_status_5 = {
+export type ID2E1VCFRONT_status_Signals_5 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_SYSTEM_HEALTH";
     VCFRONT_5VARailStable: number;
     VCFRONT_5VBRailStable: number;
@@ -2779,13 +3301,19 @@ export type ID2E1VCFRONT_status_5 = {
     VCFRONT_vbatProt: number;
 };
 
-export type ID2E1VCFRONT_status_6 = {
+export type ID2E1VCFRONT_status_Signals_6 = {
     VCFRONT_statusIndex: "VCF_STS_IDX_INVALID";
 };
 
-export type ID2E1VCFRONT_status = ID2E1VCFRONT_status_0 | ID2E1VCFRONT_status_1 | ID2E1VCFRONT_status_2 | ID2E1VCFRONT_status_3 | ID2E1VCFRONT_status_4 | ID2E1VCFRONT_status_5 | ID2E1VCFRONT_status_6;
+export type ID2E1VCFRONT_status_Signals = ID2E1VCFRONT_status_Signals_0 | ID2E1VCFRONT_status_Signals_1 | ID2E1VCFRONT_status_Signals_2 | ID2E1VCFRONT_status_Signals_3 | ID2E1VCFRONT_status_Signals_4 | ID2E1VCFRONT_status_Signals_5 | ID2E1VCFRONT_status_Signals_6;
 
-export type ID381VCFRONT_logging1Hz_0 = {
+export type ID2E1VCFRONT_status = {
+    frameId: 737;
+    name: "ID2E1VCFRONT_status";
+    signals: ID2E1VCFRONT_status_Signals;
+};
+
+export type ID381VCFRONT_logging1Hz_Signals_0 = {
     VCFRONT_logging1HzIndex: "COOLANT";
     VCFRONT_modeTransitionID: "PARALLEL_F1_noFlowRequest" | "SERIES_F2_faultPumps" | "SERIES_F3_faultTempSensors" | "SERIES_1_drive_batteryWantsCool" | "SERIES_2_drive_batteryNeedsHeat" | "SERIES_3_drive_batteryWantsHeat" | "PARALLEL_2_drive_batteryWantsHeat" | "PARALLEL_3_drive_batteryWantsCool" | "PARALLEL_4_drive_batteryNeedsCool" | "SERIES_4_charge_batteryNeedsHeat" | "SERIES_5_charge_batteryWantsHeat" | "PARALLEL_5_charge_batteryWantsHeat" | "PARALLEL_6_charge_batteryWantsCool" | "SERIES_6_fastCharge_batteryNeedsHeat" | "SERIES_7_fastCharge_batteryWantsCool" | "PARALLEL_7_fastCharge_batteryWantsCool" | "PARALLEL_8_fastCharge_batteryWantsHeat" | "SERIES_8_preConditioning_batteryNeedsHeat" | "SERIES_9_drive_driveUnitThermalLimiting" | "PARALLEL_9_drive_batteryThermalLimiting" | "INIT" | "OVERRIDE" | "UNDEFINED" | "ENTER_AMBIENTSOURCE" | "EXIT_AMBIENTSOURCE" | "SER_1_drive_battNeedsActiveCooling_evapEnabled" | "SER_2_drive_battBelowHotStagnationTemp" | "SER_3_drive_chillerPassivelyCools" | "SER_4_drive_radPassivelyCoolsBatt" | "SER_5_FC_battHeatingNeeded" | "SER_6_FC_battNeedsActiveCooling_evapDisabled" | "SER_7_FC_battNeedsActiveCooling_evapEnabled" | "SER_8_charge_battBelowPassiveTarget" | "PAR_1_drive_battNeedsActiveCooling_evapDisabled" | "PAR_2_drive_ptNeedsActiveCooling" | "PAR_3_drive_chillerPassivelyCoolsBatt" | "PAR_4_drive_cannotPassivelyCoolBatt" | "PAR_5_drive_battAboveHotStagnationTemp" | "PAR_6_FC_battNeedsActiveCooling_evapDisabled" | "PAR_7_FC_battNeedsActiveCooling_evapEnabled" | "PAR_8_charge_battAbovePassiveTarget";
     VCFRONT_modeDesired: "SERIES" | "PARALLEL" | "BLEND" | "AMBIENT_SOURCE";
@@ -2797,7 +3325,7 @@ export type ID381VCFRONT_logging1Hz_0 = {
     VCFRONT_coolantLevelVoltage: number;
 };
 
-export type ID381VCFRONT_logging1Hz_1 = {
+export type ID381VCFRONT_logging1Hz_Signals_1 = {
     VCFRONT_logging1HzIndex: "FAN_DEMAND_CONDENSER_AND_FET_TEMPS";
     VCFRONT_condenserPressureLimit: number;
     VCFRONT_fanDemandCondenser: number;
@@ -2809,7 +3337,7 @@ export type ID381VCFRONT_logging1Hz_1 = {
     VCFRONT_radiatorFanRunReason: "NONE" | "ACTIVE_MANAGER" | "AMBIENT_SNIFF" | "NVH_MASKING" | "HEAT_PUMP" | "COAST_MODE" | "MIN_ON_GLOBAL" | "MIN_ON_NVH" | "UDS";
 };
 
-export type ID381VCFRONT_logging1Hz_2 = {
+export type ID381VCFRONT_logging1Hz_Signals_2 = {
     VCFRONT_logging1HzIndex: "COOLANT_VALVE";
     VCFRONT_coolantValveRecalReason: "UNDEFINED" | "MAX_TRAVEL" | "GENERAL_FAULT" | "CALIBRATION_FAULT_NO_TRAVEL" | "SELF_TEST" | "MOTOR_FEEDBACK_INTERRUPTED" | "NVRAM_LOSS" | "SYSTEM_LEVEL_FAULT_RESPONSE";
     VCFRONT_coolantValveCountRange: "SNA";
@@ -2820,7 +3348,7 @@ export type ID381VCFRONT_logging1Hz_2 = {
     VCFRONT_coolantValveRadBypass: "SNA";
 };
 
-export type ID381VCFRONT_logging1Hz_3 = {
+export type ID381VCFRONT_logging1Hz_Signals_3 = {
     VCFRONT_logging1HzIndex: "HCML_LED_TEMPS";
     VCFRONT_HCML_lowBeamSpotTemp: "SNA";
     VCFRONT_HCML_highBeamTemp: "SNA";
@@ -2829,7 +3357,7 @@ export type ID381VCFRONT_logging1Hz_3 = {
     VCFRONT_HCML_diffuseTemp: "SNA";
 };
 
-export type ID381VCFRONT_logging1Hz_4 = {
+export type ID381VCFRONT_logging1Hz_Signals_4 = {
     VCFRONT_logging1HzIndex: "HCMR_LED_TEMPS";
     VCFRONT_HCMR_lowBeamSpotTemp: "SNA";
     VCFRONT_HCMR_highBeamTemp: "SNA";
@@ -2838,12 +3366,12 @@ export type ID381VCFRONT_logging1Hz_4 = {
     VCFRONT_HCMR_diffuseTemp: "SNA";
 };
 
-export type ID381VCFRONT_logging1Hz_5 = {
+export type ID381VCFRONT_logging1Hz_Signals_5 = {
     VCFRONT_logging1HzIndex: "HOMELINK";
     VCFRONT_homelinkRegionCode: "HOMELINK_REGION_CODE_UNKNOWN" | "HOMELINK_REGION_CODE_EUROPE" | "HOMELINK_REGION_CODE_AMERICAS" | "HOMELINK_REGION_CODE_REST_OF_WORLD" | "HOMELINK_REGION_CODE_CHINA";
 };
 
-export type ID381VCFRONT_logging1Hz_6 = {
+export type ID381VCFRONT_logging1Hz_Signals_6 = {
     VCFRONT_logging1HzIndex: "HEADLAMP_AIM";
     VCFRONT_calibratedPositionHCML: number;
     VCFRONT_calibratedPositionHCMR: number;
@@ -2851,7 +3379,7 @@ export type ID381VCFRONT_logging1Hz_6 = {
     VCFRONT_currentPositionHCMR: number;
 };
 
-export type ID381VCFRONT_logging1Hz_7 = {
+export type ID381VCFRONT_logging1Hz_Signals_7 = {
     VCFRONT_logging1HzIndex: "HP_EXV_RANGE";
     VCFRONT_chillerExvRange: number;
     VCFRONT_evapExvRange: number;
@@ -2861,7 +3389,7 @@ export type ID381VCFRONT_logging1Hz_7 = {
     VCFRONT_ccRightExvRange: number;
 };
 
-export type ID381VCFRONT_logging1Hz_8 = {
+export type ID381VCFRONT_logging1Hz_Signals_8 = {
     VCFRONT_logging1HzIndex: "HP_DATA_AND_ACCUMULATORS";
     VCFRONT_subcoolActual: number;
     VCFRONT_hpSubcoolTarget: number;
@@ -2874,7 +3402,7 @@ export type ID381VCFRONT_logging1Hz_8 = {
     VCFRONT_lowSideWattsLift: number;
 };
 
-export type ID381VCFRONT_logging1Hz_9 = {
+export type ID381VCFRONT_logging1Hz_Signals_9 = {
     VCFRONT_logging1HzIndex: "HP_CONTROL_LOOP_AND_STATE";
     VCFRONT_exteriorQuietModeEnabled: number;
     VCFRONT_exteriorQuietModeAllowed: number;
@@ -2893,7 +3421,7 @@ export type ID381VCFRONT_logging1Hz_9 = {
     VCFRONT_hpRefrigerantPurgeState: "IDLE" | "EVAP_PURGE" | "COMPLETE";
 };
 
-export type ID381VCFRONT_logging1Hz_10 = {
+export type ID381VCFRONT_logging1Hz_Signals_10 = {
     VCFRONT_logging1HzIndex: "HP_CYCLE_MODEL";
     VCFRONT_estPressureLiq: number;
     VCFRONT_estPressureSuct: number;
@@ -2906,7 +3434,7 @@ export type ID381VCFRONT_logging1Hz_10 = {
     VCFRONT_cycleModelConverged: number;
 };
 
-export type ID381VCFRONT_logging1Hz_11 = {
+export type ID381VCFRONT_logging1Hz_Signals_11 = {
     VCFRONT_logging1HzIndex: "HP_EXV_CALIBRATION";
     VCFRONT_chillerExvCalibOffset: number;
     VCFRONT_evapExvCalibOffset: number;
@@ -2922,7 +3450,7 @@ export type ID381VCFRONT_logging1Hz_11 = {
     VCFRONT_ccRightExvCalibFailed: number;
 };
 
-export type ID381VCFRONT_logging1Hz_12 = {
+export type ID381VCFRONT_logging1Hz_Signals_12 = {
     VCFRONT_logging1HzIndex: "HP_DISSIPATION_AND_POWER";
     VCFRONT_battDissipation: number;
     VCFRONT_diDissipation: number;
@@ -2933,7 +3461,7 @@ export type ID381VCFRONT_logging1Hz_12 = {
     VCFRONT_hpCompPowerIndexFiltered: number;
 };
 
-export type ID381VCFRONT_logging1Hz_13 = {
+export type ID381VCFRONT_logging1Hz_Signals_13 = {
     VCFRONT_logging1HzIndex: "HP_TEMPS_AND_DEMANDS";
     VCFRONT_radPassiveRejectEstimate: number;
     VCFRONT_lccInletTempEstimate: number;
@@ -2943,7 +3471,7 @@ export type ID381VCFRONT_logging1Hz_13 = {
     VCFRONT_radActiveRejectEstimate: number;
 };
 
-export type ID381VCFRONT_logging1Hz_14 = {
+export type ID381VCFRONT_logging1Hz_Signals_14 = {
     VCFRONT_logging1HzIndex: "HP_PRESSURE_CONTROL";
     VCFRONT_dischargePressureTarget: number;
     VCFRONT_evapDisabledLowPsCutout: number;
@@ -2957,7 +3485,7 @@ export type ID381VCFRONT_logging1Hz_14 = {
     VCFRONT_maxCompressorRPMAllowed: number;
 };
 
-export type ID381VCFRONT_logging1Hz_15 = {
+export type ID381VCFRONT_logging1Hz_Signals_15 = {
     VCFRONT_logging1HzIndex: "HP_ARBITRATION";
     VCFRONT_feedFwdMDotEvaporator: number;
     VCFRONT_feedFwdMDotCabinCondense: number;
@@ -2970,7 +3498,7 @@ export type ID381VCFRONT_logging1Hz_15 = {
     VCFRONT_fanControlRadiatorInletT: number;
 };
 
-export type ID381VCFRONT_logging1Hz_16 = {
+export type ID381VCFRONT_logging1Hz_Signals_16 = {
     VCFRONT_logging1HzIndex: "HP_MODE_SELECT_AND_ESTIMATES";
     VCFRONT_hpForceScavenge: number;
     VCFRONT_battOverStagUpperLimit: number;
@@ -2990,7 +3518,7 @@ export type ID381VCFRONT_logging1Hz_16 = {
     VCFRONT_suctionSuperheatEstPsSNA: number;
 };
 
-export type ID381VCFRONT_logging1Hz_17 = {
+export type ID381VCFRONT_logging1Hz_Signals_17 = {
     VCFRONT_logging1HzIndex: "HP_MODE_OPTIONS_AND_ESTIMATES";
     VCFRONT_hpGeneral: number;
     VCFRONT_hpAmbientSource: number;
@@ -3016,13 +3544,13 @@ export type ID381VCFRONT_logging1Hz_17 = {
     VCFRONT_hpDiagLouverCalib: number;
 };
 
-export type ID381VCFRONT_logging1Hz_18 = {
+export type ID381VCFRONT_logging1Hz_Signals_18 = {
     VCFRONT_logging1HzIndex: "BODY_CONTROL";
     VCFRONT_drlMode: "DRL_MODE_OFF" | "DRL_MODE_POSITION" | "DRL_MODE_DRL";
     VCFRONT_wiperCycles: number;
 };
 
-export type ID381VCFRONT_logging1Hz_19 = {
+export type ID381VCFRONT_logging1Hz_Signals_19 = {
     VCFRONT_logging1HzIndex: "COOLANT_2";
     VCFRONT_passiveSeriesRegOn: number;
     VCFRONT_passiveDemandRadBypass: number;
@@ -3032,13 +3560,19 @@ export type ID381VCFRONT_logging1Hz_19 = {
     VCFRONT_dischargePressureLimit: number;
 };
 
-export type ID381VCFRONT_logging1Hz_20 = {
+export type ID381VCFRONT_logging1Hz_Signals_20 = {
     VCFRONT_logging1HzIndex: "END";
 };
 
-export type ID381VCFRONT_logging1Hz = ID381VCFRONT_logging1Hz_0 | ID381VCFRONT_logging1Hz_1 | ID381VCFRONT_logging1Hz_2 | ID381VCFRONT_logging1Hz_3 | ID381VCFRONT_logging1Hz_4 | ID381VCFRONT_logging1Hz_5 | ID381VCFRONT_logging1Hz_6 | ID381VCFRONT_logging1Hz_7 | ID381VCFRONT_logging1Hz_8 | ID381VCFRONT_logging1Hz_9 | ID381VCFRONT_logging1Hz_10 | ID381VCFRONT_logging1Hz_11 | ID381VCFRONT_logging1Hz_12 | ID381VCFRONT_logging1Hz_13 | ID381VCFRONT_logging1Hz_14 | ID381VCFRONT_logging1Hz_15 | ID381VCFRONT_logging1Hz_16 | ID381VCFRONT_logging1Hz_17 | ID381VCFRONT_logging1Hz_18 | ID381VCFRONT_logging1Hz_19 | ID381VCFRONT_logging1Hz_20;
+export type ID381VCFRONT_logging1Hz_Signals = ID381VCFRONT_logging1Hz_Signals_0 | ID381VCFRONT_logging1Hz_Signals_1 | ID381VCFRONT_logging1Hz_Signals_2 | ID381VCFRONT_logging1Hz_Signals_3 | ID381VCFRONT_logging1Hz_Signals_4 | ID381VCFRONT_logging1Hz_Signals_5 | ID381VCFRONT_logging1Hz_Signals_6 | ID381VCFRONT_logging1Hz_Signals_7 | ID381VCFRONT_logging1Hz_Signals_8 | ID381VCFRONT_logging1Hz_Signals_9 | ID381VCFRONT_logging1Hz_Signals_10 | ID381VCFRONT_logging1Hz_Signals_11 | ID381VCFRONT_logging1Hz_Signals_12 | ID381VCFRONT_logging1Hz_Signals_13 | ID381VCFRONT_logging1Hz_Signals_14 | ID381VCFRONT_logging1Hz_Signals_15 | ID381VCFRONT_logging1Hz_Signals_16 | ID381VCFRONT_logging1Hz_Signals_17 | ID381VCFRONT_logging1Hz_Signals_18 | ID381VCFRONT_logging1Hz_Signals_19 | ID381VCFRONT_logging1Hz_Signals_20;
 
-export type ID318SystemTimeUTC = {
+export type ID381VCFRONT_logging1Hz = {
+    frameId: 897;
+    name: "ID381VCFRONT_logging1Hz";
+    signals: ID381VCFRONT_logging1Hz_Signals;
+};
+
+export type ID318SystemTimeUTC_Signals = {
     UTCyear318: number;
     UTCmonth318: number;
     UTCseconds318: number;
@@ -3047,16 +3581,34 @@ export type ID318SystemTimeUTC = {
     UTCminutes318: number;
 };
 
-export type ID528UnixTime = {
+export type ID318SystemTimeUTC = {
+    frameId: 792;
+    name: "ID318SystemTimeUTC";
+    signals: ID318SystemTimeUTC_Signals;
+};
+
+export type ID528UnixTime_Signals = {
     UnixTimeSeconds528: number;
 };
 
-export type ID229GearLever = {
+export type ID528UnixTime = {
+    frameId: 1320;
+    name: "ID528UnixTime";
+    signals: ID528UnixTime_Signals;
+};
+
+export type ID229GearLever_Signals = {
     GearLeverPosition229: "Center" | "Half Down" | "Full Down" | "Half Up" | "Full Up";
     GearLeverButton229: number;
 };
 
-export type ID249SCCMLeftStalk = {
+export type ID229GearLever = {
+    frameId: 553;
+    name: "ID229GearLever";
+    signals: ID229GearLever_Signals;
+};
+
+export type ID249SCCMLeftStalk_Signals = {
     SCCM_leftStalkCrc: number;
     SCCM_leftStalkCounter: number;
     SCCM_highBeamStalkStatus: "IDLE" | "PULL" | "PUSH" | "SNA";
@@ -3065,7 +3617,13 @@ export type ID249SCCMLeftStalk = {
     SCCM_leftStalkReserved1: number;
 };
 
-export type ID186DIF_torque = {
+export type ID249SCCMLeftStalk = {
+    frameId: 585;
+    name: "ID249SCCMLeftStalk";
+    signals: ID249SCCMLeftStalk_Signals;
+};
+
+export type ID186DIF_torque_Signals = {
     DIF_torqueChecksum: number;
     DIF_torqueCounter: number;
     DIF_torqueCommand: "SNA";
@@ -3075,7 +3633,13 @@ export type ID186DIF_torque = {
     DIF_slavePedalPos: "SNA";
 };
 
-export type ID396FrontOilPump = {
+export type ID186DIF_torque = {
+    frameId: 390;
+    name: "ID186DIF_torque";
+    signals: ID186DIF_torque_Signals;
+};
+
+export type ID396FrontOilPump_Signals = {
     FrontOilPumpState396: "OIL_PUMP_STANDBY" | "OIL_PUMP_ENABLE" | "OIL_PUMP_COLD_STARTUP" | "OIL_PUMP_FAULTED" | "OIL_PUMP_SNA";
     FrontOilPumpOilTempEstConfident3: number;
     FrontOilPumpLeadAngle396: number;
@@ -3088,7 +3652,13 @@ export type ID396FrontOilPump = {
     FrontOilPumpPhaseCurrent396: number;
 };
 
-export type ID395DIR_oilPump = {
+export type ID396FrontOilPump = {
+    frameId: 918;
+    name: "ID396FrontOilPump";
+    signals: ID396FrontOilPump_Signals;
+};
+
+export type ID395DIR_oilPump_Signals = {
     DIR_oilPumpState: "OIL_PUMP_STANDBY" | "OIL_PUMP_ENABLE" | "OIL_PUMP_COLD_STARTUP" | "OIL_PUMP_FAULTED" | "OIL_PUMP_SNA";
     DIR_oilPumpFluidTQF: "OIL_PUMP_FLUIDT_LOW_CONFIDENCE" | "OIL_PUMP_FLUIDT_HIGH_CONFIDENCE";
     DIR_oilPumpLeadAngle: number;
@@ -3101,7 +3671,13 @@ export type ID395DIR_oilPump = {
     DIR_oilPumpPressureResidual: number;
 };
 
-export type ID1D8RearTorque = {
+export type ID395DIR_oilPump = {
+    frameId: 917;
+    name: "ID395DIR_oilPump";
+    signals: ID395DIR_oilPump_Signals;
+};
+
+export type ID1D8RearTorque_Signals = {
     TorqueFlags1D8: number;
     RearTorqueRequest1D8: number;
     RearTorque1D8: number;
@@ -3109,7 +3685,13 @@ export type ID1D8RearTorque = {
     Checksum1D8: number;
 };
 
-export type ID155WheelAngles = {
+export type ID1D8RearTorque = {
+    frameId: 472;
+    name: "ID1D8RearTorque";
+    signals: ID1D8RearTorque_Signals;
+};
+
+export type ID155WheelAngles_Signals = {
     WheelAngleTicsFL155: number;
     WheelAngleTicsFR155: number;
     WheelAngleTicsRL155: number;
@@ -3125,7 +3707,13 @@ export type ID155WheelAngles = {
     ESP_wheelRotationChecksum: number;
 };
 
-export type ID175WheelSpeed = {
+export type ID155WheelAngles = {
+    frameId: 341;
+    name: "ID155WheelAngles";
+    signals: ID155WheelAngles_Signals;
+};
+
+export type ID175WheelSpeed_Signals = {
     WheelSpeedFL175: "SNA";
     WheelSpeedFR175: "SNA";
     WheelSpeedRL175: "SNA";
@@ -3134,7 +3722,13 @@ export type ID175WheelSpeed = {
     ESP_wheelSpeedsChecksum: number;
 };
 
-export type ID185ESP_brakeTorque = {
+export type ID175WheelSpeed = {
+    frameId: 373;
+    name: "ID175WheelSpeed";
+    signals: ID175WheelSpeed_Signals;
+};
+
+export type ID185ESP_brakeTorque_Signals = {
     ESP_brakeTorqueFrL: "SNA";
     ESP_brakeTorqueFrR: "SNA";
     ESP_brakeTorqueReL: "SNA";
@@ -3144,23 +3738,47 @@ export type ID185ESP_brakeTorque = {
     ESP_brakeTorqueChecksum: number;
 };
 
-export type ID1D4FrontTorqueOld = {
+export type ID185ESP_brakeTorque = {
+    frameId: 389;
+    name: "ID185ESP_brakeTorque";
+    signals: ID185ESP_brakeTorque_Signals;
+};
+
+export type ID1D4FrontTorqueOld_Signals = {
     RAWTorqueFront1D4: number;
 };
 
-export type ID1D5FrontTorque = {
+export type ID1D4FrontTorqueOld = {
+    frameId: 468;
+    name: "ID1D4FrontTorqueOld";
+    signals: ID1D4FrontTorqueOld_Signals;
+};
+
+export type ID1D5FrontTorque_Signals = {
     FrontTorqueRequest1D5: number;
     FrontTorque1D5: number;
 };
 
-export type ID281VCFRONT_CMPRequest = {
+export type ID1D5FrontTorque = {
+    frameId: 469;
+    name: "ID1D5FrontTorque";
+    signals: ID1D5FrontTorque_Signals;
+};
+
+export type ID281VCFRONT_CMPRequest_Signals = {
     VCFRONT_CMPTargetDuty: number;
     VCFRONT_CMPPowerLimit: number;
     VCFRONT_CMPReset: number;
     VCFRONT_CMPEnable: number;
 };
 
-export type ID3C2VCLEFT_switchStatus_0 = {
+export type ID281VCFRONT_CMPRequest = {
+    frameId: 641;
+    name: "ID281VCFRONT_CMPRequest";
+    signals: ID281VCFRONT_CMPRequest_Signals;
+};
+
+export type ID3C2VCLEFT_switchStatus_Signals_0 = {
     VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_0";
     VCLEFT_hornSwitchPressed: number;
     VCLEFT_hazardButtonPressed: number;
@@ -3205,7 +3823,7 @@ export type ID3C2VCLEFT_switchStatus_0 = {
     VCLEFT_rearCenterBuckleSwitch: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
 };
 
-export type ID3C2VCLEFT_switchStatus_1 = {
+export type ID3C2VCLEFT_switchStatus_Signals_1 = {
     VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_1";
     VCLEFT_swcLeftTiltRight: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
     VCLEFT_swcLeftPressed: "SWITCH_SNA" | "SWITCH_OFF" | "SWITCH_ON" | "SWITCH_FAULT";
@@ -3228,19 +3846,31 @@ export type ID3C2VCLEFT_switchStatus_1 = {
     VCLEFT_swcRightDoublePress: number;
 };
 
-export type ID3C2VCLEFT_switchStatus_2 = {
+export type ID3C2VCLEFT_switchStatus_Signals_2 = {
     VCLEFT_switchStatusIndex: "VCLEFT_SWITCH_STATUS_INDEX_INVALID";
 };
 
-export type ID3C2VCLEFT_switchStatus = ID3C2VCLEFT_switchStatus_0 | ID3C2VCLEFT_switchStatus_1 | ID3C2VCLEFT_switchStatus_2;
+export type ID3C2VCLEFT_switchStatus_Signals = ID3C2VCLEFT_switchStatus_Signals_0 | ID3C2VCLEFT_switchStatus_Signals_1 | ID3C2VCLEFT_switchStatus_Signals_2;
 
-export type ID336MaxPowerRating = {
+export type ID3C2VCLEFT_switchStatus = {
+    frameId: 962;
+    name: "ID3C2VCLEFT_switchStatus";
+    signals: ID3C2VCLEFT_switchStatus_Signals;
+};
+
+export type ID336MaxPowerRating_Signals = {
     DrivePowerRating336: number;
     DriveRegenRating336: number;
     DI_performancePackage: "BASE" | "PERFORMANCE" | "BASE_PLUS" | "SNA";
 };
 
-export type ID293UI_chassisControl = {
+export type ID336MaxPowerRating = {
+    frameId: 822;
+    name: "ID336MaxPowerRating";
+    signals: ID336MaxPowerRating_Signals;
+};
+
+export type ID293UI_chassisControl_Signals = {
     UI_steeringTuneRequest: "STEERING_TUNE_COMFORT" | "STEERING_TUNE_STANDARD" | "STEERING_TUNE_SPORT";
     UI_tractionControlMode: "TC_NORMAL_SELECTED" | "TC_SLIP_START_SELECTED" | "TC_DEV_MODE_1_SELECTED" | "TC_DEV_MODE_2_SELECTED" | "TC_ROLLS_MODE_SELECTED" | "TC_DYNO_MODE_SELECTED" | "TC_OFFROAD_ASSIST_SELECTED";
     UI_parkBrakeRequest: "PARK_BRAKE_REQUEST_IDLE" | "PARK_BRAKE_REQUEST_PRESSED" | "PARK_BRAKE_REQUEST_SNA";
@@ -3269,7 +3899,13 @@ export type ID293UI_chassisControl = {
     UI_chassisControlChecksum: number;
 };
 
-export type ID268SystemPower = {
+export type ID293UI_chassisControl = {
+    frameId: 659;
+    name: "ID293UI_chassisControl";
+    signals: ID293UI_chassisControl_Signals;
+};
+
+export type ID268SystemPower_Signals = {
     SystemHeatPowerMax268: number;
     SystemHeatPower268: number;
     SystemDrivePowerMax268: number;
@@ -3277,107 +3913,149 @@ export type ID268SystemPower = {
     SystemRegenPowerMax268: number;
 };
 
-export type ID04FGPSLatLong = {
+export type ID268SystemPower = {
+    frameId: 616;
+    name: "ID268SystemPower";
+    signals: ID268SystemPower_Signals;
+};
+
+export type ID04FGPSLatLong_Signals = {
     GPSLatitude04F: number;
     GPSLongitude04F: number;
     GPSAccuracy04F: number;
 };
 
-export type ID3D2TotalChargeDischarge = {
+export type ID04FGPSLatLong = {
+    frameId: 79;
+    name: "ID04FGPSLatLong";
+    signals: ID04FGPSLatLong_Signals;
+};
+
+export type ID3D2TotalChargeDischarge_Signals = {
     TotalDischargeKWh3D2: number;
     TotalChargeKWh3D2: number;
 };
 
-export type ID3F2BMSCounters_0 = {
+export type ID3D2TotalChargeDischarge = {
+    frameId: 978;
+    name: "ID3D2TotalChargeDischarge";
+    signals: ID3D2TotalChargeDischarge_Signals;
+};
+
+export type ID3F2BMSCounters_Signals_0 = {
     BMS_kwhCounter_Id: 0;
     BMS_acChargerKwhTotal: number;
 };
 
-export type ID3F2BMSCounters_1 = {
+export type ID3F2BMSCounters_Signals_1 = {
     BMS_kwhCounter_Id: 1;
     BMS_dcChargerKwhTotal: number;
 };
 
-export type ID3F2BMSCounters_2 = {
+export type ID3F2BMSCounters_Signals_2 = {
     BMS_kwhCounter_Id: 2;
     BMS_kwhRegenChargeTotal: number;
 };
 
-export type ID3F2BMSCounters_3 = {
+export type ID3F2BMSCounters_Signals_3 = {
     BMS_kwhCounter_Id: 3;
     BMS_kwhDriveDischargeTotal: number;
 };
 
-export type ID3F2BMSCounters_4 = {
+export type ID3F2BMSCounters_Signals_4 = {
     BMS_kwhCounter_Id: 4;
     BMS_kwhDischargeTotalModule1: number;
     BMS_kwhChargeTotalModule1: number;
 };
 
-export type ID3F2BMSCounters_5 = {
+export type ID3F2BMSCounters_Signals_5 = {
     BMS_kwhCounter_Id: 5;
     BMS_kwhAcChargeTotalModule1: number;
     BMS_kwhDcChargeTotalModule1: number;
 };
 
-export type ID3F2BMSCounters_6 = {
+export type ID3F2BMSCounters_Signals_6 = {
     BMS_kwhCounter_Id: 6;
     BMS_kwhDischargeTotalModule2: number;
     BMS_kwhChargeTotalModule2: number;
 };
 
-export type ID3F2BMSCounters_7 = {
+export type ID3F2BMSCounters_Signals_7 = {
     BMS_kwhCounter_Id: 7;
     BMS_kwhAcChargeTotalModule2: number;
     BMS_kwhDcChargeTotalModule2: number;
 };
 
-export type ID3F2BMSCounters_8 = {
+export type ID3F2BMSCounters_Signals_8 = {
     BMS_kwhCounter_Id: 8;
     BMS_kwhDischargeTotalModule3: number;
     BMS_kwhChargeTotalModule3: number;
 };
 
-export type ID3F2BMSCounters_9 = {
+export type ID3F2BMSCounters_Signals_9 = {
     BMS_kwhCounter_Id: 9;
     BMS_kwhAcChargeTotalModule3: number;
     BMS_kwhDcChargeTotalModule3: number;
 };
 
-export type ID3F2BMSCounters_10 = {
+export type ID3F2BMSCounters_Signals_10 = {
     BMS_kwhCounter_Id: 10;
     BMS_kwhDischargeTotalModule4: number;
     BMS_kwhChargeTotalModule4: number;
 };
 
-export type ID3F2BMSCounters_11 = {
+export type ID3F2BMSCounters_Signals_11 = {
     BMS_kwhCounter_Id: 11;
     BMS_kwhAcChargeTotalModule4: number;
     BMS_kwhDcChargeTotalModule4: number;
 };
 
-export type ID3F2BMSCounters = ID3F2BMSCounters_0 | ID3F2BMSCounters_1 | ID3F2BMSCounters_2 | ID3F2BMSCounters_3 | ID3F2BMSCounters_4 | ID3F2BMSCounters_5 | ID3F2BMSCounters_6 | ID3F2BMSCounters_7 | ID3F2BMSCounters_8 | ID3F2BMSCounters_9 | ID3F2BMSCounters_10 | ID3F2BMSCounters_11;
+export type ID3F2BMSCounters_Signals = ID3F2BMSCounters_Signals_0 | ID3F2BMSCounters_Signals_1 | ID3F2BMSCounters_Signals_2 | ID3F2BMSCounters_Signals_3 | ID3F2BMSCounters_Signals_4 | ID3F2BMSCounters_Signals_5 | ID3F2BMSCounters_Signals_6 | ID3F2BMSCounters_Signals_7 | ID3F2BMSCounters_Signals_8 | ID3F2BMSCounters_Signals_9 | ID3F2BMSCounters_Signals_10 | ID3F2BMSCounters_Signals_11;
 
-export type ID2D2BMSVAlimits = {
+export type ID3F2BMSCounters = {
+    frameId: 1010;
+    name: "ID3F2BMSCounters";
+    signals: ID3F2BMSCounters_Signals;
+};
+
+export type ID2D2BMSVAlimits_Signals = {
     MinVoltage2D2: number;
     MaxVoltage2D2: number;
     MaxChargeCurrent2D2: number;
     MaxDischargeCurrent2D2: number;
 };
 
-export type ID541FastChargeMaxLimits = {
+export type ID2D2BMSVAlimits = {
+    frameId: 722;
+    name: "ID2D2BMSVAlimits";
+    signals: ID2D2BMSVAlimits_Signals;
+};
+
+export type ID541FastChargeMaxLimits_Signals = {
     FCMaxPowerLimit541: number;
     FCMaxCurrentLimit541: number;
 };
 
-export type ID244FastChargeLimits = {
+export type ID541FastChargeMaxLimits = {
+    frameId: 1345;
+    name: "ID541FastChargeMaxLimits";
+    signals: ID541FastChargeMaxLimits_Signals;
+};
+
+export type ID244FastChargeLimits_Signals = {
     FCPowerLimit244: number;
     FCCurrentLimit244: number;
     FCMaxVlimit244: number;
     FCMinVlimit244: number;
 };
 
-export type ID214FastChargeVA = {
+export type ID244FastChargeLimits = {
+    frameId: 580;
+    name: "ID244FastChargeLimits";
+    signals: ID244FastChargeLimits_Signals;
+};
+
+export type ID214FastChargeVA_Signals = {
     FC_protocolVersion: number;
     FC_statusCode: "FC_STATUS_NOTREADY_SNA" | "FC_STATUS_READY" | "FC_STATUS_UPDATE_IN_PROGRESS" | "FC_STATUS_DEPRECATED_3" | "FC_STATUS_DEPRECATED_4" | "FC_STATUS_INT_ISOACTIVE" | "FC_STATUS_EXT_ISOACTIVE" | "FC_STATUS_POST_OUT_OF_SERVICE" | "FC_STATUS_NOTCOMPATIBLE" | "FC_STATUS_MALFUNCTION" | "FC_STATUS_NODATA";
     FC_adapterLocked: number;
@@ -3389,11 +4067,23 @@ export type ID214FastChargeVA = {
     FC_leakageTestNotSupported: number;
 };
 
-export type ID215FCisolation = {
+export type ID214FastChargeVA = {
+    frameId: 532;
+    name: "ID214FastChargeVA";
+    signals: ID214FastChargeVA_Signals;
+};
+
+export type ID215FCisolation_Signals = {
     FCIsolation215: number;
 };
 
-export type ID217FC_status3_0 = {
+export type ID215FCisolation = {
+    frameId: 533;
+    name: "ID215FCisolation";
+    signals: ID215FCisolation_Signals;
+};
+
+export type ID217FC_status3_Signals_0 = {
     FC_status3DataSelect: "Mux0";
     FC_class: "FC_CLASS_SNA" | "FC_CLASS_SUPERCHARGER" | "FC_CLASS_URBANCHARGER";
     FC_brand: "FC_BRAND_SNA" | "FC_BRAND_TESLA";
@@ -3402,14 +4092,20 @@ export type ID217FC_status3_0 = {
     FC_generation: "GENERATION_SNA";
 };
 
-export type ID217FC_status3_1 = {
+export type ID217FC_status3_Signals_1 = {
     FC_status3DataSelect: "Mux1";
     FC_billingEnergy: number;
 };
 
-export type ID217FC_status3 = ID217FC_status3_0 | ID217FC_status3_1;
+export type ID217FC_status3_Signals = ID217FC_status3_Signals_0 | ID217FC_status3_Signals_1;
 
-export type ID321VCFRONT_sensors = {
+export type ID217FC_status3 = {
+    frameId: 535;
+    name: "ID217FC_status3";
+    signals: ID217FC_status3_Signals;
+};
+
+export type ID321VCFRONT_sensors_Signals = {
     VCFRONT_tempCoolantBatInlet: "SNA";
     VCFRONT_tempCoolantPTInlet: "SNA";
     VCFRONT_coolantLevel: "NOT_OK" | "FILLED";
@@ -3421,47 +4117,53 @@ export type ID321VCFRONT_sensors = {
     VCFRONT_ptSensorIrrational: number;
 };
 
-export type ID301VCFRONT_info_0 = {
+export type ID321VCFRONT_sensors = {
+    frameId: 801;
+    name: "ID321VCFRONT_sensors";
+    signals: ID321VCFRONT_sensors_Signals;
+};
+
+export type ID301VCFRONT_info_Signals_0 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_0";
 };
 
-export type ID301VCFRONT_info_1 = {
+export type ID301VCFRONT_info_Signals_1 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_1";
 };
 
-export type ID301VCFRONT_info_2 = {
+export type ID301VCFRONT_info_Signals_2 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_2";
 };
 
-export type ID301VCFRONT_info_3 = {
+export type ID301VCFRONT_info_Signals_3 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_3";
 };
 
-export type ID301VCFRONT_info_4 = {
+export type ID301VCFRONT_info_Signals_4 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_4";
 };
 
-export type ID301VCFRONT_info_5 = {
+export type ID301VCFRONT_info_Signals_5 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_5";
 };
 
-export type ID301VCFRONT_info_6 = {
+export type ID301VCFRONT_info_Signals_6 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_6";
 };
 
-export type ID301VCFRONT_info_7 = {
+export type ID301VCFRONT_info_Signals_7 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_7";
 };
 
-export type ID301VCFRONT_info_8 = {
+export type ID301VCFRONT_info_Signals_8 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_8";
 };
 
-export type ID301VCFRONT_info_9 = {
+export type ID301VCFRONT_info_Signals_9 = {
     VCFRONT_infoIndex: "BC_INFO_DEPRECATED_9";
 };
 
-export type ID301VCFRONT_info_10 = {
+export type ID301VCFRONT_info_Signals_10 = {
     VCFRONT_infoIndex: "BC_INFO_BUILD_HWID_COMPONENTID";
     VCFRONT_infoBuildType: "INFO_UNKNOWN_BUILD" | "INFO_PLATFORM_BUILD" | "INFO_LOCAL_BUILD" | "INFO_TRACEABLE_CI_BUILD" | "INFO_MFG_BUILD";
     VCFRONT_infoBuildConfigId: number;
@@ -3469,7 +4171,7 @@ export type ID301VCFRONT_info_10 = {
     VCFRONT_infoComponentId: number;
 };
 
-export type ID301VCFRONT_info_11 = {
+export type ID301VCFRONT_info_Signals_11 = {
     VCFRONT_infoIndex: "BC_INFO_PCBAID_ASSYID_USAGEID";
     VCFRONT_infoPcbaId: number;
     VCFRONT_infoAssemblyId: "ASSEMBLY1" | "ASSEMBLY_SNA";
@@ -3477,77 +4179,83 @@ export type ID301VCFRONT_info_11 = {
     VCFRONT_infoSubUsageId: number;
 };
 
-export type ID301VCFRONT_info_13 = {
+export type ID301VCFRONT_info_Signals_13 = {
     VCFRONT_infoIndex: "BC_INFO_APP_CRC";
     VCFRONT_infoAppCrc: number;
 };
 
-export type ID301VCFRONT_info_14 = {
+export type ID301VCFRONT_info_Signals_14 = {
     VCFRONT_infoIndex: "BC_INFO_BOOTLOADER_SVN";
 };
 
-export type ID301VCFRONT_info_15 = {
+export type ID301VCFRONT_info_Signals_15 = {
     VCFRONT_infoIndex: "BC_INFO_BOOTLOADER_CRC";
 };
 
-export type ID301VCFRONT_info_16 = {
+export type ID301VCFRONT_info_Signals_16 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT1";
     VCFRONT_hcmlAppCRC: number;
 };
 
-export type ID301VCFRONT_info_17 = {
+export type ID301VCFRONT_info_Signals_17 = {
     VCFRONT_infoIndex: "BC_INFO_APP_GITHASH";
     VCFRONT_infoAppGitHash: number;
 };
 
-export type ID301VCFRONT_info_18 = {
+export type ID301VCFRONT_info_Signals_18 = {
     VCFRONT_infoIndex: "BC_INFO_BOOTLOADER_GITHASH";
     VCFRONT_infoBootGitHash: number;
 };
 
-export type ID301VCFRONT_info_19 = {
+export type ID301VCFRONT_info_Signals_19 = {
     VCFRONT_infoIndex: "BC_INFO_VERSION_DEPRECATED";
     VCFRONT_infoPlatformType: number;
 };
 
-export type ID301VCFRONT_info_20 = {
+export type ID301VCFRONT_info_Signals_20 = {
     VCFRONT_infoIndex: "BC_INFO_UDS_PROTOCOL_BOOTCRC";
     VCFRONT_infoBootUdsProtoVersion: number;
     VCFRONT_infoBootCrc: number;
 };
 
-export type ID301VCFRONT_info_23 = {
+export type ID301VCFRONT_info_Signals_23 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT2";
     VCFRONT_hcmrAppCRC: number;
 };
 
-export type ID301VCFRONT_info_24 = {
+export type ID301VCFRONT_info_Signals_24 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT3";
     VCFRONT_infoSubcomponent3: number;
 };
 
-export type ID301VCFRONT_info_31 = {
+export type ID301VCFRONT_info_Signals_31 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT4";
     VCFRONT_infoSubcomponent4: number;
 };
 
-export type ID301VCFRONT_info_32 = {
+export type ID301VCFRONT_info_Signals_32 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT5";
     VCFRONT_infoSubcomponent5: number;
 };
 
-export type ID301VCFRONT_info_33 = {
+export type ID301VCFRONT_info_Signals_33 = {
     VCFRONT_infoIndex: "BC_INFO_SUBCOMPONENT6";
     VCFRONT_infoSubcomponent6: number;
 };
 
-export type ID301VCFRONT_info_255 = {
+export type ID301VCFRONT_info_Signals_255 = {
     VCFRONT_infoIndex: "BC_INFO_END";
 };
 
-export type ID301VCFRONT_info = ID301VCFRONT_info_0 | ID301VCFRONT_info_1 | ID301VCFRONT_info_2 | ID301VCFRONT_info_3 | ID301VCFRONT_info_4 | ID301VCFRONT_info_5 | ID301VCFRONT_info_6 | ID301VCFRONT_info_7 | ID301VCFRONT_info_8 | ID301VCFRONT_info_9 | ID301VCFRONT_info_10 | ID301VCFRONT_info_11 | ID301VCFRONT_info_13 | ID301VCFRONT_info_14 | ID301VCFRONT_info_15 | ID301VCFRONT_info_16 | ID301VCFRONT_info_17 | ID301VCFRONT_info_18 | ID301VCFRONT_info_19 | ID301VCFRONT_info_20 | ID301VCFRONT_info_23 | ID301VCFRONT_info_24 | ID301VCFRONT_info_31 | ID301VCFRONT_info_32 | ID301VCFRONT_info_33 | ID301VCFRONT_info_255;
+export type ID301VCFRONT_info_Signals = ID301VCFRONT_info_Signals_0 | ID301VCFRONT_info_Signals_1 | ID301VCFRONT_info_Signals_2 | ID301VCFRONT_info_Signals_3 | ID301VCFRONT_info_Signals_4 | ID301VCFRONT_info_Signals_5 | ID301VCFRONT_info_Signals_6 | ID301VCFRONT_info_Signals_7 | ID301VCFRONT_info_Signals_8 | ID301VCFRONT_info_Signals_9 | ID301VCFRONT_info_Signals_10 | ID301VCFRONT_info_Signals_11 | ID301VCFRONT_info_Signals_13 | ID301VCFRONT_info_Signals_14 | ID301VCFRONT_info_Signals_15 | ID301VCFRONT_info_Signals_16 | ID301VCFRONT_info_Signals_17 | ID301VCFRONT_info_Signals_18 | ID301VCFRONT_info_Signals_19 | ID301VCFRONT_info_Signals_20 | ID301VCFRONT_info_Signals_23 | ID301VCFRONT_info_Signals_24 | ID301VCFRONT_info_Signals_31 | ID301VCFRONT_info_Signals_32 | ID301VCFRONT_info_Signals_33 | ID301VCFRONT_info_Signals_255;
 
-export type ID201VCFRONT_loggingAndVitals10Hz_0 = {
+export type ID301VCFRONT_info = {
+    frameId: 769;
+    name: "ID301VCFRONT_info";
+    signals: ID301VCFRONT_info_Signals;
+};
+
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_0 = {
     VCFRONT_loggingAndVitals10HzInde: "TARGETS_AND_ACTUALS_0";
     VCFRONT_pumpBatteryRPMActual: "SNA";
     VCFRONT_pumpPowertrainRPMActual: "SNA";
@@ -3557,7 +4265,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_0 = {
     VCFRONT_exvFlowTarget: number;
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_1 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_1 = {
     VCFRONT_loggingAndVitals10HzInde: "TARGETS_SENSORS_AND_ACTUALS_1";
     VCFRONT_activeLouverOpenPosTarg: number;
     VCFRONT_activeLouverOpenPos: number;
@@ -3566,7 +4274,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_1 = {
     VCFRONT_tempSuperheatActFiltered: number;
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_2 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_2 = {
     VCFRONT_loggingAndVitals10HzInde: "STATES_AND_SENSORS";
     VCFRONT_tempRefrigDischarge: "SNA";
     VCFRONT_fanDemand: number;
@@ -3580,7 +4288,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_2 = {
     VCFRONT_coolantValveMode: "SERIES" | "PARALLEL" | "BLEND" | "AMBIENT_SOURCE";
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_3 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_3 = {
     VCFRONT_loggingAndVitals10HzInde: "EXV_FLOW";
     VCFRONT_chillerExvFlow: number;
     VCFRONT_evapExvFlow: number;
@@ -3590,7 +4298,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_3 = {
     VCFRONT_ccrExvFlow: number;
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_4 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_4 = {
     VCFRONT_loggingAndVitals10HzInde: "HP_STATE";
     VCFRONT_hpHighSideHX: "NONE" | "LCC" | "CC" | "BOTH";
     VCFRONT_hpLowSideHX: "NONE" | "CHILLER" | "EVAP" | "BOTH";
@@ -3602,7 +4310,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_4 = {
     VCFRONT_hpReqCoolantMode: "ANY" | "SERIES_NO_BYPASS" | "SERIES_BYPASS" | "PARALLEL" | "AMBIENT_SOURCE";
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_5 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_5 = {
     VCFRONT_loggingAndVitals10HzInde: "EXV_FLOW_TARGET";
     VCFRONT_chillerExvFlowTarget: number;
     VCFRONT_evapExvFlowTarget: number;
@@ -3612,7 +4320,7 @@ export type ID201VCFRONT_loggingAndVitals10Hz_5 = {
     VCFRONT_ccrExvFlowTarget: number;
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_6 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_6 = {
     VCFRONT_loggingAndVitals10HzInde: "EXV_STATE";
     VCFRONT_chillerExvState: "UNINIT" | "INIT_OPEN" | "INIT_CLOSE" | "READY" | "FAULTED" | "WAIT" | "OVERDRIVING_SHUT" | "READY_SHUT" | "CALIB_CLOSE" | "CALIB_CLOSE_OVERDRIVE";
     VCFRONT_evapExvState: "UNINIT" | "INIT_OPEN" | "INIT_CLOSE" | "READY" | "FAULTED" | "WAIT" | "OVERDRIVING_SHUT" | "READY_SHUT" | "CALIB_CLOSE" | "CALIB_CLOSE_OVERDRIVE";
@@ -3622,17 +4330,29 @@ export type ID201VCFRONT_loggingAndVitals10Hz_6 = {
     VCFRONT_ccrExvState: "UNINIT" | "INIT_OPEN" | "INIT_CLOSE" | "READY" | "FAULTED" | "WAIT" | "OVERDRIVING_SHUT" | "READY_SHUT" | "CALIB_CLOSE" | "CALIB_CLOSE_OVERDRIVE";
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz_7 = {
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals_7 = {
     VCFRONT_loggingAndVitals10HzInde: "END";
 };
 
-export type ID201VCFRONT_loggingAndVitals10Hz = ID201VCFRONT_loggingAndVitals10Hz_0 | ID201VCFRONT_loggingAndVitals10Hz_1 | ID201VCFRONT_loggingAndVitals10Hz_2 | ID201VCFRONT_loggingAndVitals10Hz_3 | ID201VCFRONT_loggingAndVitals10Hz_4 | ID201VCFRONT_loggingAndVitals10Hz_5 | ID201VCFRONT_loggingAndVitals10Hz_6 | ID201VCFRONT_loggingAndVitals10Hz_7;
+export type ID201VCFRONT_loggingAndVitals10Hz_Signals = ID201VCFRONT_loggingAndVitals10Hz_Signals_0 | ID201VCFRONT_loggingAndVitals10Hz_Signals_1 | ID201VCFRONT_loggingAndVitals10Hz_Signals_2 | ID201VCFRONT_loggingAndVitals10Hz_Signals_3 | ID201VCFRONT_loggingAndVitals10Hz_Signals_4 | ID201VCFRONT_loggingAndVitals10Hz_Signals_5 | ID201VCFRONT_loggingAndVitals10Hz_Signals_6 | ID201VCFRONT_loggingAndVitals10Hz_Signals_7;
 
-export type ID3D8Elevation = {
+export type ID201VCFRONT_loggingAndVitals10Hz = {
+    frameId: 513;
+    name: "ID201VCFRONT_loggingAndVitals10Hz";
+    signals: ID201VCFRONT_loggingAndVitals10Hz_Signals;
+};
+
+export type ID3D8Elevation_Signals = {
     Elevation3D8: number;
 };
 
-export type ID261_12vBattStatus_0 = {
+export type ID3D8Elevation = {
+    frameId: 984;
+    name: "ID3D8Elevation";
+    signals: ID3D8Elevation_Signals;
+};
+
+export type ID261_12vBattStatus_Signals_0 = {
     VCFRONT_12VBatteryStatusIndex: 0;
     VCFRONT_voltageProfile: "CHARGE" | "FLOAT" | "REDUCED_FLOAT" | "ALWAYS_CLOSED_CONTACTORS";
     VCFRONT_12VOverchargeCounter: number;
@@ -3646,7 +4366,7 @@ export type ID261_12vBattStatus_0 = {
     VCFRONT_voltageFloorReachedCount: number;
 };
 
-export type ID261_12vBattStatus_1 = {
+export type ID261_12vBattStatus_Signals_1 = {
     VCFRONT_12VBatteryStatusIndex: 1;
     VCFRONT_IBSFault: number;
     VCFRONT_batterySupportRequest: number;
@@ -3661,16 +4381,22 @@ export type ID261_12vBattStatus_1 = {
     VCFRONT_LVBatteryDisconnected: number;
 };
 
-export type ID261_12vBattStatus_2 = {
+export type ID261_12vBattStatus_Signals_2 = {
     VCFRONT_12VBatteryStatusIndex: 2;
     v12vBattAH261: number;
     v12vBattTemp261: number;
     VCFRONT_12VBatteryTargetVoltage: number;
 };
 
-export type ID261_12vBattStatus = ID261_12vBattStatus_0 | ID261_12vBattStatus_1 | ID261_12vBattStatus_2;
+export type ID261_12vBattStatus_Signals = ID261_12vBattStatus_Signals_0 | ID261_12vBattStatus_Signals_1 | ID261_12vBattStatus_Signals_2;
 
-export type ID129SteeringAngle = {
+export type ID261_12vBattStatus = {
+    frameId: 609;
+    name: "ID261_12vBattStatus";
+    signals: ID261_12vBattStatus_Signals;
+};
+
+export type ID129SteeringAngle_Signals = {
     SteeringAngle129: number;
     SteeringSpeed129: number;
     SteeringSensorA129: number;
@@ -3678,14 +4404,26 @@ export type ID129SteeringAngle = {
     SteeringSensorC129: number;
 };
 
-export type ID264ChargeLineStatus = {
+export type ID129SteeringAngle = {
+    frameId: 297;
+    name: "ID129SteeringAngle";
+    signals: ID129SteeringAngle_Signals;
+};
+
+export type ID264ChargeLineStatus_Signals = {
     ChargeLineVoltage264: number;
     ChargeLineCurrent264: number;
     ChargeLinePower264: number;
     ChargeLineCurrentLimit264: number;
 };
 
-export type ID224PCSDCDCstatus = {
+export type ID264ChargeLineStatus = {
+    frameId: 612;
+    name: "ID264ChargeLineStatus";
+    signals: ID264ChargeLineStatus_Signals;
+};
+
+export type ID224PCSDCDCstatus_Signals = {
     DCDCPrechargeStatus224: number;
     DCDC12VSupportStatus224: number;
     DCDCHvBusDischargeStatus224: number;
@@ -3705,7 +4443,13 @@ export type ID224PCSDCDCstatus = {
     DCDCInitialPrechargeSubState224: number;
 };
 
-export type ID227CMP_state = {
+export type ID224PCSDCDCstatus = {
+    frameId: 548;
+    name: "ID224PCSDCDCstatus";
+    signals: ID224PCSDCDCstatus_Signals;
+};
+
+export type ID227CMP_state_Signals = {
     CMP_speedRPM: number;
     CMP_speedDuty: number;
     CMP_inverterTemperature: number;
@@ -3724,7 +4468,13 @@ export type ID227CMP_state = {
     CMP_ready: number;
 };
 
-export type ID118DriveSystemStatus = {
+export type ID227CMP_state = {
+    frameId: 551;
+    name: "ID227CMP_state";
+    signals: ID227CMP_state_Signals;
+};
+
+export type ID118DriveSystemStatus_Signals = {
     DI_systemStatusChecksum: number;
     DI_systemStatusCounter: number;
     DI_driveBlocked: "DRIVE_BLOCKED_NONE" | "DRIVE_BLOCKED_FRUNK" | "DRIVE_BLOCKED_PROX";
@@ -3741,7 +4491,13 @@ export type ID118DriveSystemStatus = {
     DI_trackModeState: "TRACK_MODE_UNAVAILABLE" | "TRACK_MODE_AVAILABLE" | "TRACK_MODE_ON";
 };
 
-export type ID352BMS_energyStatus = {
+export type ID118DriveSystemStatus = {
+    frameId: 280;
+    name: "ID118DriveSystemStatus";
+    signals: ID118DriveSystemStatus_Signals;
+};
+
+export type ID352BMS_energyStatus_Signals = {
     BMS_nominalFullPackEnergy: "SNA";
     BMS_nominalEnergyRemaining: "SNA";
     BMS_expectedEnergyRemaining: "SNA";
@@ -3751,7 +4507,13 @@ export type ID352BMS_energyStatus = {
     BMS_fullChargeComplete: number;
 };
 
-export type ID37DCP_thermalStatus = {
+export type ID352BMS_energyStatus = {
+    frameId: 850;
+    name: "ID352BMS_energyStatus";
+    signals: ID352BMS_energyStatus_Signals;
+};
+
+export type ID37DCP_thermalStatus_Signals = {
     CP_dcPinTemperature: number;
     CP_acPinTemperature: number;
     CP_dTdt_dcPinActual: number;
@@ -3759,21 +4521,33 @@ export type ID37DCP_thermalStatus = {
     CP_dTdt_dcPinExpected: number;
 };
 
-export type ID392BMS_packConfig_0 = {
+export type ID37DCP_thermalStatus = {
+    frameId: 893;
+    name: "ID37DCP_thermalStatus";
+    signals: ID37DCP_thermalStatus_Signals;
+};
+
+export type ID392BMS_packConfig_Signals_0 = {
     BMS_packConfigMultiplexer: "Mux0";
     BMS_reservedConfig_0: "BMS_CONFIG_0" | "BMS_CONFIG_1" | "BMS_CONFIG_2" | "BMS_CONFIG_3" | "BMS_CONFIG_4" | "BMS_CONFIG_5" | "BMS_CONFIG_6" | "BMS_CONFIG_7" | "BMS_CONFIG_8" | "BMS_CONFIG_9" | "BMS_CONFIG_10" | "BMS_CONFIG_11" | "BMS_CONFIG_12" | "BMS_CONFIG_13" | "BMS_CONFIG_14" | "BMS_CONFIG_15" | "BMS_CONFIG_16" | "BMS_CONFIG_17" | "BMS_CONFIG_18" | "BMS_CONFIG_19" | "BMS_CONFIG_20" | "BMS_CONFIG_21" | "BMS_CONFIG_22" | "BMS_CONFIG_23" | "BMS_CONFIG_24" | "BMS_CONFIG_25" | "BMS_CONFIG_26" | "BMS_CONFIG_27" | "BMS_CONFIG_28" | "BMS_CONFIG_29" | "BMS_CONFIG_30" | "BMS_CONFIG_31";
 };
 
-export type ID392BMS_packConfig_1 = {
+export type ID392BMS_packConfig_Signals_1 = {
     BMS_packConfigMultiplexer: "Mux1";
     BMS_moduleType: "UNKNOWN" | "E3_NCT" | "E1_NCT" | "E3_CT" | "E1_CT" | "E1_CP";
     BMS_packMass: number;
     BMS_platformMaxBusVoltage: number;
 };
 
-export type ID392BMS_packConfig = ID392BMS_packConfig_0 | ID392BMS_packConfig_1;
+export type ID392BMS_packConfig_Signals = ID392BMS_packConfig_Signals_0 | ID392BMS_packConfig_Signals_1;
 
-export type ID252BMS_powerAvailable = {
+export type ID392BMS_packConfig = {
+    frameId: 914;
+    name: "ID392BMS_packConfig";
+    signals: ID392BMS_packConfig_Signals;
+};
+
+export type ID252BMS_powerAvailable_Signals = {
     BMS_maxRegenPower: number;
     BMS_maxDischargePower: number;
     BMS_maxStationaryHeatPower: number;
@@ -3782,7 +4556,13 @@ export type ID252BMS_powerAvailable = {
     BMS_hvacPowerBudget: number;
 };
 
-export type ID312BMSthermal = {
+export type ID252BMS_powerAvailable = {
+    frameId: 594;
+    name: "ID252BMS_powerAvailable";
+    signals: ID252BMS_powerAvailable_Signals;
+};
+
+export type ID312BMSthermal_Signals = {
     BMSdissipation312: number;
     BMSflowRequest312: number;
     BMSinletActiveCoolTarget312: number;
@@ -3794,7 +4574,13 @@ export type ID312BMSthermal = {
     BMSnoFlowRequest312: number;
 };
 
-export type ID292BMS_SOC = {
+export type ID312BMSthermal = {
+    frameId: 786;
+    name: "ID312BMSthermal";
+    signals: ID312BMSthermal_Signals;
+};
+
+export type ID292BMS_SOC_Signals = {
     SOCmin292: number;
     SOCUI292: number;
     SOCmax292: number;
@@ -3803,7 +4589,13 @@ export type ID292BMS_SOC = {
     BMS_battTempPct: "SNA";
 };
 
-export type ID257DIspeed = {
+export type ID292BMS_SOC = {
+    frameId: 658;
+    name: "ID292BMS_SOC";
+    signals: ID292BMS_SOC_Signals;
+};
+
+export type ID257DIspeed_Signals = {
     DI_speedChecksum: number;
     DI_speedCounter: number;
     DI_vehicleSpeed: "SNA";
@@ -3812,7 +4604,13 @@ export type ID257DIspeed = {
     DI_uiSpeedHighSpeed: "DI_UI_HIGH_SPEED_SNA";
 };
 
-export type ID2A8CMPD_state = {
+export type ID257DIspeed = {
+    frameId: 599;
+    name: "ID257DIspeed";
+    signals: ID257DIspeed_Signals;
+};
+
+export type ID2A8CMPD_state_Signals = {
     CMPD_speedRPM: number;
     CMPD_speedDuty: number;
     CMPD_inputHVPower: number;
@@ -3825,24 +4623,36 @@ export type ID2A8CMPD_state = {
     CMPD_ready: number;
 };
 
-export type ID405VIN_16 = {
+export type ID2A8CMPD_state = {
+    frameId: 680;
+    name: "ID2A8CMPD_state";
+    signals: ID2A8CMPD_state_Signals;
+};
+
+export type ID405VIN_Signals_16 = {
     mux405: 16;
     VINA405: number;
 };
 
-export type ID405VIN_17 = {
+export type ID405VIN_Signals_17 = {
     mux405: 17;
     VINB405: number;
 };
 
-export type ID405VIN_18 = {
+export type ID405VIN_Signals_18 = {
     mux405: 18;
     VINC405: number;
 };
 
-export type ID405VIN = ID405VIN_16 | ID405VIN_17 | ID405VIN_18;
+export type ID405VIN_Signals = ID405VIN_Signals_16 | ID405VIN_Signals_17 | ID405VIN_Signals_18;
 
-export type ID51EFC_info_10 = {
+export type ID405VIN = {
+    frameId: 1029;
+    name: "ID405VIN";
+    signals: ID405VIN_Signals;
+};
+
+export type ID51EFC_info_Signals_10 = {
     FC_infoIndex: 10;
     FC_infoBuildType: number;
     FC_infoBuildConfigID: number;
@@ -3850,7 +4660,7 @@ export type ID51EFC_info_10 = {
     FC_infoComponentID: number;
 };
 
-export type ID51EFC_info_11 = {
+export type ID51EFC_info_Signals_11 = {
     FC_infoIndex: 11;
     FC_infoPcbaID: number;
     FC_infoAssemblyID: number;
@@ -3858,38 +4668,38 @@ export type ID51EFC_info_11 = {
     FC_infoSubUsageID: number;
 };
 
-export type ID51EFC_info_13 = {
+export type ID51EFC_info_Signals_13 = {
     FC_infoIndex: 13;
     FC_infoApplicationCRC: number;
 };
 
-export type ID51EFC_info_14 = {
+export type ID51EFC_info_Signals_14 = {
     FC_infoIndex: 14;
     FC_infoBootSvnRev: number;
 };
 
-export type ID51EFC_info_15 = {
+export type ID51EFC_info_Signals_15 = {
     FC_infoIndex: 15;
     FC_infoBootCRC: number;
 };
 
-export type ID51EFC_info_16 = {
+export type ID51EFC_info_Signals_16 = {
     FC_infoIndex: 16;
     FC_infoCPLDVersionMajor: number;
     FC_infoCPLDVersionMinor: number;
 };
 
-export type ID51EFC_info_17 = {
+export type ID51EFC_info_Signals_17 = {
     FC_infoIndex: 17;
     FC_infoAppGitHashBytes: number;
 };
 
-export type ID51EFC_info_18 = {
+export type ID51EFC_info_Signals_18 = {
     FC_infoIndex: 18;
     FC_infoBootGitHashBytes: number;
 };
 
-export type ID51EFC_info_19 = {
+export type ID51EFC_info_Signals_19 = {
     FC_infoIndex: 19;
     FC_infoPlatformType: number;
     FC_infoMajorVersion: number;
@@ -3898,17 +4708,17 @@ export type ID51EFC_info_19 = {
     FC_infoHardwareRevision: number;
 };
 
-export type ID51EFC_info_20 = {
+export type ID51EFC_info_Signals_20 = {
     FC_infoIndex: 20;
     FC_infoBootUdsProtoVersion: number;
 };
 
-export type ID51EFC_info_22 = {
+export type ID51EFC_info_Signals_22 = {
     FC_infoIndex: 22;
     FC_infoVariantCRC: number;
 };
 
-export type ID51EFC_info_25 = {
+export type ID51EFC_info_Signals_25 = {
     FC_infoIndex: 25;
     FC_partNumChar01: number;
     FC_partNumChar02: number;
@@ -3919,7 +4729,7 @@ export type ID51EFC_info_25 = {
     FC_partNumChar07: number;
 };
 
-export type ID51EFC_info_26 = {
+export type ID51EFC_info_Signals_26 = {
     FC_infoIndex: 26;
     FC_partNumChar08: number;
     FC_partNumChar09: number;
@@ -3930,7 +4740,7 @@ export type ID51EFC_info_26 = {
     FC_partNumChar14: number;
 };
 
-export type ID51EFC_info_27 = {
+export type ID51EFC_info_Signals_27 = {
     FC_infoIndex: 27;
     FC_partNumChar15: number;
     FC_partNumChar16: number;
@@ -3940,9 +4750,15 @@ export type ID51EFC_info_27 = {
     FC_partNumChar20: number;
 };
 
-export type ID51EFC_info = ID51EFC_info_10 | ID51EFC_info_11 | ID51EFC_info_13 | ID51EFC_info_14 | ID51EFC_info_15 | ID51EFC_info_16 | ID51EFC_info_17 | ID51EFC_info_18 | ID51EFC_info_19 | ID51EFC_info_20 | ID51EFC_info_22 | ID51EFC_info_25 | ID51EFC_info_26 | ID51EFC_info_27;
+export type ID51EFC_info_Signals = ID51EFC_info_Signals_10 | ID51EFC_info_Signals_11 | ID51EFC_info_Signals_13 | ID51EFC_info_Signals_14 | ID51EFC_info_Signals_15 | ID51EFC_info_Signals_16 | ID51EFC_info_Signals_17 | ID51EFC_info_Signals_18 | ID51EFC_info_Signals_19 | ID51EFC_info_Signals_20 | ID51EFC_info_Signals_22 | ID51EFC_info_Signals_25 | ID51EFC_info_Signals_26 | ID51EFC_info_Signals_27;
 
-export type ID376FrontInverterTemps = {
+export type ID51EFC_info = {
+    frameId: 1310;
+    name: "ID51EFC_info";
+    signals: ID51EFC_info_Signals;
+};
+
+export type ID376FrontInverterTemps_Signals = {
     TempInvPCB376: number;
     TempInverter376: number;
     TempStator376: number;
@@ -3953,7 +4769,13 @@ export type ID376FrontInverterTemps = {
     DIF_inverterTQF: "INVERTERT_INIT" | "INVERTERT_IRRATIONAL" | "INVERTERT_RATIONAL" | "INVERTERT_UNKNOWN";
 };
 
-export type ID315RearInverterTemps = {
+export type ID376FrontInverterTemps = {
+    frameId: 886;
+    name: "ID376FrontInverterTemps";
+    signals: ID376FrontInverterTemps_Signals;
+};
+
+export type ID315RearInverterTemps_Signals = {
     RearTempInvPCB315: number;
     RearTempInverter315: number;
     RearTempStator315: number;
@@ -3964,15 +4786,33 @@ export type ID315RearInverterTemps = {
     DIR_inverterTQF: "INVERTERT_INIT" | "INVERTERT_IRRATIONAL" | "INVERTERT_RATIONAL" | "INVERTERT_UNKNOWN";
 };
 
-export type ID154RearTorqueOld = {
+export type ID315RearInverterTemps = {
+    frameId: 789;
+    name: "ID315RearInverterTemps";
+    signals: ID315RearInverterTemps_Signals;
+};
+
+export type ID154RearTorqueOld_Signals = {
     RAWTorqueRear154: number;
 };
 
-export type ID3B6odometer = {
+export type ID154RearTorqueOld = {
+    frameId: 340;
+    name: "ID154RearTorqueOld";
+    signals: ID154RearTorqueOld_Signals;
+};
+
+export type ID3B6odometer_Signals = {
     Odometer3B6: "SNA";
 };
 
-export type ID266RearInverterPower = {
+export type ID3B6odometer = {
+    frameId: 950;
+    name: "ID3B6odometer";
+    signals: ID3B6odometer_Signals;
+};
+
+export type ID266RearInverterPower_Signals = {
     RearPower266: number;
     RearHeatPowerOptimal266: number;
     RearHeatPowerMax266: number;
@@ -3981,7 +4821,13 @@ export type ID266RearInverterPower = {
     RearPowerLimit266: number;
 };
 
-export type ID2E5FrontInverterPower = {
+export type ID266RearInverterPower = {
+    frameId: 614;
+    name: "ID266RearInverterPower";
+    signals: ID266RearInverterPower_Signals;
+};
+
+export type ID2E5FrontInverterPower_Signals = {
     FrontPower2E5: number;
     FrontHeatPowerOptimal2E5: number;
     FrontHeatPowerMax2E5: number;
@@ -3990,7 +4836,13 @@ export type ID2E5FrontInverterPower = {
     FrontPowerLimit2E5: number;
 };
 
-export type ID2E6PlaidFrontPower = {
+export type ID2E5FrontInverterPower = {
+    frameId: 741;
+    name: "ID2E5FrontInverterPower";
+    signals: ID2E5FrontInverterPower_Signals;
+};
+
+export type ID2E6PlaidFrontPower_Signals = {
     PFrontPower: number;
     PFrontHeatPowerOptimal: number;
     PFrontHeatPowerMax: number;
@@ -3999,7 +4851,13 @@ export type ID2E6PlaidFrontPower = {
     PFrontPowerLimit: number;
 };
 
-export type ID269LeftRearPower = {
+export type ID2E6PlaidFrontPower = {
+    frameId: 742;
+    name: "ID2E6PlaidFrontPower";
+    signals: ID2E6PlaidFrontPower_Signals;
+};
+
+export type ID269LeftRearPower_Signals = {
     LeftRearPower: number;
     LeftRearHeatPowerOptimal: number;
     LeftRearPowerMax: number;
@@ -4008,7 +4866,13 @@ export type ID269LeftRearPower = {
     LeftRearPowerLimit: number;
 };
 
-export type ID27CRightRearPower = {
+export type ID269LeftRearPower = {
+    frameId: 617;
+    name: "ID269LeftRearPower";
+    signals: ID269LeftRearPower_Signals;
+};
+
+export type ID27CRightRearPower_Signals = {
     RightRearPower: number;
     RightRearHeatPowerOptimal: number;
     RightRearHeatPowerMax: number;
@@ -4017,7 +4881,13 @@ export type ID27CRightRearPower = {
     RightRearPowerLimit: number;
 };
 
-export type ID108DIR_torque = {
+export type ID27CRightRearPower = {
+    frameId: 636;
+    name: "ID27CRightRearPower";
+    signals: ID27CRightRearPower_Signals;
+};
+
+export type ID108DIR_torque_Signals = {
     DIR_torqueChecksum: number;
     DIR_torqueCounter: number;
     DIR_torqueCommand: "SNA";
@@ -4027,14 +4897,26 @@ export type ID108DIR_torque = {
     DIR_slavePedalPos: "SNA";
 };
 
-export type ID132HVBattAmpVolt = {
+export type ID108DIR_torque = {
+    frameId: 264;
+    name: "ID108DIR_torque";
+    signals: ID108DIR_torque_Signals;
+};
+
+export type ID132HVBattAmpVolt_Signals = {
     BattVoltage132: number;
     SmoothBattCurrent132: number;
     RawBattCurrent132: number;
     ChargeHoursRemaining132: number;
 };
 
-export type ID126RearHVStatus = {
+export type ID132HVBattAmpVolt = {
+    frameId: 306;
+    name: "ID132HVBattAmpVolt";
+    signals: ID132HVBattAmpVolt_Signals;
+};
+
+export type ID126RearHVStatus_Signals = {
     RearHighVoltage126: number;
     DIR_vBatQF: "NOT_QUALIFIED" | "QUALIFIED";
     RearMotorCurrent126: number;
@@ -4043,7 +4925,13 @@ export type ID126RearHVStatus = {
     DIR_targetFluxMode: number;
 };
 
-export type ID1A5FrontHVStatus = {
+export type ID126RearHVStatus = {
+    frameId: 294;
+    name: "ID126RearHVStatus";
+    signals: ID126RearHVStatus_Signals;
+};
+
+export type ID1A5FrontHVStatus_Signals = {
     FrontHighVoltage1A5: number;
     DIF_vBatQF: "NOT_QUALIFIED" | "QUALIFIED";
     FrontMotorCurrent1A5: number;
@@ -4052,7 +4940,13 @@ export type ID1A5FrontHVStatus = {
     DIF_targetFluxMode: number;
 };
 
-export type ID127LeftRearHVStatus = {
+export type ID1A5FrontHVStatus = {
+    frameId: 421;
+    name: "ID1A5FrontHVStatus";
+    signals: ID1A5FrontHVStatus_Signals;
+};
+
+export type ID127LeftRearHVStatus_Signals = {
     LeftRear_vBat: number;
     LeftRear_vBatQF: number;
     LeftRear_motorCurrent: number;
@@ -4061,7 +4955,13 @@ export type ID127LeftRearHVStatus = {
     LeftRear_targetFluxMode: number;
 };
 
-export type ID12ARightRearHVStatus = {
+export type ID127LeftRearHVStatus = {
+    frameId: 295;
+    name: "ID127LeftRearHVStatus";
+    signals: ID127LeftRearHVStatus_Signals;
+};
+
+export type ID12ARightRearHVStatus_Signals = {
     RightRear_vBat: number;
     RightRear_vBatQF: number;
     RightRear_motorCurrent: number;
@@ -4070,7 +4970,13 @@ export type ID12ARightRearHVStatus = {
     RightRear_targetFluxMode: number;
 };
 
-export type ID31FTPMSsensors = {
+export type ID12ARightRearHVStatus = {
+    frameId: 298;
+    name: "ID12ARightRearHVStatus";
+    signals: ID12ARightRearHVStatus_Signals;
+};
+
+export type ID31FTPMSsensors_Signals = {
     TPMSFLpressure31F: number;
     TPMSFLtemp31F: number;
     TPMSFRpressure31F: number;
@@ -4081,14 +4987,26 @@ export type ID31FTPMSsensors = {
     TPMSRRtemp31F: number;
 };
 
-export type ID3FEbrakeTemps = {
+export type ID31FTPMSsensors = {
+    frameId: 799;
+    name: "ID31FTPMSsensors";
+    signals: ID31FTPMSsensors_Signals;
+};
+
+export type ID3FEbrakeTemps_Signals = {
     BrakeTempFL3FE: number;
     BrakeTempFR3FE: number;
     BrakeTempRL3FE: number;
     BrakeTempRR3FE: number;
 };
 
-export type ID228EPBrightStatus = {
+export type ID3FEbrakeTemps = {
+    frameId: 1022;
+    name: "ID3FEbrakeTemps";
+    signals: ID3FEbrakeTemps_Signals;
+};
+
+export type ID228EPBrightStatus_Signals = {
     EPBRunitStatus228: "DriveReleased" | "ParkEngaged" | "Engaging" | "Disengaging";
     EPBRunitFaultStatus228: number;
     EPBRsummonState228: number;
@@ -4106,7 +5024,13 @@ export type ID228EPBrightStatus = {
     EPBRinternalStatusChecksum228: number;
 };
 
-export type ID288EPBleftStatus = {
+export type ID228EPBrightStatus = {
+    frameId: 552;
+    name: "ID228EPBrightStatus";
+    signals: ID228EPBrightStatus_Signals;
+};
+
+export type ID288EPBleftStatus_Signals = {
     EPBLunitStatus288: "DriveReleased" | "ParkEngaged" | "Engaging" | "Disengaging";
     EPBLunitFaultStatus288: number;
     EPBLsummonState288: number;
@@ -4124,7 +5048,13 @@ export type ID288EPBleftStatus = {
     EPBLinternalStatusChecksum288: number;
 };
 
-export type ID72ABMS_serialNumber_0 = {
+export type ID288EPBleftStatus = {
+    frameId: 648;
+    name: "ID288EPBleftStatus";
+    signals: ID288EPBleftStatus_Signals;
+};
+
+export type ID72ABMS_serialNumber_Signals_0 = {
     BMS_serialNumberMultiplexer: 0;
     BMS_packSerialNumberByte01: number;
     BMS_packSerialNumberByte02: number;
@@ -4135,7 +5065,7 @@ export type ID72ABMS_serialNumber_0 = {
     BMS_packSerialNumberByte07: number;
 };
 
-export type ID72ABMS_serialNumber_1 = {
+export type ID72ABMS_serialNumber_Signals_1 = {
     BMS_serialNumberMultiplexer: 1;
     BMS_packSerialNumberByte08: number;
     BMS_packSerialNumberByte09: number;
@@ -4146,9 +5076,15 @@ export type ID72ABMS_serialNumber_1 = {
     BMS_packSerialNumberByte14: number;
 };
 
-export type ID72ABMS_serialNumber = ID72ABMS_serialNumber_0 | ID72ABMS_serialNumber_1;
+export type ID72ABMS_serialNumber_Signals = ID72ABMS_serialNumber_Signals_0 | ID72ABMS_serialNumber_Signals_1;
 
-export type ID7FFcarConfig_1 = {
+export type ID72ABMS_serialNumber = {
+    frameId: 1834;
+    name: "ID72ABMS_serialNumber";
+    signals: ID72ABMS_serialNumber_Signals;
+};
+
+export type ID7FFcarConfig_Signals_1 = {
     GTW_carConfigMultiplexer: 1;
     GTW_deliveryStatus: "NOT_DELIVERED" | "DELIVERED";
     GTW_epasType: "MANDO_VGR69_GEN3";
@@ -4162,7 +5098,7 @@ export type ID7FFcarConfig_1 = {
     GTW_restraintsHardwareType: "NA_M3" | "EUROW_ECALL_M3" | "EUROW_NO_ECALL_M3" | "NA_MY_OLD" | "NA_MY" | "EUROW_ECALL_MY" | "EUROW_NO_ECALL_MY";
 };
 
-export type ID7FFcarConfig_2 = {
+export type ID7FFcarConfig_Signals_2 = {
     GTW_carConfigMultiplexer: 2;
     GTW_frontSeatHeaters: "NONE" | "KONGSBERG_LOW_POWER";
     GTW_rearSeatHeaters: "NONE" | "KONGSBERG_LOW_POWER";
@@ -4199,7 +5135,7 @@ export type ID7FFcarConfig_2 = {
     GTW_roofGlassType: "TSA3_PET" | "TSA5_NOPET";
 };
 
-export type ID7FFcarConfig_3 = {
+export type ID7FFcarConfig_Signals_3 = {
     GTW_carConfigMultiplexer: 3;
     GTW_mapRegion: "US" | "EU" | "NONE" | "CN" | "AU" | "JP" | "TW" | "KR" | "ME" | "HK" | "MO";
     GTW_performancePackage: "BASE" | "PERFORMANCE" | "LUDICROUS" | "BASE_PLUS" | "BASE_PLUS_AWD";
@@ -4226,7 +5162,7 @@ export type ID7FFcarConfig_3 = {
     GTW_twelveVBatteryType: "ATLASBX_B24_FLOODED" | "CLARIOS_B24_FLOODED";
 };
 
-export type ID7FFcarConfig_4 = {
+export type ID7FFcarConfig_Signals_4 = {
     GTW_carConfigMultiplexer: 4;
     GTW_birthday: number;
     GTW_eCallEnabled: "DISABLED" | "ENABLED_OHC_SOS" | "ENABLED_UI_SOS";
@@ -4236,9 +5172,15 @@ export type ID7FFcarConfig_4 = {
     GTW_steeringColumnMotorType: "BOSCH" | "JE";
 };
 
-export type ID7FFcarConfig = ID7FFcarConfig_1 | ID7FFcarConfig_2 | ID7FFcarConfig_3 | ID7FFcarConfig_4;
+export type ID7FFcarConfig_Signals = ID7FFcarConfig_Signals_1 | ID7FFcarConfig_Signals_2 | ID7FFcarConfig_Signals_3 | ID7FFcarConfig_Signals_4;
 
-export type ID332BattBrickMinMax_0 = {
+export type ID7FFcarConfig = {
+    frameId: 2047;
+    name: "ID7FFcarConfig";
+    signals: ID7FFcarConfig_Signals;
+};
+
+export type ID332BattBrickMinMax_Signals_0 = {
     BattBrickMultiplexer332: 0;
     BattBrickempMaxNum332: number;
     BattBrickTempMinNum332: number;
@@ -4248,7 +5190,7 @@ export type ID332BattBrickMinMax_0 = {
     BattBrickModelTMin332: number;
 };
 
-export type ID332BattBrickMinMax_1 = {
+export type ID332BattBrickMinMax_Signals_1 = {
     BattBrickMultiplexer332: 1;
     BattBrickVoltageMax332: number;
     BattBrickVoltageMin332: number;
@@ -4256,601 +5198,290 @@ export type ID332BattBrickMinMax_1 = {
     BattBrickVoltageMinNum332: number;
 };
 
-export type ID332BattBrickMinMax = ID332BattBrickMinMax_0 | ID332BattBrickMinMax_1;
+export type ID332BattBrickMinMax_Signals = ID332BattBrickMinMax_Signals_0 | ID332BattBrickMinMax_Signals_1;
 
-export type ID401BrickVoltages_0 = {
+export type ID332BattBrickMinMax = {
+    frameId: 818;
+    name: "ID332BattBrickMinMax";
+    signals: ID332BattBrickMinMax_Signals;
+};
+
+export type ID401BrickVoltages_Signals_0 = {
     MultiplexSelector: 0;
     Brick0: number;
     Brick1: number;
     Brick2: number;
 };
 
-export type ID401BrickVoltages_1 = {
+export type ID401BrickVoltages_Signals_1 = {
     MultiplexSelector: 1;
     Brick3: number;
     Brick4: number;
     Brick5: number;
 };
 
-export type ID401BrickVoltages_2 = {
+export type ID401BrickVoltages_Signals_2 = {
     MultiplexSelector: 2;
     Brick6: number;
     Brick7: number;
     Brick8: number;
 };
 
-export type ID401BrickVoltages_3 = {
+export type ID401BrickVoltages_Signals_3 = {
     MultiplexSelector: 3;
     Brick9: number;
     Brick10: number;
     Brick11: number;
 };
 
-export type ID401BrickVoltages_4 = {
+export type ID401BrickVoltages_Signals_4 = {
     MultiplexSelector: 4;
     Brick12: number;
     Brick13: number;
     Brick14: number;
 };
 
-export type ID401BrickVoltages_5 = {
+export type ID401BrickVoltages_Signals_5 = {
     MultiplexSelector: 5;
     Brick15: number;
     Brick16: number;
     Brick17: number;
 };
 
-export type ID401BrickVoltages_6 = {
+export type ID401BrickVoltages_Signals_6 = {
     MultiplexSelector: 6;
     Brick18: number;
     Brick19: number;
     Brick20: number;
 };
 
-export type ID401BrickVoltages_7 = {
+export type ID401BrickVoltages_Signals_7 = {
     MultiplexSelector: 7;
     Brick21: number;
     Brick22: number;
     Brick23: number;
 };
 
-export type ID401BrickVoltages_8 = {
+export type ID401BrickVoltages_Signals_8 = {
     MultiplexSelector: 8;
     Brick24: number;
     Brick25: number;
     Brick26: number;
 };
 
-export type ID401BrickVoltages_9 = {
+export type ID401BrickVoltages_Signals_9 = {
     MultiplexSelector: 9;
     Brick27: number;
     Brick28: number;
     Brick29: number;
 };
 
-export type ID401BrickVoltages_10 = {
+export type ID401BrickVoltages_Signals_10 = {
     MultiplexSelector: 10;
     Brick30: number;
     Brick31: number;
     Brick32: number;
 };
 
-export type ID401BrickVoltages_11 = {
+export type ID401BrickVoltages_Signals_11 = {
     MultiplexSelector: 11;
     Brick34: number;
     Brick33: number;
     Brick35: number;
 };
 
-export type ID401BrickVoltages_12 = {
+export type ID401BrickVoltages_Signals_12 = {
     MultiplexSelector: 12;
     Brick36: number;
     Brick37: number;
     Brick38: number;
 };
 
-export type ID401BrickVoltages_13 = {
+export type ID401BrickVoltages_Signals_13 = {
     MultiplexSelector: 13;
     Brick39: number;
     Brick40: number;
     Brick41: number;
 };
 
-export type ID401BrickVoltages_14 = {
+export type ID401BrickVoltages_Signals_14 = {
     MultiplexSelector: 14;
     Brick42: number;
     Brick43: number;
     Brick44: number;
 };
 
-export type ID401BrickVoltages_15 = {
+export type ID401BrickVoltages_Signals_15 = {
     MultiplexSelector: 15;
     Brick45: number;
     Brick46: number;
     Brick47: number;
 };
 
-export type ID401BrickVoltages_16 = {
+export type ID401BrickVoltages_Signals_16 = {
     MultiplexSelector: 16;
     Brick48: number;
     Brick49: number;
     Brick50: number;
 };
 
-export type ID401BrickVoltages_17 = {
+export type ID401BrickVoltages_Signals_17 = {
     MultiplexSelector: 17;
     Brick51: number;
     Brick52: number;
     Brick53: number;
 };
 
-export type ID401BrickVoltages_18 = {
+export type ID401BrickVoltages_Signals_18 = {
     MultiplexSelector: 18;
     Brick54: number;
     Brick55: number;
     Brick56: number;
 };
 
-export type ID401BrickVoltages_19 = {
+export type ID401BrickVoltages_Signals_19 = {
     MultiplexSelector: 19;
     Brick57: number;
     Brick58: number;
     Brick59: number;
 };
 
-export type ID401BrickVoltages_20 = {
+export type ID401BrickVoltages_Signals_20 = {
     MultiplexSelector: 20;
     Brick60: number;
     Brick61: number;
     Brick62: number;
 };
 
-export type ID401BrickVoltages_21 = {
+export type ID401BrickVoltages_Signals_21 = {
     MultiplexSelector: 21;
     Brick63: number;
     Brick64: number;
     Brick65: number;
 };
 
-export type ID401BrickVoltages_22 = {
+export type ID401BrickVoltages_Signals_22 = {
     MultiplexSelector: 22;
     Brick66: number;
     Brick67: number;
     Brick68: number;
 };
 
-export type ID401BrickVoltages_23 = {
+export type ID401BrickVoltages_Signals_23 = {
     MultiplexSelector: 23;
     Brick69: number;
     Brick70: number;
     Brick71: number;
 };
 
-export type ID401BrickVoltages_24 = {
+export type ID401BrickVoltages_Signals_24 = {
     MultiplexSelector: 24;
     Brick72: number;
     Brick73: number;
     Brick74: number;
 };
 
-export type ID401BrickVoltages_25 = {
+export type ID401BrickVoltages_Signals_25 = {
     MultiplexSelector: 25;
     Brick75: number;
     Brick76: number;
     Brick77: number;
 };
 
-export type ID401BrickVoltages_26 = {
+export type ID401BrickVoltages_Signals_26 = {
     MultiplexSelector: 26;
     Brick78: number;
     Brick79: number;
     Brick80: number;
 };
 
-export type ID401BrickVoltages_27 = {
+export type ID401BrickVoltages_Signals_27 = {
     MultiplexSelector: 27;
     Brick81: number;
     Brick82: number;
     Brick83: number;
 };
 
-export type ID401BrickVoltages_28 = {
+export type ID401BrickVoltages_Signals_28 = {
     MultiplexSelector: 28;
     Brick84: number;
     Brick85: number;
     Brick86: number;
 };
 
-export type ID401BrickVoltages_29 = {
+export type ID401BrickVoltages_Signals_29 = {
     MultiplexSelector: 29;
     Brick87: number;
     Brick88: number;
     Brick89: number;
 };
 
-export type ID401BrickVoltages_30 = {
+export type ID401BrickVoltages_Signals_30 = {
     MultiplexSelector: 30;
     Brick90: number;
     Brick91: number;
     Brick92: number;
 };
 
-export type ID401BrickVoltages_31 = {
+export type ID401BrickVoltages_Signals_31 = {
     MultiplexSelector: 31;
     Brick93: number;
     Brick94: number;
     Brick95: number;
 };
 
-export type ID401BrickVoltages_32 = {
+export type ID401BrickVoltages_Signals_32 = {
     MultiplexSelector: 32;
     Brick96: number;
     Brick97: number;
     Brick98: number;
 };
 
-export type ID401BrickVoltages_33 = {
+export type ID401BrickVoltages_Signals_33 = {
     MultiplexSelector: 33;
     Brick99: number;
     Brick100: number;
     Brick101: number;
 };
 
-export type ID401BrickVoltages_34 = {
+export type ID401BrickVoltages_Signals_34 = {
     MultiplexSelector: 34;
     Brick102: number;
     Brick103: number;
     Brick104: number;
 };
 
-export type ID401BrickVoltages_35 = {
+export type ID401BrickVoltages_Signals_35 = {
     MultiplexSelector: 35;
     Brick105: number;
     Brick106: number;
     Brick107: number;
 };
 
-export type ID401BrickVoltages_36 = {
+export type ID401BrickVoltages_Signals_36 = {
     MultiplexSelector: 36;
     Brick108: number;
     Brick109: number;
     Brick110: number;
 };
 
-export type ID401BrickVoltages = ID401BrickVoltages_0 | ID401BrickVoltages_1 | ID401BrickVoltages_2 | ID401BrickVoltages_3 | ID401BrickVoltages_4 | ID401BrickVoltages_5 | ID401BrickVoltages_6 | ID401BrickVoltages_7 | ID401BrickVoltages_8 | ID401BrickVoltages_9 | ID401BrickVoltages_10 | ID401BrickVoltages_11 | ID401BrickVoltages_12 | ID401BrickVoltages_13 | ID401BrickVoltages_14 | ID401BrickVoltages_15 | ID401BrickVoltages_16 | ID401BrickVoltages_17 | ID401BrickVoltages_18 | ID401BrickVoltages_19 | ID401BrickVoltages_20 | ID401BrickVoltages_21 | ID401BrickVoltages_22 | ID401BrickVoltages_23 | ID401BrickVoltages_24 | ID401BrickVoltages_25 | ID401BrickVoltages_26 | ID401BrickVoltages_27 | ID401BrickVoltages_28 | ID401BrickVoltages_29 | ID401BrickVoltages_30 | ID401BrickVoltages_31 | ID401BrickVoltages_32 | ID401BrickVoltages_33 | ID401BrickVoltages_34 | ID401BrickVoltages_35 | ID401BrickVoltages_36;
+export type ID401BrickVoltages_Signals = ID401BrickVoltages_Signals_0 | ID401BrickVoltages_Signals_1 | ID401BrickVoltages_Signals_2 | ID401BrickVoltages_Signals_3 | ID401BrickVoltages_Signals_4 | ID401BrickVoltages_Signals_5 | ID401BrickVoltages_Signals_6 | ID401BrickVoltages_Signals_7 | ID401BrickVoltages_Signals_8 | ID401BrickVoltages_Signals_9 | ID401BrickVoltages_Signals_10 | ID401BrickVoltages_Signals_11 | ID401BrickVoltages_Signals_12 | ID401BrickVoltages_Signals_13 | ID401BrickVoltages_Signals_14 | ID401BrickVoltages_Signals_15 | ID401BrickVoltages_Signals_16 | ID401BrickVoltages_Signals_17 | ID401BrickVoltages_Signals_18 | ID401BrickVoltages_Signals_19 | ID401BrickVoltages_Signals_20 | ID401BrickVoltages_Signals_21 | ID401BrickVoltages_Signals_22 | ID401BrickVoltages_Signals_23 | ID401BrickVoltages_Signals_24 | ID401BrickVoltages_Signals_25 | ID401BrickVoltages_Signals_26 | ID401BrickVoltages_Signals_27 | ID401BrickVoltages_Signals_28 | ID401BrickVoltages_Signals_29 | ID401BrickVoltages_Signals_30 | ID401BrickVoltages_Signals_31 | ID401BrickVoltages_Signals_32 | ID401BrickVoltages_Signals_33 | ID401BrickVoltages_Signals_34 | ID401BrickVoltages_Signals_35 | ID401BrickVoltages_Signals_36;
 
-export type ID4F3SeatControl = {
+export type ID401BrickVoltages = {
+    frameId: 1025;
+    name: "ID401BrickVoltages";
+    signals: ID401BrickVoltages_Signals;
+};
+
+export type ID4F3SeatControl_Signals = {
     frontLeftSeatTrackForward: number;
     frontLeftSeatTrackBackward: number;
 };
 
-export type MessagesByName = {
-    ID00CUI_status: ID00CUI_status;
-    ID353UI_status: ID353UI_status;
-    ID016DI_bmsRequest: ID016DI_bmsRequest;
-    ID082UI_tripPlanning: ID082UI_tripPlanning;
-    ID101RCM_inertial1: ID101RCM_inertial1;
-    ID111RCM_inertial2: ID111RCM_inertial2;
-    RCM_inertial2New: RCM_inertial2New;
-    ID102VCLEFT_doorStatus: ID102VCLEFT_doorStatus;
-    ID103VCRIGHT_doorStatus: ID103VCRIGHT_doorStatus;
-    ID113GTW_bmpDebug: ID113GTW_bmpDebug;
-    ID119VCSEC_windowRequests: ID119VCSEC_windowRequests;
-    ID122VCLEFT_doorStatus2: ID122VCLEFT_doorStatus2;
-    ID123UI_alertMatrix1: ID123UI_alertMatrix1;
-    ID142VCLEFT_liftgateStatus: ID142VCLEFT_liftgateStatus;
-    ID145ESP_status: ID145ESP_status;
-    ID1D6DI_limits: ID1D6DI_limits;
-    ID20AHVP_contactorState: ID20AHVP_contactorState;
-    ID20EPARK_sdiFront: ID20EPARK_sdiFront;
-    ID219VCSEC_TPMSData: ID219VCSEC_TPMSData;
-    ID204PCS_chgStatus: ID204PCS_chgStatus;
-    ID22AHVP_pcsControl: ID22AHVP_pcsControl;
-    ID232BMS_contactorRequest: ID232BMS_contactorRequest;
-    ID273UI_vehicleControl: ID273UI_vehicleControl;
-    ID27DCP_dcChargeLimits: ID27DCP_dcChargeLimits;
-    ID2BDCP_dcPowerLimits: ID2BDCP_dcPowerLimits;
-    ID42AVCSEC_TPMSConnectionData: ID42AVCSEC_TPMSConnectionData;
-    ID22EPARK_sdiRear: ID22EPARK_sdiRear;
-    ID238UI_driverAssistMapData: ID238UI_driverAssistMapData;
-    ID239DAS_lanes: ID239DAS_lanes;
-    ID24ADAS_visualDebug: ID24ADAS_visualDebug;
-    ID25BAPP_environment: ID25BAPP_environment;
-    ID25DCP_status: ID25DCP_status;
-    ID29DCP_dcChargeStatus: ID29DCP_dcChargeStatus;
-    ID2B4PCS_dcdcRailStatus: ID2B4PCS_dcdcRailStatus;
-    ID2B9DAS_control: ID2B9DAS_control;
-    ID2D3UI_solarData: ID2D3UI_solarData;
-    ID309DAS_object: ID309DAS_object;
-    ID389DAS_status2: ID389DAS_status2;
-    ID399DAS_status: ID399DAS_status;
-    ID39DIBST_status: ID39DIBST_status;
-    ID3A1VCFRONT_vehicleStatus: ID3A1VCFRONT_vehicleStatus;
-    ID3D9UI_gpsVehicleSpeed: ID3D9UI_gpsVehicleSpeed;
-    ID3E2VCLEFT_lightStatus: ID3E2VCLEFT_lightStatus;
-    ID3E9DAS_bodyControls: ID3E9DAS_bodyControls;
-    ID3F3UI_odo: ID3F3UI_odo;
-    ID3F5VCFRONT_lighting: ID3F5VCFRONT_lighting;
-    ID3F8UI_driverAssistControl: ID3F8UI_driverAssistControl;
-    ID3FDUI_autopilotControl: ID3FDUI_autopilotControl;
-    ID267DI_vehicleEstimates: ID267DI_vehicleEstimates;
-    ID282VCLEFT_hvacBlowerFeedback: ID282VCLEFT_hvacBlowerFeedback;
-    ID2F3UI_hvacRequest: ID2F3UI_hvacRequest;
-    ID313UI_trackModeSettings: ID313UI_trackModeSettings;
-    ID335RearDIinfo: ID335RearDIinfo;
-    ID383VCRIGHT_thsStatus: ID383VCRIGHT_thsStatus;
-    ID3B3UI_vehicleControl2: ID3B3UI_vehicleControl2;
-    ID3C3VCRIGHT_switchStatus: ID3C3VCRIGHT_switchStatus;
-    ID3E3VCRIGHT_lightStatus: ID3E3VCRIGHT_lightStatus;
-    ID656FrontDIinfo: ID656FrontDIinfo;
-    ID300BMS_info: ID300BMS_info;
-    ID212BMS_status: ID212BMS_status;
-    ID31CCC_chgStatus: ID31CCC_chgStatus;
-    ID23DCP_chargeStatus: ID23DCP_chargeStatus;
-    ID13DCP_chargeStatus: ID13DCP_chargeStatus;
-    ID43DCP_chargeStatusLog: ID43DCP_chargeStatusLog;
-    ID21DCP_evseStatus: ID21DCP_evseStatus;
-    ID743VCRIGHT_recallStatus: ID743VCRIGHT_recallStatus;
-    ID75DCP_sensorData: ID75DCP_sensorData;
-    ID287PTCcabinHeatSensorStatus: ID287PTCcabinHeatSensorStatus;
-    ID333UI_chargeRequest: ID333UI_chargeRequest;
-    ID334UI_powertrainControl: ID334UI_powertrainControl;
-    ID33AUI_rangeSOC: ID33AUI_rangeSOC;
-    ID241VCFRONT_coolant: ID241VCFRONT_coolant;
-    ID3BBUI_power: ID3BBUI_power;
-    ID5D5RearDItemps: ID5D5RearDItemps;
-    ID556FrontDItemps: ID556FrontDItemps;
-    ID557FrontThermalControl: ID557FrontThermalControl;
-    ID5D7RearThermalControl: ID5D7RearThermalControl;
-    ID7D5DIR_debug: ID7D5DIR_debug;
-    ID757DIF_debug: ID757DIF_debug;
-    ID2B6DI_chassisControlStatus: ID2B6DI_chassisControlStatus;
-    ID284UIvehicleModes: ID284UIvehicleModes;
-    ID221VCFRONT_LVPowerState: ID221VCFRONT_LVPowerState;
-    ID225VCRIGHT_LVPowerState: ID225VCRIGHT_LVPowerState;
-    ID2F1VCFRONT_eFuseDebugStatus: ID2F1VCFRONT_eFuseDebugStatus;
-    ID242VCLEFT_LVPowerState: ID242VCLEFT_LVPowerState;
-    ID243VCRIGHT_hvacStatus: ID243VCRIGHT_hvacStatus;
-    ID20CVCRIGHT_hvacRequest: ID20CVCRIGHT_hvacRequest;
-    ID2E1VCFRONT_status: ID2E1VCFRONT_status;
-    ID381VCFRONT_logging1Hz: ID381VCFRONT_logging1Hz;
-    ID318SystemTimeUTC: ID318SystemTimeUTC;
-    ID528UnixTime: ID528UnixTime;
-    ID229GearLever: ID229GearLever;
-    ID249SCCMLeftStalk: ID249SCCMLeftStalk;
-    ID186DIF_torque: ID186DIF_torque;
-    ID396FrontOilPump: ID396FrontOilPump;
-    ID395DIR_oilPump: ID395DIR_oilPump;
-    ID1D8RearTorque: ID1D8RearTorque;
-    ID155WheelAngles: ID155WheelAngles;
-    ID175WheelSpeed: ID175WheelSpeed;
-    ID185ESP_brakeTorque: ID185ESP_brakeTorque;
-    ID1D4FrontTorqueOld: ID1D4FrontTorqueOld;
-    ID1D5FrontTorque: ID1D5FrontTorque;
-    ID281VCFRONT_CMPRequest: ID281VCFRONT_CMPRequest;
-    ID3C2VCLEFT_switchStatus: ID3C2VCLEFT_switchStatus;
-    ID336MaxPowerRating: ID336MaxPowerRating;
-    ID293UI_chassisControl: ID293UI_chassisControl;
-    ID268SystemPower: ID268SystemPower;
-    ID04FGPSLatLong: ID04FGPSLatLong;
-    ID3D2TotalChargeDischarge: ID3D2TotalChargeDischarge;
-    ID3F2BMSCounters: ID3F2BMSCounters;
-    ID2D2BMSVAlimits: ID2D2BMSVAlimits;
-    ID541FastChargeMaxLimits: ID541FastChargeMaxLimits;
-    ID244FastChargeLimits: ID244FastChargeLimits;
-    ID214FastChargeVA: ID214FastChargeVA;
-    ID215FCisolation: ID215FCisolation;
-    ID217FC_status3: ID217FC_status3;
-    ID321VCFRONT_sensors: ID321VCFRONT_sensors;
-    ID301VCFRONT_info: ID301VCFRONT_info;
-    ID201VCFRONT_loggingAndVitals10Hz: ID201VCFRONT_loggingAndVitals10Hz;
-    ID3D8Elevation: ID3D8Elevation;
-    ID261_12vBattStatus: ID261_12vBattStatus;
-    ID129SteeringAngle: ID129SteeringAngle;
-    ID264ChargeLineStatus: ID264ChargeLineStatus;
-    ID224PCSDCDCstatus: ID224PCSDCDCstatus;
-    ID227CMP_state: ID227CMP_state;
-    ID118DriveSystemStatus: ID118DriveSystemStatus;
-    ID352BMS_energyStatus: ID352BMS_energyStatus;
-    ID37DCP_thermalStatus: ID37DCP_thermalStatus;
-    ID392BMS_packConfig: ID392BMS_packConfig;
-    ID252BMS_powerAvailable: ID252BMS_powerAvailable;
-    ID312BMSthermal: ID312BMSthermal;
-    ID292BMS_SOC: ID292BMS_SOC;
-    ID257DIspeed: ID257DIspeed;
-    ID2A8CMPD_state: ID2A8CMPD_state;
-    ID405VIN: ID405VIN;
-    ID51EFC_info: ID51EFC_info;
-    ID376FrontInverterTemps: ID376FrontInverterTemps;
-    ID315RearInverterTemps: ID315RearInverterTemps;
-    ID154RearTorqueOld: ID154RearTorqueOld;
-    ID3B6odometer: ID3B6odometer;
-    ID266RearInverterPower: ID266RearInverterPower;
-    ID2E5FrontInverterPower: ID2E5FrontInverterPower;
-    ID2E6PlaidFrontPower: ID2E6PlaidFrontPower;
-    ID269LeftRearPower: ID269LeftRearPower;
-    ID27CRightRearPower: ID27CRightRearPower;
-    ID108DIR_torque: ID108DIR_torque;
-    ID132HVBattAmpVolt: ID132HVBattAmpVolt;
-    ID126RearHVStatus: ID126RearHVStatus;
-    ID1A5FrontHVStatus: ID1A5FrontHVStatus;
-    ID127LeftRearHVStatus: ID127LeftRearHVStatus;
-    ID12ARightRearHVStatus: ID12ARightRearHVStatus;
-    ID31FTPMSsensors: ID31FTPMSsensors;
-    ID3FEbrakeTemps: ID3FEbrakeTemps;
-    ID228EPBrightStatus: ID228EPBrightStatus;
-    ID288EPBleftStatus: ID288EPBleftStatus;
-    ID72ABMS_serialNumber: ID72ABMS_serialNumber;
-    ID7FFcarConfig: ID7FFcarConfig;
-    ID332BattBrickMinMax: ID332BattBrickMinMax;
-    ID401BrickVoltages: ID401BrickVoltages;
-    ID4F3SeatControl: ID4F3SeatControl;
+export type ID4F3SeatControl = {
+    frameId: 1267;
+    name: "ID4F3SeatControl";
+    signals: ID4F3SeatControl_Signals;
 };
 
-export type MessagesById = {
-    12: ID00CUI_status;
-    851: ID353UI_status;
-    22: ID016DI_bmsRequest;
-    130: ID082UI_tripPlanning;
-    257: ID101RCM_inertial1;
-    273: ID111RCM_inertial2;
-    278: RCM_inertial2New;
-    258: ID102VCLEFT_doorStatus;
-    259: ID103VCRIGHT_doorStatus;
-    275: ID113GTW_bmpDebug;
-    281: ID119VCSEC_windowRequests;
-    290: ID122VCLEFT_doorStatus2;
-    291: ID123UI_alertMatrix1;
-    322: ID142VCLEFT_liftgateStatus;
-    325: ID145ESP_status;
-    470: ID1D6DI_limits;
-    522: ID20AHVP_contactorState;
-    526: ID20EPARK_sdiFront;
-    537: ID219VCSEC_TPMSData;
-    516: ID204PCS_chgStatus;
-    554: ID22AHVP_pcsControl;
-    562: ID232BMS_contactorRequest;
-    627: ID273UI_vehicleControl;
-    637: ID27DCP_dcChargeLimits;
-    701: ID2BDCP_dcPowerLimits;
-    1066: ID42AVCSEC_TPMSConnectionData;
-    558: ID22EPARK_sdiRear;
-    568: ID238UI_driverAssistMapData;
-    569: ID239DAS_lanes;
-    586: ID24ADAS_visualDebug;
-    603: ID25BAPP_environment;
-    605: ID25DCP_status;
-    669: ID29DCP_dcChargeStatus;
-    692: ID2B4PCS_dcdcRailStatus;
-    697: ID2B9DAS_control;
-    723: ID2D3UI_solarData;
-    777: ID309DAS_object;
-    905: ID389DAS_status2;
-    921: ID399DAS_status;
-    925: ID39DIBST_status;
-    929: ID3A1VCFRONT_vehicleStatus;
-    985: ID3D9UI_gpsVehicleSpeed;
-    994: ID3E2VCLEFT_lightStatus;
-    1001: ID3E9DAS_bodyControls;
-    1011: ID3F3UI_odo;
-    1013: ID3F5VCFRONT_lighting;
-    1016: ID3F8UI_driverAssistControl;
-    1021: ID3FDUI_autopilotControl;
-    615: ID267DI_vehicleEstimates;
-    642: ID282VCLEFT_hvacBlowerFeedback;
-    755: ID2F3UI_hvacRequest;
-    787: ID313UI_trackModeSettings;
-    821: ID335RearDIinfo;
-    899: ID383VCRIGHT_thsStatus;
-    947: ID3B3UI_vehicleControl2;
-    963: ID3C3VCRIGHT_switchStatus;
-    995: ID3E3VCRIGHT_lightStatus;
-    1622: ID656FrontDIinfo;
-    768: ID300BMS_info;
-    530: ID212BMS_status;
-    796: ID31CCC_chgStatus;
-    573: ID23DCP_chargeStatus;
-    317: ID13DCP_chargeStatus;
-    1085: ID43DCP_chargeStatusLog;
-    541: ID21DCP_evseStatus;
-    1859: ID743VCRIGHT_recallStatus;
-    1885: ID75DCP_sensorData;
-    647: ID287PTCcabinHeatSensorStatus;
-    819: ID333UI_chargeRequest;
-    820: ID334UI_powertrainControl;
-    826: ID33AUI_rangeSOC;
-    577: ID241VCFRONT_coolant;
-    955: ID3BBUI_power;
-    1493: ID5D5RearDItemps;
-    1366: ID556FrontDItemps;
-    1367: ID557FrontThermalControl;
-    1495: ID5D7RearThermalControl;
-    2005: ID7D5DIR_debug;
-    1879: ID757DIF_debug;
-    694: ID2B6DI_chassisControlStatus;
-    644: ID284UIvehicleModes;
-    545: ID221VCFRONT_LVPowerState;
-    549: ID225VCRIGHT_LVPowerState;
-    753: ID2F1VCFRONT_eFuseDebugStatus;
-    578: ID242VCLEFT_LVPowerState;
-    579: ID243VCRIGHT_hvacStatus;
-    524: ID20CVCRIGHT_hvacRequest;
-    737: ID2E1VCFRONT_status;
-    897: ID381VCFRONT_logging1Hz;
-    792: ID318SystemTimeUTC;
-    1320: ID528UnixTime;
-    553: ID229GearLever;
-    585: ID249SCCMLeftStalk;
-    390: ID186DIF_torque;
-    918: ID396FrontOilPump;
-    917: ID395DIR_oilPump;
-    472: ID1D8RearTorque;
-    341: ID155WheelAngles;
-    373: ID175WheelSpeed;
-    389: ID185ESP_brakeTorque;
-    468: ID1D4FrontTorqueOld;
-    469: ID1D5FrontTorque;
-    641: ID281VCFRONT_CMPRequest;
-    962: ID3C2VCLEFT_switchStatus;
-    822: ID336MaxPowerRating;
-    659: ID293UI_chassisControl;
-    616: ID268SystemPower;
-    79: ID04FGPSLatLong;
-    978: ID3D2TotalChargeDischarge;
-    1010: ID3F2BMSCounters;
-    722: ID2D2BMSVAlimits;
-    1345: ID541FastChargeMaxLimits;
-    580: ID244FastChargeLimits;
-    532: ID214FastChargeVA;
-    533: ID215FCisolation;
-    535: ID217FC_status3;
-    801: ID321VCFRONT_sensors;
-    769: ID301VCFRONT_info;
-    513: ID201VCFRONT_loggingAndVitals10Hz;
-    984: ID3D8Elevation;
-    609: ID261_12vBattStatus;
-    297: ID129SteeringAngle;
-    612: ID264ChargeLineStatus;
-    548: ID224PCSDCDCstatus;
-    551: ID227CMP_state;
-    280: ID118DriveSystemStatus;
-    850: ID352BMS_energyStatus;
-    893: ID37DCP_thermalStatus;
-    914: ID392BMS_packConfig;
-    594: ID252BMS_powerAvailable;
-    786: ID312BMSthermal;
-    658: ID292BMS_SOC;
-    599: ID257DIspeed;
-    680: ID2A8CMPD_state;
-    1029: ID405VIN;
-    1310: ID51EFC_info;
-    886: ID376FrontInverterTemps;
-    789: ID315RearInverterTemps;
-    340: ID154RearTorqueOld;
-    950: ID3B6odometer;
-    614: ID266RearInverterPower;
-    741: ID2E5FrontInverterPower;
-    742: ID2E6PlaidFrontPower;
-    617: ID269LeftRearPower;
-    636: ID27CRightRearPower;
-    264: ID108DIR_torque;
-    306: ID132HVBattAmpVolt;
-    294: ID126RearHVStatus;
-    421: ID1A5FrontHVStatus;
-    295: ID127LeftRearHVStatus;
-    298: ID12ARightRearHVStatus;
-    799: ID31FTPMSsensors;
-    1022: ID3FEbrakeTemps;
-    552: ID228EPBrightStatus;
-    648: ID288EPBleftStatus;
-    1834: ID72ABMS_serialNumber;
-    2047: ID7FFcarConfig;
-    818: ID332BattBrickMinMax;
-    1025: ID401BrickVoltages;
-    1267: ID4F3SeatControl;
-};
-
-export type DatabaseType = {
-    ByName: MessagesByName;
-    ById: MessagesById;
-};
+export type Messages = ID00CUI_status | ID353UI_status | ID016DI_bmsRequest | ID082UI_tripPlanning | ID101RCM_inertial1 | ID111RCM_inertial2 | RCM_inertial2New | ID102VCLEFT_doorStatus | ID103VCRIGHT_doorStatus | ID113GTW_bmpDebug | ID119VCSEC_windowRequests | ID122VCLEFT_doorStatus2 | ID123UI_alertMatrix1 | ID142VCLEFT_liftgateStatus | ID145ESP_status | ID1D6DI_limits | ID20AHVP_contactorState | ID20EPARK_sdiFront | ID219VCSEC_TPMSData | ID204PCS_chgStatus | ID22AHVP_pcsControl | ID232BMS_contactorRequest | ID273UI_vehicleControl | ID27DCP_dcChargeLimits | ID2BDCP_dcPowerLimits | ID42AVCSEC_TPMSConnectionData | ID22EPARK_sdiRear | ID238UI_driverAssistMapData | ID239DAS_lanes | ID24ADAS_visualDebug | ID25BAPP_environment | ID25DCP_status | ID29DCP_dcChargeStatus | ID2B4PCS_dcdcRailStatus | ID2B9DAS_control | ID2D3UI_solarData | ID309DAS_object | ID389DAS_status2 | ID399DAS_status | ID39DIBST_status | ID3A1VCFRONT_vehicleStatus | ID3D9UI_gpsVehicleSpeed | ID3E2VCLEFT_lightStatus | ID3E9DAS_bodyControls | ID3F3UI_odo | ID3F5VCFRONT_lighting | ID3F8UI_driverAssistControl | ID3FDUI_autopilotControl | ID267DI_vehicleEstimates | ID282VCLEFT_hvacBlowerFeedback | ID2F3UI_hvacRequest | ID313UI_trackModeSettings | ID335RearDIinfo | ID383VCRIGHT_thsStatus | ID3B3UI_vehicleControl2 | ID3C3VCRIGHT_switchStatus | ID3E3VCRIGHT_lightStatus | ID656FrontDIinfo | ID300BMS_info | ID212BMS_status | ID31CCC_chgStatus | ID23DCP_chargeStatus | ID13DCP_chargeStatus | ID43DCP_chargeStatusLog | ID21DCP_evseStatus | ID743VCRIGHT_recallStatus | ID75DCP_sensorData | ID287PTCcabinHeatSensorStatus | ID333UI_chargeRequest | ID334UI_powertrainControl | ID33AUI_rangeSOC | ID241VCFRONT_coolant | ID3BBUI_power | ID5D5RearDItemps | ID556FrontDItemps | ID557FrontThermalControl | ID5D7RearThermalControl | ID7D5DIR_debug | ID757DIF_debug | ID2B6DI_chassisControlStatus | ID284UIvehicleModes | ID221VCFRONT_LVPowerState | ID225VCRIGHT_LVPowerState | ID2F1VCFRONT_eFuseDebugStatus | ID242VCLEFT_LVPowerState | ID243VCRIGHT_hvacStatus | ID20CVCRIGHT_hvacRequest | ID2E1VCFRONT_status | ID381VCFRONT_logging1Hz | ID318SystemTimeUTC | ID528UnixTime | ID229GearLever | ID249SCCMLeftStalk | ID186DIF_torque | ID396FrontOilPump | ID395DIR_oilPump | ID1D8RearTorque | ID155WheelAngles | ID175WheelSpeed | ID185ESP_brakeTorque | ID1D4FrontTorqueOld | ID1D5FrontTorque | ID281VCFRONT_CMPRequest | ID3C2VCLEFT_switchStatus | ID336MaxPowerRating | ID293UI_chassisControl | ID268SystemPower | ID04FGPSLatLong | ID3D2TotalChargeDischarge | ID3F2BMSCounters | ID2D2BMSVAlimits | ID541FastChargeMaxLimits | ID244FastChargeLimits | ID214FastChargeVA | ID215FCisolation | ID217FC_status3 | ID321VCFRONT_sensors | ID301VCFRONT_info | ID201VCFRONT_loggingAndVitals10Hz | ID3D8Elevation | ID261_12vBattStatus | ID129SteeringAngle | ID264ChargeLineStatus | ID224PCSDCDCstatus | ID227CMP_state | ID118DriveSystemStatus | ID352BMS_energyStatus | ID37DCP_thermalStatus | ID392BMS_packConfig | ID252BMS_powerAvailable | ID312BMSthermal | ID292BMS_SOC | ID257DIspeed | ID2A8CMPD_state | ID405VIN | ID51EFC_info | ID376FrontInverterTemps | ID315RearInverterTemps | ID154RearTorqueOld | ID3B6odometer | ID266RearInverterPower | ID2E5FrontInverterPower | ID2E6PlaidFrontPower | ID269LeftRearPower | ID27CRightRearPower | ID108DIR_torque | ID132HVBattAmpVolt | ID126RearHVStatus | ID1A5FrontHVStatus | ID127LeftRearHVStatus | ID12ARightRearHVStatus | ID31FTPMSsensors | ID3FEbrakeTemps | ID228EPBrightStatus | ID288EPBleftStatus | ID72ABMS_serialNumber | ID7FFcarConfig | ID332BattBrickMinMax | ID401BrickVoltages | ID4F3SeatControl;

@@ -9,107 +9,120 @@ import {
   EmitHint,
   type TypeNode,
   type TypeAliasDeclaration,
-} from "typescript";
-import fs from "fs";
-import path from "path";
-import { Signal } from "./signal.js";
-import {
-  Message,
-  type SignalBranch,
-  type SignalNode,
-} from "./message.js";
+} from 'typescript';
+import fs from 'fs';
+import path from 'path';
+import { Signal } from './signal.js';
+import { Message, type SignalBranch, type SignalNode } from './message.js';
 
-export async function generateTypes(messages: Array<Message>, outputDir: string): Promise<void> {
+export async function generateTypes(
+  messages: Array<Message>,
+  outputDir: string,
+): Promise<void> {
   let allTypes: Array<TypeAliasDeclaration> = [];
 
   // Generate message types
-  messages.forEach((message) => {
+  for (let message of messages) {
     if (message.isMultiplexed()) {
-      let types = generateMultiplexedTypes(message, message.signalTree!);
-      allTypes.push(...types);
+      allTypes.push(...generateMultiplexedTypes(message, message.signalTree!));
     } else {
       allTypes.push(generateRegularType(message));
     }
-  });
+
+    let messageType = f.createTypeAliasDeclaration(
+      [f.createModifier(SyntaxKind.ExportKeyword)],
+      f.createIdentifier(message.name),
+      undefined,
+      f.createTypeLiteralNode([
+        f.createPropertySignature(
+          undefined,
+          f.createIdentifier('frameId'),
+          undefined,
+          f.createLiteralTypeNode(f.createNumericLiteral(message.frameId)),
+        ),
+        f.createPropertySignature(
+          undefined,
+          f.createIdentifier('name'),
+          undefined,
+          f.createLiteralTypeNode(f.createStringLiteral(message.name)),
+        ),
+        f.createPropertySignature(
+          undefined,
+          f.createIdentifier('signals'),
+          undefined,
+          f.createTypeReferenceNode(f.createIdentifier(`${message.name}_Signals`)),
+        ),
+      ]),
+    );
+    allTypes.push(messageType);
+  }
 
   // Generate container type
-  allTypes.push(generateContainerType(messages, 'MessagesByName', (message) => message.name));
-  allTypes.push(generateContainerType(messages, 'MessagesById', (message) => message.frameId));
-  allTypes.push(f.createTypeAliasDeclaration(
+  let messageUnion = f.createTypeAliasDeclaration(
     [f.createModifier(SyntaxKind.ExportKeyword)],
-    f.createIdentifier('DatabaseType'),
+    f.createIdentifier('Messages'),
     undefined,
-    f.createTypeLiteralNode([
-      f.createPropertySignature(
-        undefined,
-        f.createIdentifier('ByName'),
-        undefined,
-        f.createTypeReferenceNode(f.createIdentifier('MessagesByName'))
+    f.createUnionTypeNode(
+      messages.map((message) =>
+        f.createTypeReferenceNode(f.createIdentifier(message.name), undefined),
       ),
-      f.createPropertySignature(
-        undefined,
-        f.createIdentifier('ById'),
-        undefined,
-        f.createTypeReferenceNode(f.createIdentifier('MessagesById'))
-      ),
-    ])
-  ));
-
+    ),
+  );
+  allTypes.push(messageUnion);
 
   // Generate output
   let sourceFile = createSourceFile(
-    "types.ts",
-    "",
+    'types.ts',
+    '',
     ScriptTarget.Latest,
     false,
-    ScriptKind.TS
+    ScriptKind.TS,
   );
   let printer = createPrinter({ newLine: NewLineKind.LineFeed });
   let outputs = allTypes.map((type) =>
-    printer.printNode(EmitHint.Unspecified, type, sourceFile)
+    printer.printNode(EmitHint.Unspecified, type, sourceFile),
   );
 
-  let finalOutput = outputs.join("\n\n");
+  let finalOutput = outputs.join('\n\n');
 
   // Write to file
   if (!fs.existsSync(outputDir)) {
     await fs.promises.mkdir(outputDir, { recursive: true });
   }
-  let outputPath = path.join(outputDir, "types.ts");
+  let outputPath = path.join(outputDir, 'types.ts');
   await fs.promises.writeFile(outputPath, finalOutput);
 }
 
 function generateRegularType(message: Message): TypeAliasDeclaration {
-  let members = message.signals.map((signal) => {
-    let typeNode = generateSignalTypeNode(signal);
-    return f.createPropertySignature(
-      undefined,
-      f.createIdentifier(signal.name),
-      undefined,
-      typeNode
-    );
-  });
-
   return f.createTypeAliasDeclaration(
     [f.createModifier(SyntaxKind.ExportKeyword)],
-    f.createIdentifier(message.name),
+    f.createIdentifier(`${message.name}_Signals`),
     undefined,
-    f.createTypeLiteralNode(members)
+    f.createTypeLiteralNode(
+      message.signals.map((signal) =>
+        f.createPropertySignature(
+          undefined,
+          f.createIdentifier(signal.name),
+          undefined,
+          generateSignalTypeNode(signal),
+        ),
+      ),
+    ),
   );
 }
 
 function generateMultiplexedTypes(
   message: Message,
-  signalNodes: Array<SignalNode>
+  signalNodes: Array<SignalNode>,
 ): Array<TypeAliasDeclaration> {
   let types: Array<TypeAliasDeclaration> = [];
 
   for (let node of signalNodes) {
-    if (typeof node === "string") continue;
+    if (typeof node === 'string') continue;
 
     let multiplexName = Object.keys(node)[0];
     if (multiplexName === undefined) {
-      throw new Error("Empty multiplex node");
+      throw new Error('Empty multiplex node');
     }
     let variants = Object.entries(node[multiplexName]!);
 
@@ -119,8 +132,8 @@ function generateMultiplexedTypes(
         message,
         multiplexName,
         index,
-        signals.filter((s): s is string => typeof s === "string")
-      )
+        signals.filter((s): s is string => typeof s === 'string'),
+      ),
     );
     types.push(...variantTypes);
 
@@ -128,16 +141,15 @@ function generateMultiplexedTypes(
     types.push(
       generateMultiplexUnionType(
         message.name,
-        multiplexName,
-        variants.map(([index]) => index)
-      )
+        variants.map(([index]) => index),
+      ),
     );
 
     // Handle nested multiplexers
     variants.forEach(([_, signals]) => {
       let nestedTypes = generateMultiplexedTypes(
         message,
-        signals.filter((s): s is SignalBranch => typeof s !== "string")
+        signals.filter((s): s is SignalBranch => typeof s !== 'string'),
       );
       types.push(...nestedTypes);
     });
@@ -150,7 +162,7 @@ function generateMultiplexVariantType(
   message: Message,
   multiplexName: string,
   index: number | string,
-  signals: Array<string>
+  signals: Array<string>,
 ): TypeAliasDeclaration {
   let signal = message.getSignalByName(multiplexName);
   let discriminantNode: any;
@@ -168,7 +180,7 @@ function generateMultiplexVariantType(
       undefined,
       f.createIdentifier(multiplexName),
       undefined,
-      f.createLiteralTypeNode(discriminantNode)
+      f.createLiteralTypeNode(discriminantNode),
     ),
     // Signal properties
     ...signals.map((signalName) => {
@@ -180,71 +192,45 @@ function generateMultiplexVariantType(
         undefined,
         f.createIdentifier(signalName),
         undefined,
-        typeNode
+        typeNode,
       );
     }),
   ];
 
-  let variantTypeName = `${message.name}_${index}`;
+  let variantTypeName = `${message.name}_Signals_${index}`;
   return f.createTypeAliasDeclaration(
     [f.createModifier(SyntaxKind.ExportKeyword)],
     f.createIdentifier(variantTypeName),
     undefined,
-    f.createTypeLiteralNode(members)
+    f.createTypeLiteralNode(members),
   );
 }
 
 function generateMultiplexUnionType(
   messageName: string,
-  multiplexName: string,
-  variants: Array<string>
+  variants: Array<string>,
 ): TypeAliasDeclaration {
   return f.createTypeAliasDeclaration(
     [f.createModifier(SyntaxKind.ExportKeyword)],
-    f.createIdentifier(messageName),
+    f.createIdentifier(`${messageName}_Signals`),
     undefined,
     f.createUnionTypeNode(
       variants.map((index) =>
         f.createTypeReferenceNode(
-          f.createIdentifier(`${messageName}_${index}`),
-          undefined
-        )
-      )
-    )
+          f.createIdentifier(`${messageName}_Signals_${index}`),
+          undefined,
+        ),
+      ),
+    ),
   );
 }
 
 function generateSignalTypeNode(signal: Signal): TypeNode {
   if (signal.conversion.choices) {
     let literals = Object.values(signal.conversion.choices).map((value) =>
-      f.createLiteralTypeNode(f.createStringLiteral(value))
+      f.createLiteralTypeNode(f.createStringLiteral(value)),
     );
     return f.createUnionTypeNode(literals);
   }
   return f.createKeywordTypeNode(SyntaxKind.NumberKeyword);
-}
-
-function generateContainerType(
-  messages: Array<Message>,
-  containerTypeName: string,
-  propertyIdentifier: (message: Message) => string | number
-): TypeAliasDeclaration {
-  let members = messages.map((message) =>
-    f.createPropertySignature(
-      undefined,
-      f.createIdentifier(propertyIdentifier(message).toString()),
-      undefined,
-      f.createTypeReferenceNode(
-        f.createIdentifier(message.name),
-        undefined
-      )
-    )
-  );
-
-  return f.createTypeAliasDeclaration(
-    [f.createModifier(SyntaxKind.ExportKeyword)],
-    f.createIdentifier(containerTypeName),
-    undefined,
-    f.createTypeLiteralNode(members)
-  );
 }

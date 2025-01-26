@@ -1,18 +1,13 @@
 import { Database } from './database.js';
-import type { DatabaseType } from './__test__/types.js';
+import type { Messages } from './__test__/types.js';
 import { CanSocket } from './index.js';
 
 console.log('ready');
-let db = Database.loadFile<DatabaseType>('js/__test__/files/model-y.kcd');
+let db = Database.loadFile<Messages>('js/__test__/files/model-y.kcd');
 let state = { isMovingSeat: false };
 
-let socket = new CanSocket('can1');
-socket.setFilters([
-  { id: 0x3C2, mask: 0x7FF }
-])
+let socket = new CanSocket('can1', { filters: [{ id: 0x3c2, mask: 0x7ff }] });
 socket.on('message', async (frame) => {
-  if (frame.id !== 0x3c2) return;
-
   let signals = db.decodeMessageById(frame.id, frame.data);
   if (
     signals.VCLEFT_switchStatusIndex === 'VCLEFT_SWITCH_STATUS_INDEX_1' &&

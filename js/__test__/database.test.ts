@@ -1,19 +1,17 @@
 import { expect, test } from 'vitest';
-import { promises as fs } from 'fs';
-import path from 'path';
 import { Database } from '../database.js';
 import { buffer } from './utils.js';
 import {
-  DatabaseType,
-  ID3C2VCLEFT_switchStatus,
-  ID3C2VCLEFT_switchStatus_0,
+  Messages,
+  ID3C2VCLEFT_switchStatus_Signals,
+  ID3C2VCLEFT_switchStatus_Signals_0,
 } from './types.js';
 
 test('encodes and decodes multiplexed messages', async () => {
-  let db = Database.loadFile<DatabaseType>('js/__test__/files/model-y.kcd');
+  let db = Database.loadFile<Messages>('js/__test__/files/model-y.kcd');
   let message = db.getMessageByName('ID3C2VCLEFT_switchStatus');
 
-  let data1: ID3C2VCLEFT_switchStatus = {
+  let data1: ID3C2VCLEFT_switchStatus_Signals = {
     VCLEFT_switchStatusIndex: 'VCLEFT_SWITCH_STATUS_INDEX_1',
     VCLEFT_swcLeftTiltRight: 'SWITCH_OFF',
     VCLEFT_swcLeftPressed: 'SWITCH_OFF',
@@ -40,7 +38,7 @@ test('encodes and decodes multiplexed messages', async () => {
   let decoded1 = message.decode(encoded1);
   expect(decoded1).toEqual(data1);
 
-  let data0: ID3C2VCLEFT_switchStatus_0 = {
+  let data0: ID3C2VCLEFT_switchStatus_Signals_0 = {
     VCLEFT_switchStatusIndex: 'VCLEFT_SWITCH_STATUS_INDEX_0',
     VCLEFT_hornSwitchPressed: 0,
     VCLEFT_hazardButtonPressed: 0,
@@ -91,7 +89,7 @@ test('encodes and decodes multiplexed messages', async () => {
 });
 
 test('seat controls', async () => {
-  let db = Database.loadFile<DatabaseType>('js/__test__/files/model-y.kcd');
+  let db = Database.loadFile<Messages>('js/__test__/files/model-y.kcd');
   let message = db.getMessageByName('ID4F3SeatControl');
 
   let encodedForward = message.encode({
