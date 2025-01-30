@@ -87,15 +87,19 @@ export class CanSchema<T extends MessageType> {
 
   encodeMessage<
     K extends number | T['name'],
-    M extends MessageType = K extends number
-    ? Extract<T, { frameId: K }>
-    : Extract<T, { name: K }>,
-  >(params: {
-    id?: K extends number ? K : M['frameId'];
-    name?: K extends T['name'] ? K : M['name'];
-    data: M['signals'];
-  }): Reveal<EncodedMessage<M>> {
-    return null as any;
+    M extends K extends number ? Extract<T, { frameId: K }> : Extract<T, { name: K }>,
+  >(
+    params:
+      | { id: K extends number ? K : never; name?: M['name']; data: M['signals'] }
+      | { name: K extends T['name'] ? K : never; id?: M['frameId']; data: M['signals'] },
+  ): Reveal<EncodedMessage<M>> {
+    if (params.id) {
+      return this.encodeMessageById(params.id, params.data);
+    } else if (params.name) {
+      return this.encodeMessageByName(params.name, params.data);
+    } else {
+      throw new Error('Expected message name or frame id');
+    }
   }
 
   encodeMessageByName<

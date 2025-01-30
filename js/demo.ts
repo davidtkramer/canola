@@ -31,8 +31,8 @@ function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
     name: 'ID4F3SeatControl',
     data: {
       frontLeftSeatTrackForward: 1,
-      frontLeftSeatTrackBackward: 0
-    },
+      frontLeftSeatTrackBackward: 0,
+    }
   });
 
   let startTime = Date.now();
@@ -61,7 +61,7 @@ function moveDriverSeatBackward(options: { seconds: number }): Promise<null> {
         clearInterval(intervalId);
         resolve(null);
       } else {
-        socket.write(message.id, message.data);
+        socket.write(message);
       }
     }, 100);
   });
