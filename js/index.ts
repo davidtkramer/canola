@@ -15,7 +15,7 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
 > {
   socket: CanSocketNative;
 
-  constructor(interfaceName: string, options?: { filters: Filters }) {
+  constructor(interfaceName: string, options?: { filters?: Filters }) {
     super();
     this.socket = new CanSocketNative(
       interfaceName,

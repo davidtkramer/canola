@@ -1,7 +1,7 @@
 import { parseXml, XmlElement, XmlNode } from '@rgrove/parse-xml';
-import type { Node, Bus, ByteOrder } from './types.js';
-import { Message } from './message.js';
-import { Signal } from './signal.js';
+import type { NodeSchema, BusSchema, ByteOrder } from './types.js';
+import { MessageSchema } from './message-schema.js';
+import { SignalSchema } from './signal-schema.js';
 import { BaseConversion } from './conversions.js';
 
 export function loadString(xmlString: string, strict: boolean = true) {
@@ -22,8 +22,8 @@ export function loadString(xmlString: string, strict: boolean = true) {
     name: node.attributes.name,
   }));
 
-  let buses: Array<Bus> = [];
-  let messages: Array<Message> = [];
+  let buses: Array<BusSchema> = [];
+  let messages: Array<MessageSchema> = [];
   let version: string | undefined;
 
   // Version
@@ -50,9 +50,9 @@ export function loadString(xmlString: string, strict: boolean = true) {
 function loadMessageElement(
   message: XmlElement,
   busName: string,
-  nodes: Array<Node>,
+  nodes: Array<NodeSchema>,
   strict: boolean,
-): Message {
+): MessageSchema {
   // Default values
   let name: string | undefined;
   let frameId: number | undefined;
@@ -61,7 +61,7 @@ function loadMessageElement(
   let length: number = 0;
   let interval: number | undefined;
   let senders: Array<string> = [];
-  let signals: Array<Signal> = [];
+  let signals: Array<SignalSchema> = [];
 
   // Message XML attributes
   Object.entries(message.attributes).forEach(([key, value]) => {
@@ -144,7 +144,7 @@ function loadMessageElement(
     );
   }
 
-  return new Message({
+  return new MessageSchema({
     frameId,
     isExtendedFrame,
     name,
@@ -159,7 +159,7 @@ function loadMessageElement(
   });
 }
 
-function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
+function loadSignalElement(signal: XmlElement, nodes: Array<NodeSchema>): SignalSchema {
   let name: string | undefined;
   let offset: number | undefined;
   let length = 1;
@@ -259,7 +259,7 @@ function loadSignalElement(signal: XmlElement, nodes: Array<Node>): Signal {
     throw new Error('Signal must have name and offset');
   }
 
-  return new Signal({
+  return new SignalSchema({
     name,
     start: startBit(offset, byteOrder),
     length,
@@ -282,7 +282,7 @@ function startBit(offset: number, byteOrder: ByteOrder): number {
   }
 }
 
-function getNodeNameById(nodes: Array<Node>, nodeId: string): string | undefined {
+function getNodeNameById(nodes: Array<NodeSchema>, nodeId: string): string | undefined {
   return nodes.find((node) => node.id === nodeId)?.name;
 }
 

@@ -29,7 +29,7 @@ import { BaseConversion, IdentityConversion } from './conversions.js';
  *        +--------+--------+--------+--- - -
  * Bit:    7      0 15     8 23    16 31
  */
-export class Signal {
+export class SignalSchema {
   // The signal name as a string
   public name: string;
 

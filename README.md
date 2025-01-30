@@ -1,3 +1,34 @@
+# Canola
+
+Basic Usage
+
+```typescript
+import { CanSocket } from 'canola';
+
+let socket = new CanSocket('can0');
+
+socket.on('message', (frame) => {
+  console.log(frame.id, frame.data);
+});
+
+socket.write(123, Buffer.from('deadbeefdeadbeef', 'hex'));
+```
+
+Encode/decode messages
+
+```typescript
+import { Database } from 'canola';
+import { Messages } from './types.js';
+
+let db = Database.loadFile<Messages>('model-y.kcd');
+
+let socket = new CanSocket('can0');
+
+socket.on('message', (frame) => {
+  let message = db.getMessageById(frame.id);
+});
+```
+
 # Development
 
 Clone repository
@@ -46,9 +77,20 @@ yarn test
 
 # Raspberry Pi Setup
 
-First, add the appropriate dtoverlays for your can device to /boot/config.txt.
+Canola has been developed and tested on a Raspberry PI 4, but should work on any Linux SBC that supports SocketCAN.
 
-Waveshare 2CH CAN HAT+
+# Materials
+
+- Raspberry PI
+- CAN HAT
+- CAN bus splitter
+- OBD pigtail cable
+
+# Hardware Setup
+
+First, add the appropriate dtoverlays for your can device to `/boot/config.txt`.
+
+For example, Waveshare 2CH CAN HAT+ config:
 
 ```
 dtparam=spi=on
@@ -58,16 +100,15 @@ dtoverlay=mcp2515,spi1-1,oscillator=16000000,interrupt=22
 dtoverlay=mcp2515,spi1-2,oscillator=16000000,interrupt=13
 ```
 
-Copperhill CAN HAT
+Reboot your raspberry pi
 
 ```
-dtparam=spi=on
-dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25
-dtoverlay=mcp2515-can1,oscillator=16000000,interrupt=24
-dtoverlay=spi-bcm2835-overlay
+sudo reboot
 ```
 
-Setup socketcan kernel modules.
+# SocketCAN Config
+
+Setup socketCAN kernel modules.
 
 ```
 sudo modprobe can
@@ -75,14 +116,14 @@ sudo modprobe can_raw
 sudo modprobe vcan
 ```
 
-Bring up can interface. Ensure bitrate argument matches your can device.
+Bring up CAN interface. Ensure bitrate argument matches your can device.
 
 ```
 ip link set can0 type can bitrate 500000
 ip link set can0 up
 ```
 
-Verify can device is up.
+Verify CAN device is up.
 
 ```
 ip link show
@@ -90,7 +131,7 @@ ip link show
 ip -details -statistics link show can0
 ```
 
-To auto-start can interface on boot, create the file `/etc/network/interfaces.d/can0` and add the following:
+To auto start CAN interface on boot, create the file `/etc/network/interfaces.d/can0` and add the following:
 
 ```
 auto can0
@@ -100,13 +141,9 @@ iface can0 inet manual
     down /sbin/ip link set can0 down
 ```
 
-To auto start your canola project on boot:
+# Project Setup
 
-```
-sudo nano /etc/systemd/system/<your project name>.service
-```
-
-And add the following. Configure ExecStart and WorkingDirectory with the paths to the node binary, your JS script, and the directory your script resides in.
+To auto start your canola project on boot, create the file `/etc/systemd/system/<your project name>.service` and add the following. Set the Description, ExecStart, WorkingDirectory, and User options accordingly.
 
 ```
 [Unit]
@@ -117,7 +154,7 @@ DefaultDependencies=false
 Type=simple
 ExecStart=/path/to/node /path/to/your/dir/script.js
 WorkingDirectory=/path/to/your/dir
-User=david
+User=<your linux user>
 
 [Install]
 WantedBy=local-fs.target

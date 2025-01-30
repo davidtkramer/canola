@@ -1,17 +1,22 @@
-import { Database } from './database.js';
+import { CanSchema } from './can-schema.js';
 import type { Messages } from './__test__/types.js';
 import { CanSocket } from './index.js';
 
 console.log('ready');
-let db = Database.loadFile<Messages>('js/__test__/files/model-y.kcd');
+let schema = CanSchema.loadFile<Messages>('js/__test__/files/model-y.kcd');
 let state = { isMovingSeat: false };
 
-let socket = new CanSocket('can1', { filters: [{ id: 0x3c2, mask: 0x7ff }] });
+let socket = new CanSocket('can1', {
+  filters: [{ id: 0x3c2, mask: 0x7ff }],
+});
+
 socket.on('message', async (frame) => {
-  let signals = db.decodeMessageById(frame.id, frame.data);
+  let message = schema.decodeMessageById(frame.id, frame.data);
+
   if (
-    signals.VCLEFT_switchStatusIndex === 'VCLEFT_SWITCH_STATUS_INDEX_1' &&
-    signals.VCLEFT_2RowSeatLeftFoldFlatSwitch === 1 &&
+    message.name === 'ID3C2VCLEFT_switchStatus' &&
+    message.data.switchStatusIndex === 'INDEX_1' &&
+    message.data.secondRowSeatLeftFoldFlatSwitch === 1 &&
     !state.isMovingSeat
   ) {
     state.isMovingSeat = true;
@@ -22,8 +27,7 @@ socket.on('message', async (frame) => {
 });
 
 function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
-  let message = db.getMessageByName('ID4F3SeatControl');
-  let data = message.encode({
+  let message = schema.encodeMessageByName('ID4F3SeatControl', {
     frontLeftSeatTrackForward: 1,
     frontLeftSeatTrackBackward: 0,
   });
@@ -35,15 +39,14 @@ function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
         clearInterval(intervalId);
         resolve(null);
       } else {
-        socket.write(message.frameId, data);
+        socket.write(message.id, message.data);
       }
     }, 100);
   });
 }
 
 function moveDriverSeatBackward(options: { seconds: number }): Promise<null> {
-  let message = db.getMessageByName('ID4F3SeatControl');
-  let data = message.encode({
+  let message = schema.encodeMessageByName('ID4F3SeatControl', {
     frontLeftSeatTrackForward: 0,
     frontLeftSeatTrackBackward: 1,
   });
@@ -55,7 +58,7 @@ function moveDriverSeatBackward(options: { seconds: number }): Promise<null> {
         clearInterval(intervalId);
         resolve(null);
       } else {
-        socket.write(message.frameId, data);
+        socket.write(message.id, message.data);
       }
     }, 100);
   });

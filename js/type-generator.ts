@@ -12,11 +12,11 @@ import {
 } from 'typescript';
 import fs from 'fs';
 import path from 'path';
-import { Signal } from './signal.js';
-import { Message, type SignalBranch, type SignalNode } from './message.js';
+import { SignalSchema } from './signal-schema.js';
+import { MessageSchema, type SignalBranch, type SignalNode } from './message-schema.js';
 
 export async function generateTypes(
-  messages: Array<Message>,
+  messages: Array<MessageSchema>,
   outputDir: string,
 ): Promise<void> {
   let allTypes: Array<TypeAliasDeclaration> = [];
@@ -93,7 +93,7 @@ export async function generateTypes(
   await fs.promises.writeFile(outputPath, finalOutput);
 }
 
-function generateRegularType(message: Message): TypeAliasDeclaration {
+function generateRegularType(message: MessageSchema): TypeAliasDeclaration {
   return f.createTypeAliasDeclaration(
     [f.createModifier(SyntaxKind.ExportKeyword)],
     f.createIdentifier(`${message.name}_Signals`),
@@ -112,7 +112,7 @@ function generateRegularType(message: Message): TypeAliasDeclaration {
 }
 
 function generateMultiplexedTypes(
-  message: Message,
+  message: MessageSchema,
   signalNodes: Array<SignalNode>,
 ): Array<TypeAliasDeclaration> {
   let types: Array<TypeAliasDeclaration> = [];
@@ -159,7 +159,7 @@ function generateMultiplexedTypes(
 }
 
 function generateMultiplexVariantType(
-  message: Message,
+  message: MessageSchema,
   multiplexName: string,
   index: number | string,
   signals: Array<string>,
@@ -225,7 +225,7 @@ function generateMultiplexUnionType(
   );
 }
 
-function generateSignalTypeNode(signal: Signal): TypeNode {
+function generateSignalTypeNode(signal: SignalSchema): TypeNode {
   if (signal.conversion.choices) {
     let literals = Object.values(signal.conversion.choices).map((value) =>
       f.createLiteralTypeNode(f.createStringLiteral(value)),

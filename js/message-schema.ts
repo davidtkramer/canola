@@ -1,18 +1,17 @@
-import { Signal } from './signal.js';
+import { SignalSchema } from './signal-schema.js';
 import type { ByteOrder, Comments, SignalValue } from './types.js';
 import { BitStruct } from './bitstruct.js';
 
-interface Codec {
-  signals: Array<Signal>;
+type Codec = {
+  signals: Array<SignalSchema>;
   formats: SignalFormat;
   multiplexers: Record<string, Record<number, Codec>>;
 }
-interface SignalFormat {
+type SignalFormat = {
   paddingMask: bigint;
   big: BitStruct;
   little: BitStruct;
 }
-
 export type MessageType = {
   frameId: number;
   name: string;
@@ -23,18 +22,18 @@ export type SignalBranch = Record<string, Record<number, Array<SignalNode>>>;
 export type SignalNode = string | SignalBranch;
 type UnionKeys<T> = T extends any ? keyof T : never;
 
-export class Message<T extends MessageType = MessageType> {
-  public frameId: number;
+export class MessageSchema<T extends MessageType = MessageType> {
+  public frameId: T['frameId'];
   public headerId?: number;
   public headerByteOrder: ByteOrder;
   public isExtendedFrame: boolean;
   public isFd: boolean;
-  public name: string;
+  public name: T['name'];
   public length: number;
   public unusedBitPattern: number;
-  public signals: Array<Signal>;
-  private signalDict: Map<string, Signal>;
-  private containedMessages?: Array<Message>;
+  public signals: Array<SignalSchema>;
+  private signalDict: Map<string, SignalSchema>;
+  private containedMessages?: Array<MessageSchema>;
   public comments?: Comments;
   public senders: Array<string>;
   public sendType?: string;
@@ -49,8 +48,8 @@ export class Message<T extends MessageType = MessageType> {
     frameId: number;
     name: string;
     length: number;
-    signals: Array<Signal>;
-    containedMessages?: Array<Message>;
+    signals: Array<SignalSchema>;
+    containedMessages?: Array<MessageSchema>;
     headerId?: number;
     headerByteOrder?: ByteOrder;
     unusedBitPattern?: number;
@@ -122,7 +121,7 @@ export class Message<T extends MessageType = MessageType> {
   }
 
   private createCodec(parentSignal?: string, multiplexerId?: number): Codec {
-    let signals: Array<Signal> = [];
+    let signals: Array<SignalSchema> = [];
     let multiplexers: Record<string, Record<number, Codec>> = {};
 
     // Handle multiplexer signals
@@ -209,7 +208,7 @@ export class Message<T extends MessageType = MessageType> {
     return nodes;
   }
 
-  getSignalById(id: string | number): Signal {
+  getSignalById(id: string | number): SignalSchema {
     let signal = this.signalDict.get(id.toString());
     if (signal === undefined) {
       throw new Error(`Could not find signal with id '${id}'`);
@@ -217,7 +216,7 @@ export class Message<T extends MessageType = MessageType> {
     return signal;
   }
 
-  getSignalByName<K extends UnionKeys<T['signals']>>(name: K): Signal {
+  getSignalByName<K extends UnionKeys<T['signals']>>(name: K): SignalSchema {
     let signal = this.signalDict.get(name.toString());
     if (!signal) {
       throw new Error(`Signal ${name.toString()} not found in message ${this.name}`);
@@ -329,7 +328,7 @@ export class Message<T extends MessageType = MessageType> {
     node: Codec,
     data: SignalMap,
     scaling: boolean,
-  ): [bigint, bigint, Array<Signal>] {
+  ): [bigint, bigint, Array<SignalSchema>] {
     let encoded = this.packData(node, data, scaling);
     let paddingMask = node.formats.paddingMask;
     let multiplexers = node.multiplexers;
@@ -372,7 +371,7 @@ export class Message<T extends MessageType = MessageType> {
   }
 
   private encodeSignalValues(
-    signals: Array<Signal>,
+    signals: Array<SignalSchema>,
     signalMap: SignalMap,
     scaling: boolean,
   ): Record<string, number> {
@@ -416,11 +415,11 @@ export class Message<T extends MessageType = MessageType> {
   }
 }
 
-function sortSignalsByStartBit(signals: Array<Signal>): Array<Signal> {
+function sortSignalsByStartBit(signals: Array<SignalSchema>): Array<SignalSchema> {
   return [...signals].sort((a, b) => startBit(a) - startBit(b));
 }
 
-function startBit(signal: Signal): number {
+function startBit(signal: SignalSchema): number {
   if (signal.byteOrder === 'big_endian') {
     return 8 * Math.floor(signal.start / 8) + (7 - (signal.start % 8));
   }
@@ -428,7 +427,7 @@ function startBit(signal: Signal): number {
 }
 
 function createEncodeDecodeFormats(
-  signals: Array<Signal>,
+  signals: Array<SignalSchema>,
   numberOfBytes: number,
 ): SignalFormat {
   let formatLength = 8 * numberOfBytes;
