@@ -86,21 +86,16 @@ export class CanSchema<T extends MessageType> {
   }
 
   encodeMessage<
-    K extends T['name'],
-    M extends MessageType = Extract<T, { name: K }>,
-  >(params: { name: K; data: M['signals'] }): Reveal<EncodedMessage<M>>;
-  encodeMessage<
-    K extends number,
-    M extends MessageType = Extract<T, { frameId: K }>,
-  >(params: { id: K; data: M['signals'] }): Reveal<EncodedMessage<M>>;
-  encodeMessage(params: { id?: number; name?: string; data: any }): EncodedMessage<any> {
-    if (params.id) {
-      return this.encodeMessageById(params.id, params.data);
-    } else if (params.name) {
-      return this.encodeMessageByName(params.name, params.data);
-    } else {
-      throw new Error('Expected message name or frame id');
-    }
+    K extends number | T['name'],
+    M extends MessageType = K extends number
+    ? Extract<T, { frameId: K }>
+    : Extract<T, { name: K }>,
+  >(params: {
+    id?: K extends number ? K : M['frameId'];
+    name?: K extends T['name'] ? K : M['name'];
+    data: M['signals'];
+  }): Reveal<EncodedMessage<M>> {
+    return null as any;
   }
 
   encodeMessageByName<

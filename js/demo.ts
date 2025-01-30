@@ -28,12 +28,11 @@ socket.on('message', async (frame) => {
 
 function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
   let message = schema.encodeMessage({
-    id: 1267,
+    name: 'ID4F3SeatControl',
     data: {
       frontLeftSeatTrackForward: 1,
-      frontLeftSeatTrackBackward: 0,
-      frontBuckleSwitch: 1
-    }
+      frontLeftSeatTrackBackward: 0
+    },
   });
 
   let startTime = Date.now();
