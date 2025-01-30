@@ -31,8 +31,18 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
     this.emit('message', { id: id as any, data });
   };
 
-  write(id: number, data: Buffer) {
-    this.socket.write(id, data);
+  write(id: number, data: Buffer): void;
+  write(params: { id: number; data: Buffer }): void;
+  write(idOrParams: number | { id: number; data: Buffer }, data?: Buffer): void {
+    if (typeof idOrParams === 'number') {
+      this.socket.write(idOrParams, data!);
+    } else if (idOrParams !== null && typeof idOrParams === 'object') {
+      this.socket.write(idOrParams.id, idOrParams.data);
+    } else {
+      throw new Error(
+        'First argument must be frame id or an object with id and data properties',
+      );
+    }
   }
 
   close() {

@@ -22,7 +22,7 @@ export type DecodedMessage<T extends MessageType> = T extends any
   ? {
     id: T['frameId'];
     name: T['name'];
-    data: Reveal<T['signals']>;
+    data: T['signals'];
   }
   : never;
 
@@ -85,10 +85,28 @@ export class CanSchema<T extends MessageType> {
     return message as any;
   }
 
-  encodeMessageByName<K extends T['name'], M extends MessageType = Extract<T, { name: K }>>(
-    name: K,
-    data: M['signals']
-  ): Reveal<EncodedMessage<M>> {
+  encodeMessage<
+    K extends T['name'],
+    M extends MessageType = Extract<T, { name: K }>,
+  >(params: { name: K; data: M['signals'] }): Reveal<EncodedMessage<M>>;
+  encodeMessage<
+    K extends number,
+    M extends MessageType = Extract<T, { frameId: K }>,
+  >(params: { id: K; data: M['signals'] }): Reveal<EncodedMessage<M>>;
+  encodeMessage(params: { id?: number; name?: string; data: any }): EncodedMessage<any> {
+    if (params.id) {
+      return this.encodeMessageById(params.id, params.data);
+    } else if (params.name) {
+      return this.encodeMessageByName(params.name, params.data);
+    } else {
+      throw new Error('Expected message name or frame id');
+    }
+  }
+
+  encodeMessageByName<
+    K extends T['name'],
+    M extends MessageType = Extract<T, { name: K }>,
+  >(name: K, data: M['signals']): Reveal<EncodedMessage<M>> {
     let messageSchema = this.getMessageSchemaByName(name);
     return {
       id: messageSchema.frameId,
@@ -105,8 +123,30 @@ export class CanSchema<T extends MessageType> {
     return {
       id,
       name: messageSchema.name,
-      data: messageSchema.encode(data)
+      data: messageSchema.encode(data),
     };
+  }
+
+  decodeMessage<K extends number>(params: {
+    id: K;
+    data: Buffer;
+  }): DecodedMessage<Extract<T, { frameId: K }>>;
+  decodeMessage<K extends T['name']>(params: {
+    name: K;
+    data: Buffer;
+  }): DecodedMessage<Extract<T, { name: K }>>;
+  decodeMessage(params: {
+    id?: number;
+    name?: string;
+    data: Buffer;
+  }): DecodedMessage<any> {
+    if (params.id) {
+      return this.decodeMessageById(params.id, params.data);
+    } else if (params.name) {
+      return this.decodeMessageByName(params.name, params.data);
+    } else {
+      throw new Error('Expected message name or frame id');
+    }
   }
 
   decodeMessageByName<K extends T['name']>(
