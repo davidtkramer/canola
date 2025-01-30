@@ -18,6 +18,25 @@ type ById<T extends MessageType, K extends number> = Extract<
   MessageSchema<{ name: any; frameId: K; signals: any }>
 >;
 
+export type DecodedMessageParams<T extends MessageType> = T extends any
+  ?
+  | {
+    id: T['frameId'];
+    name: T['name'];
+    data: T['signals'];
+  }
+  | {
+    id: T['frameId'];
+    name?: undefined;
+    data: T['signals'];
+  }
+  | {
+    id?: undefined;
+    name: T['name'];
+    data: T['signals'];
+  }
+  : never;
+
 export type DecodedMessage<T extends MessageType> = T extends any
   ? {
     id: T['frameId'];
@@ -85,27 +104,26 @@ export class CanSchema<T extends MessageType> {
     return message as any;
   }
 
-  encodeMessage<
-    K extends number | T['name'],
-    M extends K extends number ? Extract<T, { frameId: K }> : Extract<T, { name: K }>,
-  >(
-    params:
-      | { id: K extends number ? K : never; name?: M['name']; data: M['signals'] }
-      | { name: K extends T['name'] ? K : never; id?: M['frameId']; data: M['signals'] },
-  ): Reveal<EncodedMessage<M>> {
-    if (params.id) {
-      return this.encodeMessageById(params.id, params.data);
-    } else if (params.name) {
-      return this.encodeMessageByName(params.name, params.data);
+  encodeMessage<P extends DecodedMessageParams<T>>(
+    params: P,
+  ): P extends { name: infer N }
+    ? Reveal<EncodedMessage<Extract<T, { name: N }>>>
+    : P extends { id: infer I }
+    ? Reveal<EncodedMessage<Extract<T, { frameId: I }>>>
+    : never {
+    if (params.id !== undefined) {
+      return this.encodeMessageById(params.id, params.data) as any;
+    } else if (params.name !== undefined) {
+      return this.encodeMessageByName(params.name, params.data) as any;
     } else {
       throw new Error('Expected message name or frame id');
     }
   }
 
-  encodeMessageByName<
-    K extends T['name'],
-    M extends MessageType = Extract<T, { name: K }>,
-  >(name: K, data: M['signals']): Reveal<EncodedMessage<M>> {
+  encodeMessageByName<K extends T['name'], M extends Extract<T, { name: K }>>(
+    name: K,
+    data: M['signals'],
+  ): Reveal<EncodedMessage<M>> {
     let messageSchema = this.getMessageSchemaByName(name);
     return {
       id: messageSchema.frameId,
@@ -114,7 +132,7 @@ export class CanSchema<T extends MessageType> {
     };
   }
 
-  encodeMessageById<K extends number, M extends MessageType = Extract<T, { frameId: K }>>(
+  encodeMessageById<K extends number, M extends Extract<T, { frameId: K }>>(
     id: K,
     data: M['signals'],
   ): Reveal<EncodedMessage<M>> {

@@ -12,6 +12,7 @@ let socket = new CanSocket('can1', {
 
 socket.on('message', async (frame) => {
   let message = schema.decodeMessage(frame);
+  let result = schema.encodeMessage(message);
 
   if (
     message.name === 'ID3C2VCLEFT_switchStatus' &&
@@ -31,7 +32,7 @@ function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
     name: 'ID4F3SeatControl',
     data: {
       frontLeftSeatTrackForward: 1,
-      frontLeftSeatTrackBackward: 0,
+      frontLeftSeatTrackBackward: 0
     }
   });
 
