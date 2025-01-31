@@ -28,9 +28,9 @@ socket.on('message', (frame) => {
   let message = schema.decodeMessage(frame);
   console.log(message.name, message.data);
 
-  if (message.name === 'Ping') {
+  if (message.name === 'ping') {
     let message = schema.encodeMessage({
-      name: 'Pong',
+      name: 'pong',
       data: { x: 1, y: 2 },
     });
     socket.write(message);
@@ -88,14 +88,14 @@ yarn test
 
 Canola has been developed and tested on a Raspberry PI 4, but should work on any Linux SBC that supports SocketCAN.
 
-# Materials
+## Materials
 
 - Raspberry PI
 - CAN HAT
 - CAN bus splitter
 - OBD pigtail cable
 
-# Hardware Setup
+## Hardware Setup
 
 First, add the appropriate dtoverlays for your can device to `/boot/config.txt`.
 
@@ -115,7 +115,7 @@ Reboot your raspberry pi
 sudo reboot
 ```
 
-# SocketCAN Config
+## SocketCAN Config
 
 Setup socketCAN kernel modules.
 
@@ -150,7 +150,7 @@ iface can0 inet manual
     down /sbin/ip link set can0 down
 ```
 
-# Project Setup
+## Project Setup
 
 To auto start your canola project on boot, create the file `/etc/systemd/system/<your project name>.service` and add the following. Set the Description, ExecStart, WorkingDirectory, and User options accordingly.
 
