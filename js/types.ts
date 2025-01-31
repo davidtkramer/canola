@@ -17,3 +17,7 @@ export type BusSchema = {
   baudrate?: number;
   fdBaudrate?: number;
 };
+
+export type Reveal<T> = {
+  [K in keyof T]: T[K];
+} & {};

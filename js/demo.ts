@@ -12,10 +12,8 @@ let socket = new CanSocket('can1', {
 
 socket.on('message', async (frame) => {
   let message = schema.decodeMessage(frame);
-  let result = schema.encodeMessage(message);
 
   if (
-    message.name === 'ID3C2VCLEFT_switchStatus' &&
     message.data.switchStatusIndex === 'INDEX_1' &&
     message.data.secondRowSeatLeftFoldFlatSwitch === 1 &&
     !state.isMovingSeat
@@ -32,8 +30,8 @@ function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
     name: 'ID4F3SeatControl',
     data: {
       frontLeftSeatTrackForward: 1,
-      frontLeftSeatTrackBackward: 0
-    }
+      frontLeftSeatTrackBackward: 0,
+    },
   });
 
   let startTime = Date.now();
@@ -50,9 +48,12 @@ function moveDriverSeatForward(options: { seconds: number }): Promise<null> {
 }
 
 function moveDriverSeatBackward(options: { seconds: number }): Promise<null> {
-  let message = schema.encodeMessageByName('ID4F3SeatControl', {
-    frontLeftSeatTrackForward: 0,
-    frontLeftSeatTrackBackward: 1,
+  let message = schema.encodeMessage({
+    name: 'ID4F3SeatControl',
+    data: {
+      frontLeftSeatTrackForward: 0,
+      frontLeftSeatTrackBackward: 1,
+    },
   });
 
   let startTime = Date.now();

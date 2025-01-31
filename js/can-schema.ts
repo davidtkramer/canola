@@ -2,23 +2,33 @@ import fs from 'fs';
 import path from 'path';
 import { MessageSchema, type MessageType } from './message-schema.js';
 import { loadString } from './kcd-parser.js';
-import type { NodeSchema, BusSchema } from './types.js';
+import type { NodeSchema, BusSchema, Reveal } from './types.js';
 
-export type AnyMessageSchema<T extends MessageType> = T extends any
-  ? MessageSchema<T>
-  : never;
+type AnyMessageSchema<T extends MessageType> = T extends any ? MessageSchema<T> : never;
 
-type ByName<T extends MessageType, K extends string> = Extract<
+type MessageSchemaByName<T extends MessageType, K extends string> = Extract<
   AnyMessageSchema<T>,
   MessageSchema<{ name: K; frameId: any; signals: any }>
 >;
 
-type ById<T extends MessageType, K extends number> = Extract<
+type MessageSchemaById<T extends MessageType, K extends number> = Extract<
   AnyMessageSchema<T>,
   MessageSchema<{ name: any; frameId: K; signals: any }>
 >;
 
-export type DecodedMessageParams<T extends MessageType> = T extends any
+type DecodeMessageParams<T extends MessageType> =
+  | { id: number; data: Buffer; name?: never }
+  | { name: T['name']; data: Buffer; id?: never };
+
+type DecodedMessage<T extends MessageType> = T extends any
+  ? {
+    id: T['frameId'];
+    name: T['name'];
+    data: T['signals'];
+  }
+  : never;
+
+type EncodeMessageParams<T extends MessageType> = T extends any
   ?
   | {
     id: T['frameId'];
@@ -27,19 +37,11 @@ export type DecodedMessageParams<T extends MessageType> = T extends any
   }
   | {
     id: T['frameId'];
-    name?: undefined;
+    name?: never;
     data: T['signals'];
   }
   | {
-    id?: undefined;
-    name: T['name'];
-    data: T['signals'];
-  }
-  : never;
-
-export type DecodedMessage<T extends MessageType> = T extends any
-  ? {
-    id: T['frameId'];
+    id?: never;
     name: T['name'];
     data: T['signals'];
   }
@@ -50,10 +52,6 @@ type EncodedMessage<T extends MessageType> = {
   name: T['name'];
   data: Buffer;
 };
-
-type Reveal<T> = {
-  [K in keyof T]: T[K];
-} & {};
 
 export class CanSchema<T extends MessageType> {
   messages: Array<MessageSchema>;
@@ -86,25 +84,65 @@ export class CanSchema<T extends MessageType> {
     return new CanSchema<T>(messages, nodes, buses, version);
   }
 
-  getMessageSchemaByName<K extends T['name']>(name: K): ByName<T, K> {
-    let message = this.messages.find(
-      (message): message is ByName<T, K> => message.name === name,
+  getMessageSchemaByName<K extends T['name']>(name: K): MessageSchemaByName<T, K> {
+    let messageSchema = this.messages.find(
+      (message): message is MessageSchemaByName<T, K> => message.name === name,
     );
-    if (message === undefined) {
+    if (messageSchema === undefined) {
       throw new Error(`Unable to find message with name '${String(name)}'`);
     }
-    return message;
+    return messageSchema;
   }
 
-  getMessageSchemaById<K extends number>(id: K): ById<T, K> {
-    let message = this.messages.find((message) => message.frameId === id);
-    if (message === undefined) {
+  getMessageSchemaById<K extends number>(id: K): MessageSchemaById<T, K> {
+    let messageSchema = this.messages.find((message) => message.frameId === id);
+    if (messageSchema === undefined) {
       throw new Error(`Unable to find message with id '${id}'`);
     }
-    return message as any;
+    return messageSchema as any;
   }
 
-  encodeMessage<P extends DecodedMessageParams<T>>(
+  decodeMessage<P extends DecodeMessageParams<T>>(
+    params: P,
+  ): P extends { name: infer N }
+    ? Reveal<DecodedMessage<Extract<T, { name: N }>>>
+    : P extends { id: infer I }
+    ? Reveal<DecodedMessage<Extract<T, { frameId: I }>>>
+    : never {
+    if (params.id) {
+      return this.decodeMessageById(params.id, params.data) as any;
+    } else if (params.name) {
+      return this.decodeMessageByName(params.name, params.data) as any;
+    } else {
+      throw new Error('Expected message name or frame id');
+    }
+  }
+
+  decodeMessageByName<K extends T['name']>(
+    name: K,
+    data: Buffer,
+  ): DecodedMessage<Extract<T, { name: K }>> {
+    let schema = this.getMessageSchemaByName(name);
+    return {
+      id: schema.frameId,
+      name: schema.name,
+      data: schema.decode(data),
+    } as DecodedMessage<Extract<T, { name: K }>>;
+  }
+
+  decodeMessageById<K extends number>(
+    id: K,
+    data: Buffer,
+  ): DecodedMessage<Extract<T, { frameId: K }>> {
+    let schema = this.getMessageSchemaById(id);
+    return {
+      id: schema.frameId,
+      name: schema.name,
+      data: schema.decode(data),
+    } as DecodedMessage<Extract<T, { frameId: K }>>;
+  }
+
+  encodeMessage<P extends EncodeMessageParams<T>>(
     params: P,
   ): P extends { name: infer N }
     ? Reveal<EncodedMessage<Extract<T, { name: N }>>>
@@ -142,51 +180,5 @@ export class CanSchema<T extends MessageType> {
       name: messageSchema.name,
       data: messageSchema.encode(data),
     };
-  }
-
-  decodeMessage<K extends number>(params: {
-    id: K;
-    data: Buffer;
-  }): DecodedMessage<Extract<T, { frameId: K }>>;
-  decodeMessage<K extends T['name']>(params: {
-    name: K;
-    data: Buffer;
-  }): DecodedMessage<Extract<T, { name: K }>>;
-  decodeMessage(params: {
-    id?: number;
-    name?: string;
-    data: Buffer;
-  }): DecodedMessage<any> {
-    if (params.id) {
-      return this.decodeMessageById(params.id, params.data);
-    } else if (params.name) {
-      return this.decodeMessageByName(params.name, params.data);
-    } else {
-      throw new Error('Expected message name or frame id');
-    }
-  }
-
-  decodeMessageByName<K extends T['name']>(
-    name: K,
-    data: Buffer,
-  ): DecodedMessage<Extract<T, { name: K }>> {
-    let schema = this.getMessageSchemaByName(name);
-    return {
-      id: schema.frameId,
-      name: schema.name,
-      data: schema.decode(data),
-    } as DecodedMessage<Extract<T, { name: K }>>;
-  }
-
-  decodeMessageById<K extends number>(
-    id: K,
-    data: Buffer,
-  ): DecodedMessage<Extract<T, { frameId: K }>> {
-    let schema = this.getMessageSchemaById(id);
-    return {
-      id: schema.frameId,
-      name: schema.name,
-      data: schema.decode(data),
-    } as DecodedMessage<Extract<T, { frameId: K }>>;
   }
 }
