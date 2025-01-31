@@ -17,15 +17,24 @@ socket.write(123, Buffer.from('deadbeefdeadbeef', 'hex'));
 Encode/decode messages
 
 ```typescript
-import { Database } from 'canola';
+import { CanSchema } from 'canola';
 import { Messages } from './types.js';
 
-let db = Database.loadFile<Messages>('model-y.kcd');
+let schema = CanSchema.loadFile<Messages>('model-y.kcd');
 
 let socket = new CanSocket('can0');
 
 socket.on('message', (frame) => {
-  let message = db.getMessageById(frame.id);
+  let message = schema.decodeMessage(frame);
+  console.log(message.name, message.data);
+
+  if (message.name === 'Ping') {
+    let message = schema.encodeMessage({
+      name: 'Pong',
+      data: { x: 1, y: 2 },
+    });
+    socket.write(message);
+  }
 });
 ```
 
