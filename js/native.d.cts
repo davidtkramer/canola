@@ -7,10 +7,15 @@ export interface CanFilter {
   id: number
   mask: number
 }
+export declare class PeriodicTask {
+  start(): void
+  stop(): void
+}
 export type CanSocketProxy = CanSocketNative
 export declare class CanSocketNative {
   constructor(interfaceName: string, filters: Array<CanFilter>, callback: (id: number, data: Buffer) => void)
   write(id: number, data: Buffer): void
+  sendPeriodic(id: number, data: Buffer): PeriodicTask
   close(): void
   setFilters(filters: Array<CanFilter>): void
   getWriteQueueSize(): number

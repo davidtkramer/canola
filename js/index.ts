@@ -45,6 +45,10 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
     }
   }
 
+  sendPeriodic(id: number, data: Buffer) {
+    return this.socket.sendPeriodic(id, data);
+  }
+
   close() {
     this.socket.close();
   }

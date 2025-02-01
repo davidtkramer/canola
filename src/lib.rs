@@ -3,6 +3,12 @@
 #[macro_use]
 extern crate napi_derive;
 
+use libc::{
+  can_frame, if_nametoindex, sa_family_t, sockaddr_can, sockaddr_storage, socklen_t, AF_CAN,
+  CAN_RAW, CAN_RAW_FILTER, SOL_CAN_RAW,
+};
+use napi::{bindgen_prelude::*, Env, Ref};
+use socket2::{Domain, Protocol, SockAddr, Socket, Type};
 use std::{
   collections::VecDeque,
   ffi,
@@ -11,17 +17,13 @@ use std::{
   os::{fd::AsRawFd, raw::c_int},
   ptr, slice,
 };
-
-use libc::{
-  can_frame, if_nametoindex, sa_family_t, sockaddr_can, sockaddr_storage, socklen_t, AF_CAN,
-  CAN_RAW, CAN_RAW_FILTER, SOL_CAN_RAW,
-};
-use napi::{bindgen_prelude::*, Env, Ref};
-use socket2::{Domain, Protocol, SockAddr, Socket, Type};
 use uv_sys::sys::{
   uv_close, uv_handle_t, uv_loop_s, uv_poll_event, uv_poll_init_socket, uv_poll_start,
   uv_poll_stop, uv_poll_t,
 };
+
+mod periodic_task;
+use periodic_task::PeriodicTask;
 
 #[napi(js_name = "CanSocketNative")]
 struct CanSocketProxy {
@@ -62,8 +64,13 @@ impl CanSocketProxy {
   }
 
   #[napi]
-  pub fn write(&mut self, id: u32, data: Buffer) -> Result<()> {
+  pub fn write(&self, id: u32, data: Buffer) -> Result<()> {
     self.socket()?.write(id, data)
+  }
+
+  #[napi]
+  pub fn send_periodic(&self, id: u32, data: Buffer) -> Result<PeriodicTask> {
+    self.socket()?.send_periodic(id, data)
   }
 
   #[napi]
@@ -77,7 +84,7 @@ impl CanSocketProxy {
   }
 
   #[napi]
-  pub fn set_filters(&mut self, filters: Vec<CanFilter>) -> Result<()> {
+  pub fn set_filters(&self, filters: Vec<CanFilter>) -> Result<()> {
     self.socket()?.set_filters(filters)
   }
 
@@ -193,9 +200,10 @@ impl CanSocket {
     }
   }
 
-  pub fn handle_event(&mut self, status: i32, events: i32) {
+  pub fn handle_event(&mut self, status: i32, events: i32) -> Result<()> {
     if status < 0 {
       log!("error processing event");
+      return Ok(());
     }
 
     // Handle reads - keep reading until we get EAGAIN
@@ -208,20 +216,16 @@ impl CanSocket {
         }) {
           Ok(_) => {
             log!("read frame");
-            self
-              .env
-              .run_in_scope(|| {
-                let data = self
-                  .env
-                  .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
-                  .into_raw();
+            self.env.run_in_scope(|| {
+              let data = self
+                .env
+                .create_buffer_with_data(frame.data[..frame.can_dlc as usize].to_vec())?
+                .into_raw();
 
-                let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
-                callback.call2(frame.can_id, data)?;
-
-                Ok(())
-              })
-              .unwrap();
+              let callback: JsFunction = self.env.get_reference_value(&self.callback_ref)?;
+              let _: () = callback.call2(frame.can_id, data)?;
+              Ok(())
+            })?
           }
           Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
             log!("read all available frames");
@@ -270,6 +274,8 @@ impl CanSocket {
         }
       }
     }
+
+    Ok(())
   }
 
   pub fn write(&mut self, id: u32, data: Buffer) -> Result<()> {
@@ -327,6 +333,13 @@ impl CanSocket {
     }
   }
 
+  pub fn send_periodic(&self, id: u32, data: Buffer) -> Result<PeriodicTask> {
+    let socket = self.socket.try_clone()?;
+    let mut task = PeriodicTask::new(100, socket, id, data);
+    task.start();
+    Ok(task)
+  }
+
   pub fn close(&mut self) {
     unsafe {
       uv_poll_stop(self.handle);
@@ -378,7 +391,7 @@ impl CanSocket {
 
 extern "C" fn on_event(handle: *mut uv_poll_t, status: i32, events: i32) {
   let socket = unsafe { &mut *((*handle).data as *mut CanSocket) };
-  socket.handle_event(status, events);
+  let _ = socket.handle_event(status, events);
 }
 
 extern "C" fn on_close(handle: *mut uv_handle_t) {
@@ -389,7 +402,7 @@ extern "C" fn on_close(handle: *mut uv_handle_t) {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-      if false {
+      if true {
         println!($($arg)*);
       }
     }
