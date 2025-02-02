@@ -394,6 +394,8 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install
+      - name: Compile TypeScript
+        run: yarn tsc
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
