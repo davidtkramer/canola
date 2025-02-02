@@ -19,7 +19,7 @@ npm install @canola/core
 Basic Usage
 
 ```typescript
-import { CanSocket } from 'canola';
+import { CanSocket } from '@canola/core';
 
 let socket = new CanSocket('can0');
 
@@ -33,7 +33,7 @@ socket.write(123, Buffer.from('deadbeefdeadbeef', 'hex'));
 Encode/decode messages
 
 ```typescript
-import { CanSchema } from 'canola';
+import { CanSchema } from '@canola/core';
 import { Messages } from './types.js';
 
 let schema = CanSchema.loadFile<Messages>('model-y.kcd');
