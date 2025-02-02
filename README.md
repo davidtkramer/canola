@@ -1,5 +1,21 @@
 # Canola
 
+A Node.js library for interacting with CAN (Controller Area Network) buses. Built with TypeScript and Rust to provide 100% type safety when working with CAN messages.
+
+## Features
+
+- 🔒 **Type-safe messaging**: Generate TypeScript types from KCD (Kayak CAN Definition) files for compile-time validation of CAN messages
+- 🚀 **High performance**: Native bindings for direct CAN bus access
+- 📦 **Message schema support**: Encode and decode CAN messages using KCD schemas
+- 🔄 **Broadcast messages**: Easily send messages at specified intervals with OS-level timing precision
+- 🎯 **Message filtering**: Filter messages by ID and mask at the socket level
+
+## Installation
+
+```bash
+npm install typesafe-can
+```
+
 Basic Usage
 
 ```typescript
