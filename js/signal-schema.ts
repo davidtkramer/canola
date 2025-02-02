@@ -131,7 +131,6 @@ export class SignalSchema {
       this.invalid = this.conversion.rawToScaled(params.rawInvalid);
     }
 
-    // Handle comments similar to Python implementation
     if (typeof params.comment === 'string') {
       this.comments = { _default: params.comment };
     } else {
@@ -151,52 +150,16 @@ export class SignalSchema {
     return this.conversion.scale;
   }
 
-  set scale(value: number) {
-    this.conversion = BaseConversion.factory(
-      value,
-      this.conversion.offset,
-      this.conversion.choices,
-      this.conversion.isFloat,
-    );
-  }
-
   get offset(): number {
     return this.conversion.offset;
-  }
-
-  set offset(value: number) {
-    this.conversion = BaseConversion.factory(
-      this.conversion.scale,
-      value,
-      this.conversion.choices,
-      this.conversion.isFloat,
-    );
   }
 
   get choices() {
     return this.conversion.choices;
   }
 
-  set choices(value) {
-    this.conversion = BaseConversion.factory(
-      this.conversion.scale,
-      this.conversion.offset,
-      value,
-      this.conversion.isFloat,
-    );
-  }
-
   get isFloat(): boolean {
     return this.conversion.isFloat;
-  }
-
-  set isFloat(value: boolean) {
-    this.conversion = BaseConversion.factory(
-      this.conversion.scale,
-      this.conversion.offset,
-      this.conversion.choices,
-      value,
-    );
   }
 
   get comment(): string | undefined {

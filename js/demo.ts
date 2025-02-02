@@ -14,7 +14,7 @@ socket.on('message', async (frame) => {
 
   if (
     data.switchStatusIndex === 'INDEX_1' &&
-    data.secondRowSeatLeftFoldFlatSwitch === 1 &&
+    data.secondRowSeatLeftFoldFlatSwitch &&
     !state.isMovingSeat
   ) {
     try {
