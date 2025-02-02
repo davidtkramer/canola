@@ -17,9 +17,9 @@ test('reads and writes a message', async () => {
 });
 
 test('sends broadcast message', async () => {
-  let frames: Array<[CanFrame, number]> = [];
+  let frames: Array<CanFrame> = [];
   new CanSocket('vcan0').on('message', (frame) => {
-    frames.push([frame, Date.now()]);
+    frames.push(frame);
   });
 
   let socket = new CanSocket('vcan0');
