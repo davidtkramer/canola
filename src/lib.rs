@@ -414,7 +414,7 @@ extern "C" fn on_close(handle: *mut uv_handle_t) {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-      if true {
+      if false {
         println!($($arg)*);
       }
     }
