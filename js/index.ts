@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { CanSocketNative, type CanFilter } from './native.cjs';
+import { CanSocketNative, Broadcast, type CanFilter } from './native.cjs';
 
 export type CanFrame<Id = number> = {
   id: Id;
@@ -45,8 +45,26 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
     }
   }
 
-  sendPeriodic(id: number, data: Buffer) {
-    return this.socket.sendPeriodic(id, data);
+  createBroadcast(options: {
+    message: { id: number; data: Buffer; },
+    interval: number;
+    duration?: number;
+  }): Broadcast {
+    return this.socket.createBroadcast(
+      options.message.id,
+      options.message.data,
+      options.interval,
+      options.duration,
+    );
+  }
+
+  sendBroadcast(options: {
+    message: { id: number; data: Buffer; },
+    interval: number;
+    duration?: number;
+  }): Promise<number> {
+    let broadcast = this.createBroadcast(options);
+    return broadcast.start();
   }
 
   close() {

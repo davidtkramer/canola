@@ -1,5 +1,5 @@
 use libc::can_frame;
-use napi::bindgen_prelude::*;
+use napi::{bindgen_prelude::*, JsObject};
 use socket2::Socket;
 use std::{
   io::Write,
@@ -13,48 +13,59 @@ use std::{
 };
 
 #[napi]
-pub struct PeriodicTask {
+pub struct Broadcast {
+  env: Env,
   running: Arc<AtomicBool>,
   handle: Option<thread::JoinHandle<Socket>>,
-  interval: Duration,
   socket: Option<Socket>,
+  interval: Duration,
+  duration: Option<Duration>,
   id: u32,
   data: Buffer,
 }
 
 #[napi]
-impl PeriodicTask {
-  pub fn new(interval: u64, socket: Socket, id: u32, data: Buffer) -> Self {
-    PeriodicTask {
+impl Broadcast {
+  pub fn new(
+    env: Env,
+    socket: Socket,
+    id: u32,
+    data: Buffer,
+    interval: u32,
+    duration: Option<u32>,
+  ) -> Result<Self> {
+    Ok(Broadcast {
+      env,
       running: Arc::new(AtomicBool::new(false)),
       handle: None,
-      interval: Duration::from_millis(interval),
+      interval: Duration::from_millis(interval as u64),
+      duration: duration.map(|d| Duration::from_millis(d as u64)),
       socket: Some(socket),
       id,
       data,
-    }
+    })
   }
 
-  #[napi]
-  pub fn start(&mut self) {
+  #[napi(ts_return_type = "Promise<number>")]
+  pub fn start(&mut self) -> Result<JsObject> {
     if self.running.load(Ordering::SeqCst) {
-      return;
+      return Err(Error::from_reason("Broadcast is already running"));
     }
-    self.reset_socket();
-
     self.running.store(true, Ordering::SeqCst);
     let running = self.running.clone();
+    let mut socket = self.reset_socket();
     let interval = self.interval;
-    let mut socket = self.socket.take().unwrap();
+    let duration = self.duration;
     let id = self.id;
     let data = self.data.clone();
 
-    let handle = thread::spawn(move || {
+    let (deferred, promise) = self.env.create_deferred()?;
+
+    self.handle = Some(thread::spawn(move || {
       let mut next_send = Instant::now();
+      let end_time = duration.map(|d| next_send + d);
 
-      while running.load(Ordering::SeqCst) {
-        println!("sending periodic message");
-
+      while running.load(Ordering::SeqCst) && end_time.map_or(true, |e| Instant::now() < e) {
         let mut frame: can_frame = unsafe { mem::zeroed() };
         frame.can_id = id;
         frame.can_dlc = data.len() as u8;
@@ -73,17 +84,22 @@ impl PeriodicTask {
             }
           }
           Err(e) => {
-            println!("Error writing to socket: {:?}", e);
             running.store(false, Ordering::SeqCst);
-            break;
+            deferred.reject(Error::new(
+              Status::GenericFailure,
+              format!("Failed to send broadcast message: {}", e),
+            ));
+            return socket;
           }
         }
       }
 
+      running.store(false, Ordering::SeqCst);
+      deferred.resolve(|_| Ok(1));
       return socket;
-    });
+    }));
 
-    self.handle = Some(handle);
+    Ok(promise)
   }
 
   #[napi]
@@ -91,10 +107,10 @@ impl PeriodicTask {
     self.running.store(false, Ordering::SeqCst);
   }
 
-  fn reset_socket(&mut self) {
-    if let Some(handle) = self.handle.take() {
-      let socket = handle.join().unwrap();
-      self.socket = Some(socket);
+  fn reset_socket(&mut self) -> Socket {
+    match self.handle.take() {
+      Some(handle) => handle.join().unwrap(),
+      None => self.socket.take().unwrap(),
     }
   }
 }

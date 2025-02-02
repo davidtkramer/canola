@@ -22,8 +22,8 @@ use uv_sys::sys::{
   uv_poll_stop, uv_poll_t,
 };
 
-mod periodic_task;
-use periodic_task::PeriodicTask;
+mod broadcast;
+use broadcast::Broadcast;
 
 #[napi(js_name = "CanSocketNative")]
 struct CanSocketProxy {
@@ -69,8 +69,16 @@ impl CanSocketProxy {
   }
 
   #[napi]
-  pub fn send_periodic(&self, id: u32, data: Buffer) -> Result<PeriodicTask> {
-    self.socket()?.send_periodic(id, data)
+  pub fn create_broadcast(
+    &self,
+    id: u32,
+    data: Buffer,
+    interval: u32,
+    duration: Option<u32>,
+  ) -> Result<Broadcast> {
+    self
+      .socket()?
+      .create_broadcast(id, data, interval, duration)
   }
 
   #[napi]
@@ -333,11 +341,15 @@ impl CanSocket {
     }
   }
 
-  pub fn send_periodic(&self, id: u32, data: Buffer) -> Result<PeriodicTask> {
+  pub fn create_broadcast(
+    &self,
+    id: u32,
+    data: Buffer,
+    interval: u32,
+    duration: Option<u32>,
+  ) -> Result<Broadcast> {
     let socket = self.socket.try_clone()?;
-    let mut task = PeriodicTask::new(100, socket, id, data);
-    task.start();
-    Ok(task)
+    Broadcast::new(self.env, socket, id, data, interval, duration)
   }
 
   pub fn close(&mut self) {

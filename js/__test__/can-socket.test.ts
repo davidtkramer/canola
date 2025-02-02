@@ -16,6 +16,26 @@ test('reads and writes a message', async () => {
   });
 });
 
+test('sends broadcast message', async () => {
+  let frames: Array<[CanFrame, number]> = [];
+  new CanSocket('vcan0').on('message', (frame) => {
+    frames.push([frame, Date.now()]);
+  });
+
+  let socket = new CanSocket('vcan0');
+  await socket.sendBroadcast({
+    message: { id: 123, data: buffer('beeffeedbeeffeed') },
+    interval: 50,
+    duration: 1000
+  });
+
+  expect(frames).toHaveLength(20);
+  let intervals = frames.slice(1).map(([_frame, ts], i) => ts - frames[i][1])
+  intervals.forEach(interval => {
+    expect(interval).closeTo(50, 2)
+  });
+});
+
 test('filters received messages on socket initialization', async () => {
   let frames: Array<CanFrame> = [];
   let reader = new CanSocket('vcan0', {
