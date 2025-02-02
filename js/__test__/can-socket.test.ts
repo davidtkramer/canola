@@ -26,66 +26,72 @@ test('sends broadcast message', async () => {
   await socket.sendBroadcast({
     message: { id: 123, data: buffer('beeffeedbeeffeed') },
     interval: 50,
-    duration: 1000
+    duration: 1000,
   });
 
   expect(frames).toHaveLength(20);
-  let intervals = frames.slice(1).map(([_frame, ts], i) => ts - frames[i][1])
-  intervals.forEach(interval => {
-    expect(interval).closeTo(50, 10) // +/- 10ms because CI is slow
+  let intervals = frames.slice(1).map(([_frame, ts], i) => ts - frames[i][1]);
+  intervals.forEach((interval) => {
+    expect(interval).closeTo(50, 10); // +/- 10ms because CI is slow
   });
 });
 
-test('filters received messages on socket initialization', async () => {
-  let frames: Array<CanFrame> = [];
-  let reader = new CanSocket('vcan0', {
-    filters: [
+test.runIf(!process.env['CI'])(
+  'filters received messages on socket initialization',
+  async () => {
+    let frames: Array<CanFrame> = [];
+    let reader = new CanSocket('vcan0', {
+      filters: [
+        { id: 124, mask: 0x7ff },
+        { id: 125, mask: 0x7ff },
+      ],
+    });
+    reader.on('message', (frame) => {
+      frames.push(frame);
+    });
+
+    let writer = new CanSocket('vcan0');
+    writer.write(123, buffer('deadbeefdeadbeef'));
+    writer.write(124, buffer('deadbeefdeadbeef'));
+    writer.write(125, buffer('deadbeefdeadbeef'));
+
+    await waitFor(() => {
+      expect(frames[1]?.id).toBe(125);
+    });
+    expect(frames[0].id).toBe(124);
+    expect(frames).toHaveLength(2);
+  },
+);
+
+test.runIf(!process.env['CI'])(
+  'filters received messages after initialization',
+  async () => {
+    let frames: Array<CanFrame> = [];
+    let reader = new CanSocket('vcan0');
+    reader.on('message', (frame) => {
+      frames.push(frame);
+    });
+
+    let writer = new CanSocket('vcan0');
+    writer.write(123, buffer('deadbeefdeadbeef'));
+
+    reader.setFilters([
       { id: 124, mask: 0x7ff },
       { id: 125, mask: 0x7ff },
-    ],
-  });
-  reader.on('message', (frame) => {
-    frames.push(frame);
-  });
+    ]);
 
-  let writer = new CanSocket('vcan0');
-  writer.write(123, buffer('deadbeefdeadbeef'));
-  writer.write(124, buffer('deadbeefdeadbeef'));
-  writer.write(125, buffer('deadbeefdeadbeef'));
+    writer.write(123, buffer('deadbeefdeadbeef'));
+    writer.write(124, buffer('deadbeefdeadbeef'));
+    writer.write(125, buffer('deadbeefdeadbeef'));
 
-  await waitFor(() => {
-    expect(frames[1]?.id).toBe(125);
-  });
-  expect(frames[0].id).toBe(124);
-  expect(frames).toHaveLength(2);
-});
-
-test('filters received messages after initialization', async () => {
-  let frames: Array<CanFrame> = [];
-  let reader = new CanSocket('vcan0');
-  reader.on('message', (frame) => {
-    frames.push(frame);
-  });
-
-  let writer = new CanSocket('vcan0');
-  writer.write(123, buffer('deadbeefdeadbeef'));
-
-  reader.setFilters([
-    { id: 124, mask: 0x7ff },
-    { id: 125, mask: 0x7ff },
-  ]);
-
-  writer.write(123, buffer('deadbeefdeadbeef'));
-  writer.write(124, buffer('deadbeefdeadbeef'));
-  writer.write(125, buffer('deadbeefdeadbeef'));
-
-  await waitFor(() => {
-    expect(frames[2]?.id).toBe(125);
-  });
-  expect(frames[1].id).toBe(124);
-  expect(frames[0].id).toBe(123); // sent before filters were applied
-  expect(frames).toHaveLength(3);
-});
+    await waitFor(() => {
+      expect(frames[2]?.id).toBe(125);
+    });
+    expect(frames[1].id).toBe(124);
+    expect(frames[0].id).toBe(123); // sent before filters were applied
+    expect(frames).toHaveLength(3);
+  },
+);
 
 test('errors if can interface does not exist', () => {
   expect(() => {

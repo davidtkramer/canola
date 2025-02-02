@@ -46,7 +46,7 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
   }
 
   createBroadcast(options: {
-    message: { id: number; data: Buffer; },
+    message: { id: number; data: Buffer };
     interval: number;
     duration?: number;
   }): Broadcast {
@@ -59,7 +59,7 @@ export class CanSocket<const Filters extends Array<CanFilter>> extends EventEmit
   }
 
   sendBroadcast(options: {
-    message: { id: number; data: Buffer; },
+    message: { id: number; data: Buffer };
     interval: number;
     duration?: number;
   }): Promise<number> {

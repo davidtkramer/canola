@@ -6,12 +6,12 @@ type Codec = {
   signals: Array<SignalSchema>;
   formats: SignalFormat;
   multiplexers: Record<string, Record<number, Codec>>;
-}
+};
 type SignalFormat = {
   paddingMask: bigint;
   big: BitStruct;
   little: BitStruct;
-}
+};
 export type MessageType = {
   frameId: number;
   name: string;

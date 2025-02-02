@@ -219,160 +219,204 @@ jobs:
         shell: bash
       - name: Test bindings
         run: docker run -e CI=true --network host --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine yarn test
-  # test-linux-aarch64-gnu-binding:
-  #   name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
-  #   needs:
-  #     - build
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       node:
-  #         - '18'
-  #         - '20'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Install CAN support on host
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y linux-modules-extra-$(uname -r)
-  #     - name: Setup CAN kernel modules
-  #       run: |
-  #         sudo modprobe can
-  #         sudo modprobe can_raw
-  #         sudo modprobe vcan
-  #         lsmod | grep can
-  #     - name: Setup virtual CAN interface
-  #       run: |
-  #         sudo ip link add dev vcan0 type vcan
-  #         sudo ip link set up vcan0
-  #         sudo ip link show
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: bindings-aarch64-unknown-linux-gnu
-  #         path: ./js
-  #     - name: List packages
-  #       run: ls -R .
-  #       shell: bash
-  #     - name: Install dependencies
-  #       run: |
-  #         yarn config set supportedArchitectures.cpu "arm64"
-  #         yarn config set supportedArchitectures.libc "glibc"
-  #         yarn install
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-  #       with:
-  #         platforms: arm64
-  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-  #     - name: Setup and run tests
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: node:${{ matrix.node }}-slim
-  #         options: '--network host -e CI=true --platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
-  #         run: |
-  #           set -e
-  #           yarn test
-  #           ls -la
-  # test-linux-aarch64-musl-binding:
-  #   name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
-  #   needs:
-  #     - build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Install CAN support on host
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y linux-modules-extra-$(uname -r)
-  #     - name: Setup CAN kernel modules
-  #       run: |
-  #         sudo modprobe can
-  #         sudo modprobe can_raw
-  #         sudo modprobe vcan
-  #         lsmod | grep can
-  #     - name: Setup virtual CAN interface
-  #       run: |
-  #         sudo ip link add dev vcan0 type vcan
-  #         sudo ip link set up vcan0
-  #         sudo ip link show
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: bindings-aarch64-unknown-linux-musl
-  #         path: ./js
-  #     - name: List packages
-  #       run: ls -R .
-  #       shell: bash
-  #     - name: Install dependencies
-  #       run: |
-  #         yarn config set supportedArchitectures.cpu "arm64"
-  #         yarn config set supportedArchitectures.libc "musl"
-  #         yarn install
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-  #       with:
-  #         platforms: arm64
-  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-  #     - name: Setup and run tests
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: node:lts-alpine
-  #         options: '--network host -e CI=true --platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
-  #         run: |
-  #           set -e
-  #           yarn test
-  # test-linux-arm-gnueabihf-binding:
-  #   name: Test bindings on armv7-unknown-linux-gnueabihf - node@${{ matrix.node }}
-  #   needs:
-  #     - build
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       node:
-  #         - '18'
-  #         - '20'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Install CAN support on host
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y linux-modules-extra-$(uname -r)
-  #     - name: Setup CAN kernel modules
-  #       run: |
-  #         sudo modprobe can
-  #         sudo modprobe can_raw
-  #         sudo modprobe vcan
-  #         lsmod | grep can
-  #     - name: Setup virtual CAN interface
-  #       run: |
-  #         sudo ip link add dev vcan0 type vcan
-  #         sudo ip link set up vcan0
-  #         sudo ip link show
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: bindings-armv7-unknown-linux-gnueabihf
-  #         path: ./js
-  #     - name: List packages
-  #       run: ls -R .
-  #       shell: bash
-  #     - name: Install dependencies
-  #       run: |
-  #         yarn config set supportedArchitectures.cpu "arm"
-  #         yarn install
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-  #       with:
-  #         platforms: arm
-  #     - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-  #     - name: Setup and run tests
-  #       uses: addnab/docker-run-action@v3
-  #       with:
-  #         image: node:${{ matrix.node }}-bullseye-slim
-  #         options: '--network host -e CI=true --platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
-  #         run: |
-  #           set -e
-  #           yarn test
-  #           ls -la
+  test-linux-aarch64-gnu-binding:
+    name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '18'
+          - '20'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install CAN support on host
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-modules-extra-$(uname -r)
+      - name: Setup CAN kernel modules
+        run: |
+          sudo modprobe can
+          sudo modprobe can_raw
+          sudo modprobe vcan
+          lsmod | grep can
+      - name: Setup virtual CAN interface
+        run: |
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+          sudo ip link show
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-aarch64-unknown-linux-gnu
+          path: ./js
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.cpu "arm64"
+          yarn config set supportedArchitectures.libc "glibc"
+          yarn install
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Setup and run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:${{ matrix.node }}-slim
+          options: '--network host -e CI=true --platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+          run: |
+            set -e
+            yarn test
+            ls -la
+  test-linux-aarch64-musl-binding:
+    name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install CAN support on host
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-modules-extra-$(uname -r)
+      - name: Setup CAN kernel modules
+        run: |
+          sudo modprobe can
+          sudo modprobe can_raw
+          sudo modprobe vcan
+          lsmod | grep can
+      - name: Setup virtual CAN interface
+        run: |
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+          sudo ip link show
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-aarch64-unknown-linux-musl
+          path: ./js
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.cpu "arm64"
+          yarn config set supportedArchitectures.libc "musl"
+          yarn install
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Setup and run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:lts-alpine
+          options: '--network host -e CI=true --platform linux/arm64 -v ${{ github.workspace }}:/build -w /build'
+          run: |
+            set -e
+            yarn test
+  test-linux-arm-gnueabihf-binding:
+    name: Test bindings on armv7-unknown-linux-gnueabihf - node@${{ matrix.node }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '18'
+          - '20'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install CAN support on host
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-modules-extra-$(uname -r)
+      - name: Setup CAN kernel modules
+        run: |
+          sudo modprobe can
+          sudo modprobe can_raw
+          sudo modprobe vcan
+          lsmod | grep can
+      - name: Setup virtual CAN interface
+        run: |
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+          sudo ip link show
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-armv7-unknown-linux-gnueabihf
+          path: ./js
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.cpu "arm"
+          yarn install
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
+      - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Setup and run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:${{ matrix.node }}-bullseye-slim
+          options: '--network host -e CI=true --platform linux/arm/v7 -v ${{ github.workspace }}:/build -w /build'
+          run: |
+            set -e
+            yarn test
+            ls -la
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs:
+      - test-linux-x64-gnu-binding
+      - test-linux-x64-musl-binding
+      - test-linux-aarch64-gnu-binding
+      - test-linux-aarch64-musl-binding
+      - test-linux-arm-gnueabihf-binding
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Move artifacts
+        run: yarn artifacts
+      - name: List packages
+        run: ls -R ./npm
+        shell: bash
+      - name: Publish
+        run: |
+          npm config set provenance true
+          if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
+          then
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            npm publish --access public
+          elif git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+";
+          then
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            npm publish --tag next --access public
+          else
+            echo "Not a release, skipping publish"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
