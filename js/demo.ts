@@ -33,7 +33,7 @@ let frontLeftSeatTrackForward = socket.createBroadcast({
     frontLeftSeatTrackBackward: 0,
   }),
   interval: 50,
-  duration: 5000,
+  duration: 7000,
 });
 
 let frontLeftSeatTrackBackward = socket.createBroadcast({
@@ -42,5 +42,5 @@ let frontLeftSeatTrackBackward = socket.createBroadcast({
     frontLeftSeatTrackBackward: 1,
   }),
   interval: 50,
-  duration: 5000,
+  duration: 7000,
 });
