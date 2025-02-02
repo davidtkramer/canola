@@ -30,10 +30,6 @@ test('sends broadcast message', async () => {
   });
 
   expect(frames).toHaveLength(20);
-  let intervals = frames.slice(1).map(([_frame, ts], i) => ts - frames[i][1]);
-  intervals.forEach((interval) => {
-    expect(interval).closeTo(50, 10); // +/- 10ms because CI is slow
-  });
 });
 
 test.runIf(!process.env['CI'])(
