@@ -54,53 +54,7 @@ socket.on('message', (frame) => {
 });
 ```
 
-# Development
-
-Clone repository
-
-```
-git clone https://github.com/davidtkramer/canola.git
-cd canola
-```
-
-Install rust
-
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-Install nvm + node: https://nodejs.org/en/download
-
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/<VERSION>/install.sh | bash
-nvm install 22
-```
-
-Install yarn
-
-```
-npm install -g yarn
-```
-
-Install @napi-rs/cli
-
-```
-npm install -g @napi-rs/cli
-```
-
-Build project
-
-```
-yarn build:debug
-```
-
-Run tests
-
-```
-yarn test
-```
-
-# Raspberry Pi Setup
+# Raspberry Pi Deployment
 
 Canola has been developed and tested on a Raspberry PI 4, but should work on any Linux SBC that supports SocketCAN.
 
@@ -186,3 +140,49 @@ WantedBy=local-fs.target
 ```
 
 > With `DefaultDependencies=false`, systemd will start your service immediately after the kernel loads. On a Raspberry Pi 4, the service can be running within seconds of the board receiving power. However, networking, bluetooth, and other services you may require will not be available yet.
+
+# Development
+
+Clone repository
+
+```
+git clone https://github.com/davidtkramer/canola.git
+cd canola
+```
+
+Install rust
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Install nvm + node: https://nodejs.org/en/download
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/<VERSION>/install.sh | bash
+nvm install 22
+```
+
+Install yarn
+
+```
+npm install -g yarn
+```
+
+Install @napi-rs/cli
+
+```
+npm install -g @napi-rs/cli
+```
+
+Build project
+
+```
+yarn build:debug
+```
+
+Run tests
+
+```
+yarn test
+```
