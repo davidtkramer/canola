@@ -1,5 +1,5 @@
 {
-  "name": "@davtomkra/canola",
+  "name": "@canola/core",
   "version": "0.0.0",
   "files": [
     "dist"
@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "type": "module",
   "napi": {
-    "name": "canola",
+    "name": "core",
     "triples": {
       "defaults": false,
       "additional": [
@@ -47,5 +47,6 @@
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
-  }
+  },
+  "repository": "https://github.com/davidtkramer/canola"
 }

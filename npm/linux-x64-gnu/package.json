@@ -1,15 +1,15 @@
 {
-  "name": "@canola/core-linux-riscv64-gnu",
+  "name": "@canola/core-linux-x64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
   ],
   "cpu": [
-    "riscv64"
+    "x64"
   ],
-  "main": "core.linux-riscv64-gnu.node",
+  "main": "core.linux-x64-gnu.node",
   "files": [
-    "core.linux-riscv64-gnu.node"
+    "core.linux-x64-gnu.node"
   ],
   "license": "MIT",
   "engines": {

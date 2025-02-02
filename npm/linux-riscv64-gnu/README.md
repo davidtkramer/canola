@@ -1,3 +1,3 @@
-# `@davtomkra/canola-linux-riscv64-gnu`
+# `@canola/core-linux-riscv64-gnu`
 
-This is the **riscv64gc-unknown-linux-gnu** binary for `@davtomkra/canola`
+This is the **riscv64gc-unknown-linux-gnu** binary for `@canola/core`

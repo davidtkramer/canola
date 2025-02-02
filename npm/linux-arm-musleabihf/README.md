@@ -1,3 +1,3 @@
-# `@davtomkra/canola-linux-arm-musleabihf`
+# `@canola/core-linux-arm-musleabihf`
 
-This is the **armv7-unknown-linux-musleabihf** binary for `@davtomkra/canola`
+This is the **armv7-unknown-linux-musleabihf** binary for `@canola/core`

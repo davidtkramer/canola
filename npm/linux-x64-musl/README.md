@@ -1,3 +1,3 @@
-# `@davtomkra/canola-linux-x64-musl`
+# `@canola/core-linux-x64-musl`
 
-This is the **x86_64-unknown-linux-musl** binary for `@davtomkra/canola`
+This is the **x86_64-unknown-linux-musl** binary for `@canola/core`

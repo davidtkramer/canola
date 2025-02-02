@@ -1,3 +1,3 @@
-# `@davtomkra/canola-linux-arm-gnueabihf`
+# `@canola/core-linux-arm-gnueabihf`
 
-This is the **armv7-unknown-linux-gnueabihf** binary for `@davtomkra/canola`
+This is the **armv7-unknown-linux-gnueabihf** binary for `@canola/core`
