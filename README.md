@@ -41,11 +41,11 @@ let schema = CanSchema.loadFile<Messages>('model-y.kcd');
 let socket = new CanSocket('can0');
 
 socket.on('message', (frame) => {
-  let message = schema.decodeMessage(frame);
+  let message = schema.decode(frame);
   console.log(message.name, message.data);
 
   if (message.name === 'ping') {
-    let message = schema.encodeMessage({
+    let message = schema.encode({
       name: 'pong',
       data: { x: 1, y: 2 },
     });
