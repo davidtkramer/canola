@@ -37,13 +37,13 @@
   },
   "packageManager": "yarn@4.5.3",
   "dependencies": {
-    "@rgrove/parse-xml": "^4.2.0",
-    "blessed": "^0.1.81"
+    "@rgrove/parse-xml": "^4.2.0"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
     "@types/blessed": "^0",
     "@types/node": "^22.10.2",
+    "blessed": "^0.1.81",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
