@@ -1,8 +1,8 @@
-import { CanSchema } from './can-schema.js';
-import type { Messages } from './__test__/types.js';
-import { CanSocket } from './index.js';
+import { CanSchema } from '../js/can-schema.js';
+import { CanSocket } from '../js/index.js';
+import type { Messages } from './tesla-seat.types.js';
 
-let schema = CanSchema.loadFile<Messages>('js/__test__/files/model-y.kcd');
+let schema = CanSchema.loadFile<Messages>('js/__test__/files/tesla-seat.kcd');
 let state = { isMovingSeat: false };
 
 let socket = new CanSocket('can1', {
