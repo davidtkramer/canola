@@ -1,0 +1,12 @@
+{
+  "name": "can-sniffer",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@canola/core": "^0.0.1",
+    "@types/blessed": "^0.1.25",
+    "blessed": "^0.1.81"
+  }
+}

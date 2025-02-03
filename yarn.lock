@@ -11,12 +11,12 @@ __metadata:
   dependencies:
     "@napi-rs/cli": "npm:^2.18.4"
     "@rgrove/parse-xml": "npm:^4.2.0"
-    "@types/blessed": "npm:^0"
     "@types/node": "npm:^22.10.2"
-    blessed: "npm:^0.1.81"
     prettier: "npm:^3.4.2"
     typescript: "npm:^5.7.2"
     vitest: "npm:^2.1.8"
+  bin:
+    canola: ./dist/cli.js
   languageName: unknown
   linkType: soft
 
@@ -389,15 +389,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/blessed@npm:^0":
-  version: 0.1.25
-  resolution: "@types/blessed@npm:0.1.25"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10c0/ec298878c1c9d4202fee26248677c39236d7c0eac8ed8f6e93a9e5838bc531074fe44941e2b85fc77b0cc20924493930d295042ee0315e020dffeba99668737a
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:1.0.6, @types/estree@npm:^1.0.0":
   version: 1.0.6
   resolution: "@types/estree@npm:1.0.6"
@@ -405,7 +396,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.10.2":
+"@types/node@npm:^22.10.2":
   version: 22.13.0
   resolution: "@types/node@npm:22.13.0"
   dependencies:
@@ -550,15 +541,6 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 10c0/9308baf0a7e4838a82bbfd11e01b1cb0f0cf2893bc1676c27c2a8c0e70cbae1c59120c3268517a8ae7fb6376b4639ef81ca22582611dbee4ed28df945134aaee
-  languageName: node
-  linkType: hard
-
-"blessed@npm:^0.1.81":
-  version: 0.1.81
-  resolution: "blessed@npm:0.1.81"
-  bin:
-    blessed: ./bin/tput.js
-  checksum: 10c0/19515ff7899e8af0dd6c080e30e849833ee9518508cc4eabae5a2ea5f17440537a2526169081f20c79d73fbbeca26cc798cc4b037ec250f91f4952b3a75a2143
   languageName: node
   linkType: hard
 

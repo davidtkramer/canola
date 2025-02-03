@@ -1,5 +1,5 @@
+import { CanSocket } from '@canola/core';
 import blessed from 'blessed';
-import { CanSocket } from './index.js';
 
 // Validate input
 
