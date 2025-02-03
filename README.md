@@ -4,11 +4,15 @@ A Node.js library for interacting with CAN (Controller Area Network) buses. Buil
 
 ## Features
 
-- 🔒 **Type-safe messaging**: Generate TypeScript types from KCD (Kayak CAN Definition) files for compile-time validation of CAN messages
-- 📦 **Message schema support**: Encode and decode CAN messages using KCD schemas
-- 🚀 **High performance**: Non-blocking SocketCAN reads/writes, written in rust
-- 🔄 **Broadcast messages**: Easily send messages at specified intervals with OS-level timing precision
-- 🎯 **Message filtering**: Kernel-level filtering of messages by ID and mask
+🔒 **Type-safe messaging**: Generate TypeScript types from KCD (Kayak CAN Definition) files for compile-time validation of CAN messages
+
+📦 **Message schema support**: Encode and decode CAN messages using KCD schemas
+
+🚀 **High performance**: Non-blocking SocketCAN reads/writes, written in rust
+
+🔄 **Broadcast messages**: Easily send messages at specified intervals with OS-level timing precision
+
+🎯 **Message filtering**: Kernel-level filtering of messages by ID and mask
 
 ## Installation
 
