@@ -25,6 +25,9 @@
   "engines": {
     "node": ">= 10"
   },
+  "bin": {
+    "canola": "./dist/cli.js"
+  },
   "scripts": {
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release --js ./native.cjs --dts ./native.d.cts ./js $* && tsc && cp ./js/*.node ./dist",
