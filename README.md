@@ -1,6 +1,6 @@
 # Canola
 
-A Node.js library for interacting with CAN (Controller Area Network) buses via Linux SocketCAN. Built with TypeScript and Rust to provide complete type-safety when working with CAN messages.
+A Node.js library for interacting with CAN buses via Linux SocketCAN. Built with TypeScript and Rust to provide complete type-safety when working with CAN messages.
 
 ## Features
 
