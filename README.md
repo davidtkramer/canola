@@ -1,4 +1,13 @@
-# Canola
+<div align="center">
+    <img
+    height="80"
+    width="80"
+    alt="factory"
+    src="https://github.com/user-attachments/assets/bf0918e9-ea23-4bfd-bf64-5ff13cd34a83"
+  />
+  <p />
+  <h1>Canola</h1>
+</div>
 
 A Node.js library for interacting with CAN buses via Linux SocketCAN. Built with TypeScript and Rust to provide complete type-safety when working with CAN messages.
 
