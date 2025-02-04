@@ -96,8 +96,8 @@ Canola has been developed and tested on a Raspberry PI 4, but should work on any
 ## Materials
 
 - Raspberry PI
-- CAN HAT: [Amazon](https://www.amazon.com/Waveshare-CAN-HAT-SN65HVD230-Protection/dp/B087RJ6XGG)
-- OBD pigtail cable
+- [CAN HAT](https://www.amazon.com/Waveshare-CAN-HAT-SN65HVD230-Protection/dp/B087RJ6XGG)
+- [OBD pigtail cable](https://www.amazon.com/gp/product/B09YQ57GXT)
 - OBD CAN bus cable: [Tesla](https://enhauto.com/product/tesla-gen1-obd-cable)
 
 ## Hardware Setup
