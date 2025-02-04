@@ -100,7 +100,7 @@ socket.on('message', (frame) => {
 
 # Deployment
 
-Canola has been developed and tested on a Raspberry Pi 4, but should work on any Linux machine with SocketCAN hardware or virtual SocketCAN interfaces.
+Canola has been developed and tested on a Raspberry Pi 4, but should work on any Linux machine with SocketCAN hardware or a virtual SocketCAN interface.
 
 ## Materials
 
