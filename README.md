@@ -38,36 +38,13 @@ socket.write(123, Buffer.from('deadbeefdeadbeef', 'hex'));
 
 ## Encode/decode messages
 
-```typescript
-import { CanSchema } from '@canola/core';
-
-let schema = CanSchema.loadFile('path/to/schema.kcd');
-
-let socket = new CanSocket('can0');
-
-socket.on('message', (frame) => {
-  let message = schema.decode(frame);
-  console.log(message.name, message.data);
-
-  if (message.name === 'ping') {
-    let message = schema.encode({
-      name: 'pong',
-      data: { x: 1, y: 2 },
-    });
-    socket.write(message);
-  }
-});
-```
-
-## Generate Types
-
 Run this command to generate types from your network schema. Outputs a `types.ts` file in the current directory.
 
 ```
 npx canola type-gen path/to/schema.kcd
 ```
 
-Import the generated `Messages` type and provide it as the generic argument to `CanSchema.loadFile`.
+Import the generated `Messages` type and pass it to the generic param for `CanSchema.loadFile`.
 
 ```typescript
 import { CanSchema } from '@canola/core';
@@ -89,13 +66,18 @@ socket.on('message', (frame) => {
       console.log(message.data.current); // number
     }
     case 'ChargeStatus': {
-      // Multiplexed messages can be further narrowed, using the mux
-      // signal as the discriminant
-      if (message.data.chargeStatusMuxIndex === 0)
-        // message.data is typed as ChargeStatus_Signals_0
-        let { chargeStatus, chargeDoorControlStatus}
-        console.log(message.data.chargeStatus); // 'enabled' | 'faulted' | 'standby'
-        console.log(message.data.chargeDoorStatus); // 'closing' | 'opening' | 'idle'
+      // message.data is typed as ChargeStatus_Signals
+      console.log(message.data.chargeStatus); // 'enabled' | 'faulted' | 'standby'
+      console.log(message.data.chargeDoorStatus); // 'closing' | 'opening' | 'idle'
+    }
+    case 'SwitchStatus': {
+      if (message.data.swcLeftDoublePress === 1) {
+        // name and data are type checked against the KCD schema
+        let ventWindows = schema.encode({
+          name: 'VehicleControl',
+          data: { windowRequest: 'vent' },
+        });
+        socket.write(ventWindows);
       }
     }
   }
