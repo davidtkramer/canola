@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { CanSocket, type CanFrame } from '../index.js';
+import { CanSocket, type CanFrame } from '..';
 import { buffer, waitFor, sleep, throttle, unthrottle } from './utils.js';
 
 test('reads and writes a message', async () => {

@@ -14,7 +14,7 @@ switch (command) {
     if (schemaFilePath === undefined) {
       throw new Error('Schema file path is required');
     }
-    let outputFilePath = process.argv[4] ?? '';
+    let outputFilePath = process.argv[4] ?? 'types.ts';
     let cs = CanSchema.loadFile(schemaFilePath);
     await generateTypes(cs.messages, path.join(process.cwd(), outputFilePath));
     break;

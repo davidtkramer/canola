@@ -1,7 +1,6 @@
 import { beforeAll, expect, test } from 'vitest';
 import path from 'path';
-import { CanSchema } from '../can-schema.js';
-import { generateTypes } from '../type-generator.js';
+import { CanSchema, generateTypes } from '..';
 import { buffer } from './utils.js';
 import {
   Messages,
