@@ -1,30 +1,25 @@
-export type SwitchStatus_Signals_0 = {
-  switchStatusIndex: 'INDEX_0';
-  hazardButtonPressed: number;
-  brakeSwitchPressed: number;
-  frontSeatTrackBack: 'SNA' | 'OFF' | 'ON' | 'FAULT';
+export type MultiplexedMessage_Signals_0 = {
+    muxIndex: "INDEX_0";
+    signalA: number;
+    signalB: number;
 };
 
-export type SwitchStatus_Signals_1 = {
-  switchStatusIndex: 'INDEX_1';
-  swcLeftTiltRight: 'SNA' | 'OFF' | 'ON' | 'FAULT';
-  swcLeftScrollTicks: number;
-  swcRightScrollTicks: number;
+export type MultiplexedMessage_Signals_1 = {
+    muxIndex: "INDEX_1";
+    signalC: number;
+    signalD: number;
 };
 
-export type SwitchStatus_Signals_2 = {
-  switchStatusIndex: 'INDEX_INVALID';
+export type MultiplexedMessage_Signals_2 = {
+    muxIndex: "INDEX_INVALID";
 };
 
-export type SwitchStatus_Signals =
-  | SwitchStatus_Signals_0
-  | SwitchStatus_Signals_1
-  | SwitchStatus_Signals_2;
+export type MultiplexedMessage_Signals = MultiplexedMessage_Signals_0 | MultiplexedMessage_Signals_1 | MultiplexedMessage_Signals_2;
 
-export type SwitchStatus = {
-  frameId: 962;
-  name: 'SwitchStatus';
-  signals: SwitchStatus_Signals;
+export type MultiplexedMessage = {
+    frameId: 962;
+    name: "MultiplexedMessage";
+    signals: MultiplexedMessage_Signals;
 };
 
-export type Messages = SwitchStatus;
+export type Messages = MultiplexedMessage;

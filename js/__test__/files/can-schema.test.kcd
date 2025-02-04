@@ -1,0 +1,30 @@
+<NetworkDefinition>
+  <Bus name="Vehicle">
+    <Message id="0x3C2" name="MultiplexedMessage" length="1" interval="50">
+      <Multiplex name="muxIndex" offset="0" length="2">
+        <Value min="0" max="2" />
+        <LabelSet>
+          <Label name="INDEX_0" value="0" />
+          <Label name="INDEX_1" value="1" />
+          <Label name="INDEX_INVALID" value="2" />
+        </LabelSet>
+        <MuxGroup count="0">
+          <Signal name="signalA" offset="3">
+            <Value min="0" max="1" />
+          </Signal>
+          <Signal name="signalB" offset="4">
+            <Value min="0" max="1" />
+          </Signal>
+        </MuxGroup>
+        <MuxGroup count="1">
+          <Signal name="signalC" offset="3" length="2">
+            <Value min="0" max="3" />
+          </Signal>
+          <Signal name="signalD" offset="5" length="1">
+            <Value min="0" max="1" />
+          </Signal>
+        </MuxGroup>
+      </Multiplex>
+    </Message>
+  </Bus>
+</NetworkDefinition>
