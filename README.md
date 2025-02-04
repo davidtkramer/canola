@@ -6,13 +6,13 @@ A Node.js library for interacting with CAN buses via Linux SocketCAN. Built with
 
 🚀 **High performance**: Native Node.js add-on written in Rust for non-blocking SocketCAN access
 
-🔒 **Type-safe messaging**: Generate types from KCD files for compile-time validation of CAN messages
+🔒 **100% Type Safe**: Generate types from KCD files for compile-time validation of CAN messages
 
 📦 **Message schema support**: Encode and decode CAN messages using KCD schemas
 
 🔄 **Broadcast messages**: Easily send messages at specified intervals with native thread timing precision
 
-🎯 **Message filtering**: Kernel-level filtering of messages by ID and mask
+🎯 **Message filtering**: Performant kernel-level filtering of messages by ID and mask
 
 # Quick Start
 
