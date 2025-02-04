@@ -196,3 +196,7 @@ Cargo.lock
 !.yarn/versions
 
 *.node
+
+# Canola
+
+js/__test__/files/type-generator.test.types.ts

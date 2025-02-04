@@ -17,7 +17,7 @@ import { MessageSchema, type SignalBranch, type SignalNode } from './message-sch
 
 export async function generateTypes(
   messages: Array<MessageSchema>,
-  outputDir: string,
+  outputPath: string,
 ): Promise<void> {
   let allTypes: Array<TypeAliasDeclaration> = [];
 
@@ -85,11 +85,11 @@ export async function generateTypes(
 
   let finalOutput = outputs.join('\n\n');
 
-  // Write to file
-  if (!fs.existsSync(outputDir)) {
-    await fs.promises.mkdir(outputDir, { recursive: true });
+  const parsedPath = path.parse(outputPath);
+  const dirPath = parsedPath.dir
+  if (!fs.existsSync(dirPath)) {
+    await fs.promises.mkdir(dirPath, { recursive: true });
   }
-  let outputPath = path.join(outputDir, 'types.ts');
   await fs.promises.writeFile(outputPath, finalOutput);
 }
 
