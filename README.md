@@ -103,7 +103,7 @@ Canola has been developed and tested on a Raspberry PI 4, but should work on any
 
 Connect the CAN bus wires on the OBD pigtail cable to the screw terminals on the CAN HAT. Refer to the pinout diagram for your car's OBD port.
 
-> ⚠️ Cut off or insulate any pigtail wires you will not use to prevent shorts and possible damage to your vehicle.
+> ⚠️ Cut off or insulate any unused pigtail wires to prevent shorts and possible damage to your vehicle.
 
 If your CAN HAT can provide power to your pi, connect the 12v wire from the pigtail cable to the HAT.
 
