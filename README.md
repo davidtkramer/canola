@@ -89,16 +89,16 @@ socket.on('message', (frame) => {
 - [Model Y Seat Folding Manager](https://github.com/davidtkramer/canola/tree/main/examples/tesla-seat-manager)
 - [CAN Sniffer](https://github.com/davidtkramer/canola/tree/main/examples/can-sniffer)
 
-# Raspberry Pi Deployment
+# Deployment
 
-Canola has been developed and tested on a Raspberry PI 4, but should work on any Linux machine with SocketCAN hardware.
+Canola has been developed and tested on a Raspberry PI 4, but should work on any Linux machine with SocketCAN hardware or virtual SocketCAN interfaces.
 
 ## Materials
 
 - Raspberry PI
-- CAN HAT
-- CAN bus splitter
+- CAN HAT: [Amazon](https://www.amazon.com/Waveshare-CAN-HAT-SN65HVD230-Protection/dp/B087RJ6XGG)
 - OBD pigtail cable
+- OBD CAN bus cable: [Tesla](https://enhauto.com/product/tesla-gen1-obd-cable)
 
 ## Hardware Setup
 
@@ -176,7 +176,7 @@ WantedBy=local-fs.target
 
 > With `DefaultDependencies=false`, systemd will start your service immediately after the kernel loads. On a Raspberry Pi 4, the service can be running within seconds of the board receiving power. However, networking, bluetooth, and other services you may require will not be available yet.
 
-# Development
+# Contributing
 
 Clone repository
 
