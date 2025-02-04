@@ -71,10 +71,8 @@ Import the generated `Messages` type and provide it as the generic argument to `
 
 ```typescript
 import { CanSchema } from '@canola/core';
-// Import auto-generated types
 import { Messages } from './types.js';
 
-// Provide generic type argument to loadFile
 let schema = CanSchema.loadFile<Messages>('path/to/schema.kcd');
 
 let socket = new CanSocket('can0');
@@ -95,8 +93,9 @@ socket.on('message', (frame) => {
       // signal as the discriminant
       if (message.data.chargeStatusMuxIndex === 0)
         // message.data is typed as ChargeStatus_Signals_0
-        console.log(message.data.chargeStatus); // 'blocked' | 'enabled' | 'faulted' | 'standby'
-        console.log(message.data.chargeDoorControlStatus); // 'closing' | 'opening' | 'open' | 'closed'
+        let { chargeStatus, chargeDoorControlStatus}
+        console.log(message.data.chargeStatus); // 'enabled' | 'faulted' | 'standby'
+        console.log(message.data.chargeDoorStatus); // 'closing' | 'opening' | 'idle'
       }
     }
   }
