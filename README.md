@@ -7,7 +7,9 @@
   />
   <p />
   <h1>Canola</h1>
-  <img width="90" height="20" src="https://github.com/davidtkramer/canola/actions/workflows/CI.yml/badge.svg" />
+  <a href="https://github.com/davidtkramer/canola/actions/workflows/CI.yml">
+    <img width="90" height="20" src="https://github.com/davidtkramer/canola/actions/workflows/CI.yml/badge.svg" />
+  </a>
   <p />
 </div>
 
