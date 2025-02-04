@@ -53,7 +53,7 @@ Run this command to generate types from your network schema. Outputs a `types.ts
 npx canola type-gen path/to/schema.kcd
 ```
 
-Import the generated `Messages` type and pass it to the generic param for `CanSchema.loadFile`.
+Import the generated `Messages` type and pass it as the generic type for `CanSchema.loadFile`.
 
 ```typescript
 import { CanSchema } from '@canola/core';
