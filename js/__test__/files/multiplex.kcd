@@ -35,14 +35,11 @@
               <Label name="SNA" value="0" />
             </LabelSet>
           </Signal>
-          <Signal name="swcLeftScrollTicks" offset="16" length="6">
+          <Signal name="swcLeftScrollTicks" offset="5" length="6">
             <Value min="-32" max="31" type="signed" />
           </Signal>
-          <Signal name="swcRightScrollTicks" offset="24" length="6">
+          <Signal name="swcRightScrollTicks" offset="11" length="6">
             <Value min="-32" max="31" type="signed" />
-          </Signal>
-          <Signal name="btnWindowUpLR" offset="32">
-            <Value min="0" max="1" />
           </Signal>
         </MuxGroup>
       </Multiplex>

@@ -86,7 +86,7 @@ export async function generateTypes(
   let finalOutput = outputs.join('\n\n');
 
   const parsedPath = path.parse(outputPath);
-  const dirPath = parsedPath.dir
+  const dirPath = parsedPath.dir;
   if (!fs.existsSync(dirPath)) {
     await fs.promises.mkdir(dirPath, { recursive: true });
   }
