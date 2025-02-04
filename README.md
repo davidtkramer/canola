@@ -96,16 +96,16 @@ Canola has been developed and tested on a Raspberry PI 4, but should work on any
 ## Materials
 
 - Raspberry Pi
-- [CAN HAT](https://www.amazon.com/Waveshare-CAN-HAT-SN65HVD230-Protection/dp/B087RJ6XGG)
+- [CAN HAT](https://www.amazon.com/Waveshare-2-Channel-Expansion-Compatible-Protections/dp/B0D3GD458Z)
 - [OBD pigtail cable](https://www.amazon.com/gp/product/B09YQ57GXT)
 - OBD CAN bus splitter (vehicle specific)
-  - [Tesla](https://enhauto.com/product/tesla-gen1-obd-cable)
+  - Tesla: [Enhance Auto](https://enhauto.com/product/tesla-gen1-obd-cable) | [EV Offer](https://evoffer.com/product/model-3-y-can-diagnostic-cable)
 
 Connect the CAN bus wires on the OBD pigtail cable to the screw terminals on the CAN HAT. Refer to the pinout diagram for your car's OBD port.
 
 > ⚠️ Cut off or insulate any unused pigtail wires to prevent shorts and possible damage to your vehicle.
 
-If your CAN HAT can provide power to your pi, connect the 12v wire from the pigtail cable to the HAT.
+If your CAN HAT can provide power to your pi, connect the 12v power and ground wires from the pigtail cable to the HAT.
 
 Connect your OBD splitter to your vehicle, then plugin the pigtail cable into the splitter.
 
