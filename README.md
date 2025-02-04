@@ -7,6 +7,8 @@
   />
   <p />
   <h1>Canola</h1>
+  <img width="90" height="20" src="https://github.com/davidtkramer/canola/actions/workflows/CI.yml/badge.svg" />
+  <p />
 </div>
 
 A Node.js library for interacting with CAN buses via Linux SocketCAN. Built with TypeScript and Rust to provide complete type-safety when working with CAN messages.
