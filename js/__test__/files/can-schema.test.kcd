@@ -1,6 +1,14 @@
 <NetworkDefinition>
   <Bus name="Vehicle">
-    <Message id="0x3C2" name="MultiplexedMessage" length="1" interval="50">
+    <Message id="0x200" name="RegularMessage" length="1">
+      <Signal name="signalA" offset="0">
+        <Value min="0" max="1" />
+      </Signal>
+      <Signal name="signalB" offset="1">
+        <Value min="0" max="1" />
+      </Signal>
+    </Message>
+    <Message id="0x201" name="MultiplexedMessage" length="1">
       <Multiplex name="muxIndex" offset="0" length="2">
         <Value min="0" max="2" />
         <LabelSet>
