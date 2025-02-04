@@ -14,7 +14,7 @@ A Node.js library for interacting with CAN buses via Linux SocketCAN. Built with
 
 🎯 **Message filtering**: Kernel-level filtering of messages by ID and mask
 
-## Quick Start
+# Quick Start
 
 Installation
 
@@ -22,7 +22,7 @@ Installation
 npm install @canola/core
 ```
 
-Basic Usage
+## Basic Usage
 
 ```typescript
 import { CanSocket } from '@canola/core';
@@ -36,13 +36,12 @@ socket.on('message', (frame) => {
 socket.write(123, Buffer.from('deadbeefdeadbeef', 'hex'));
 ```
 
-Encode/decode messages
+## Encode/decode messages
 
 ```typescript
 import { CanSchema } from '@canola/core';
-import { Messages } from './types.js';
 
-let schema = CanSchema.loadFile<Messages>('model-y.kcd');
+let schema = CanSchema.loadFile('path/to/schema.kcd');
 
 let socket = new CanSocket('can0');
 
@@ -59,6 +58,55 @@ socket.on('message', (frame) => {
   }
 });
 ```
+
+## Generate Types
+
+Run this command to generate types from your network schema. Outputs a `types.ts` file in the current directory.
+
+```
+npx canola type-gen path/to/schema.kcd
+```
+
+Import the generated `Messages` type and provide it as the generic argument to `CanSchema.loadFile`.
+
+```typescript
+import { CanSchema } from '@canola/core';
+// Import auto-generated types
+import { Messages } from './types.js';
+
+// Provide generic type argument to loadFile
+let schema = CanSchema.loadFile<Messages>('path/to/schema.kcd');
+
+let socket = new CanSocket('can0');
+
+socket.on('message', (frame) => {
+  let message = schema.decode(frame);
+
+  // TypeScript knows message.name can only be one of the names
+  // defined in the KCD file, and narrows message.data accordingly
+  switch (message.name) {
+    case 'MotorData': {
+      // message.data is typed as MotorData_Signals
+      console.log(message.data.voltage); // number
+      console.log(message.data.current); // number
+    }
+    case 'ChargeStatus': {
+      // Multiplexed messages can be further narrowed, using the mux
+      // signal as the discriminant
+      if (message.data.chargeStatusMuxIndex === 0)
+        // message.data is typed as ChargeStatus_Signals_0
+        console.log(message.data.chargeStatus); // 'blocked' | 'enabled' | 'faulted' | 'standby'
+        console.log(message.data.chargeDoorControlStatus); // 'closing' | 'opening' | 'open' | 'closed'
+      }
+    }
+  }
+});
+```
+
+# Examples
+
+- [Model Y Seat Folding Manager](https://github.com/davidtkramer/canola/tree/main/examples/tesla-seat-manager)
+- [CAN Sniffer](https://github.com/davidtkramer/canola/tree/main/examples/can-sniffer)
 
 # Raspberry Pi Deployment
 
