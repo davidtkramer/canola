@@ -6,10 +6,13 @@ import type { NodeSchema, BusSchema, Reveal } from './types.js';
 
 type AnyMessageSchema<T extends MessageType> = T extends any ? MessageSchema<T> : never;
 
-type MessageSchemaByName<T extends MessageType, K extends string> = Extract<
-  AnyMessageSchema<T>,
-  MessageSchema<{ name: K; frameId: any; signals: any }>
->;
+type MessageSchemaByName<T extends MessageType, K extends string> = string extends T['name']
+  ? MessageSchema<MessageType>
+  : Extract<AnyMessageSchema<T>, MessageSchema<{ name: K; frameId: any; signals: any }>>;
+// type MessageSchemaByName<T extends MessageType, K extends string> = Extract<
+//   AnyMessageSchema<T>,
+//   MessageSchema<{ name: string extends T['name'] ? string : K; frameId: any; signals: any }>
+// >;
 
 type MessageSchemaById<T extends MessageType, K extends number> = Extract<
   AnyMessageSchema<T>,
