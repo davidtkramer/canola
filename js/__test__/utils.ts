@@ -56,12 +56,12 @@ export const kcd = Object.assign(_kcd, {
     }
     let messageSchema = schema.messages[0]!;
     return Object.assign(messageSchema, {
-      roundTrip: (...args: Parameters<typeof messageSchema['encode']>) => {
+      roundTrip: (...args: Parameters<(typeof messageSchema)['encode']>) => {
         return messageSchema.decode(messageSchema.encode(...args));
-      }
-    })
-  }
-})
+      },
+    });
+  },
+});
 
 export function throttle(bytes: number) {
   let sudo = process.env['CI'] ? '' : 'sudo ';

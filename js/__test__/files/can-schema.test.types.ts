@@ -1,36 +1,32 @@
 export type RegularMessage_Signals = {
-    signalA: number;
-    signalB: number;
+  signalA: number;
+  signalB: number;
 };
 
 export type RegularMessage = {
-    frameId: 512;
-    name: "RegularMessage";
-    signals: RegularMessage_Signals;
+  frameId: 512;
+  name: 'RegularMessage';
+  signals: RegularMessage_Signals;
 };
 
-export type MultiplexedMessage_Signals_0 = {
-    muxIndex: "INDEX_0";
-    signalA: number;
-    signalB: number;
+export type MultiplexMessage_Signals_0 = {
+  muxIndex: 'INDEX_0';
+  signalA: number;
 };
 
-export type MultiplexedMessage_Signals_1 = {
-    muxIndex: "INDEX_1";
-    signalC: number;
-    signalD: number;
+export type MultiplexMessage_Signals_1 = {
+  muxIndex: 'INDEX_1';
+  signalB: number;
 };
 
-export type MultiplexedMessage_Signals_2 = {
-    muxIndex: "INDEX_INVALID";
+export type MultiplexMessage_Signals =
+  | MultiplexMessage_Signals_0
+  | MultiplexMessage_Signals_1;
+
+export type MultiplexMessage = {
+  frameId: 513;
+  name: 'MultiplexMessage';
+  signals: MultiplexMessage_Signals;
 };
 
-export type MultiplexedMessage_Signals = MultiplexedMessage_Signals_0 | MultiplexedMessage_Signals_1 | MultiplexedMessage_Signals_2;
-
-export type MultiplexedMessage = {
-    frameId: 513;
-    name: "MultiplexedMessage";
-    signals: MultiplexedMessage_Signals;
-};
-
-export type Messages = RegularMessage | MultiplexedMessage;
+export type Messages = RegularMessage | MultiplexMessage;
