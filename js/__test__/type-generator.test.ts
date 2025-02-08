@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { test, expect } from 'vitest';
-import { CanSchema, generateTypes } from '..';
+import { CanSchema, generateTypes } from '../index.js';
 
 test('generates types', async () => {
   let schema = CanSchema.loadFile('js/__test__/files/model-y.kcd');

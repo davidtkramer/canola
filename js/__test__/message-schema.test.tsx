@@ -1,76 +1,22 @@
 import { expect, test } from 'vitest';
 import { buffer, kcd } from './utils.js';
-import { Message, Signal, Value } from './jsx.js';
-
-function $<T>(arg: T): T {
-  return arg;
-}
-
-test('jsx', () => {
-  // prettier-ignore
-  let schema =
-    Message({ id: '0x123', name: 'TestMessage', length: 4 },
-      Signal({ name: 'signalA', offset: 0, length: 32 },
-        Value({ type: 'single' })
-      ),
-      Signal({ name: 'signalB', offset: 0, length: 32 },
-        Value({ type: 'single', slope: 1.5, intercept: 10 }),
-      ),
-    );
-});
+import { $, Message, Signal, Value, LabelSet, Label } from './jsx.js';
 
 test('enum', () => {});
 
 test('unsigned integer', () => {});
 
 test('double', () => {
-  let schema = kcd.message`
-    <Message id="0x123" name="TestMessage" length="8">
-      <Signal name="signal" offset="0" length="64">
-        <Value type="double" />
-      </Signal>
-    </Message>
-  `;
-
-  let metadata = {
-    type: 'Message',
-    attributes: {
-      name: 'TestMessage',
-      length: 8,
-    },
-    children: [
-      {
-        type: 'Signal',
-        attributes: {
-          name: 'SignalA',
-          offset: 0,
-          length: 16,
-        },
-        children: [
-          {
-            type: 'Value',
-            attributes: { type: 'double' },
-            children: [],
-          },
-        ],
-      },
-      {
-        type: 'Signal',
-        attributes: {
-          name: 'SignalB',
-          offset: 17,
-          length: 8,
-        },
-        children: [
-          {
-            type: 'Value',
-            attributes: { type: 'double' },
-            children: [],
-          },
-        ],
-      },
-    ],
-  };
+  let schema = $(
+    Message({ id: 0x123, name: 'TestMessage', length: 8 })(
+      Signal({ name: 'signalA', offset: 0, length: 64 })(
+        Value({ type: 'double' }),
+        LabelSet(
+          Label({ name: 'Foo', value: 1 }), //
+        ),
+      ),
+    ),
+  );
 
   let data = { signal: Number.MAX_VALUE };
   expect(schema.encode(data)).toEqual(buffer('ffffffffffffef7f'));

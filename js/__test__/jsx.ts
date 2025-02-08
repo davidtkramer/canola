@@ -1,44 +1,46 @@
+type CallableElementType<Props extends object> = {
+  props: Props;
+  children: null;
+} & ChildBuilder<Props>;
+
+type ChildBuilder<Props> = <
+  InnerProps extends object,
+  InnerChildren,
+  Children extends Array<ElementType<InnerProps, InnerChildren>>,
+>(
+  ...children: Children
+) => ElementType<Props, Children>;
+
+type ElementType<Props, Children> = {
+  props: Props;
+  children: Children;
+};
+
+function Element<const Props extends object>(props: Props): CallableElementType<Props> {
+  let inner: ChildBuilder<Props> = (...children) => ({ props, children });
+  return Object.assign(inner, { props, children: null });
+}
+
+export function $<T>(arg: T): T {
+  return arg;
+}
+
 type MessageProps = {
-  id: string;
+  id: number;
   name: string;
   length: number;
 };
-type MessageElement<Signals> = {
-  type: 'Message';
-  attributes: MessageProps;
-  children?: Array<SignalElement<Signals>>;
-};
-export function Message(
-  props: MessageProps,
-): <Signals>(...children: Array<SignalElement<Signals>>) => MessageElement<Signals> {
-  console.log('Message');
-  return <Signals>(...children: Array<SignalElement<Signals>>) => ({
-    type: 'Message',
-    attributes: props,
-    children,
-  });
+export function Message(props: MessageProps) {
+  return Element(props);
 }
 
 type SignalProps<Name> = {
   name: Name;
   offset: number;
   length: number;
-  children?: any;
 };
-type SignalElement<Name> = {
-  type: 'Signal';
-  attributes: SignalProps<Name>;
-  children?: ValueElement;
-};
-export function Signal<const Name>(
-  props: SignalProps<Name>,
-): (children?: ValueElement) => SignalElement<Name> {
-  console.log('Signal');
-  return (children) => ({
-    type: 'Signal',
-    attributes: props,
-    children,
-  });
+export function Signal<Name extends string>(props: SignalProps<Name>) {
+  return Element(props);
 }
 
 type ValueProps = {
@@ -46,36 +48,18 @@ type ValueProps = {
   slope?: number;
   intercept?: number;
 };
-type ValueElement = {
-  type: 'Value';
-  attributes: ValueProps;
-};
-export function Value(props: ValueProps): ValueElement {
-  console.log('Value');
-  return {
-    type: 'Value',
-    attributes: props,
-  };
+export function Value(props: ValueProps) {
+  return Element(props);
 }
 
-// Type to extract signal names from a template string
-type ExtractSignalNames<T extends string> =
-  T extends `${string}<Signal name="${infer Name}"${string}>${string}</Signal>${infer Rest}`
-    ? Name | ExtractSignalNames<Rest>
-    : never;
-
-// Template tag implementation
-const message = <const T extends string>(strings: T): ExtractSignalNames<T> => {
-  return {} as any;
+export let LabelSet: ChildBuilder<{}> = (...children) => {
+  return Element({})(...children);
 };
 
-let schema = message(`
-  <Message id="0x123" name="TestMessage" length="8">
-    <Signal name="signalA" offset="0" length="64">
-      <Value type="double" />
-    </Signal>
-    <Signal name="signalB" offset="0" length="64">
-      <Value type="double" />
-    </Signal>
-  </Message>
-`);
+type LabelProps<Name> = {
+  name: Name;
+  value: number;
+};
+export function Label<Name extends string>(props: LabelProps<Name>) {
+  return Element(props);
+}
