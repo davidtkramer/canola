@@ -22,8 +22,6 @@
     "sourceMap": true,
     "moduleResolution": "NodeNext",
     "emitDeclarationOnly": false,
-    "jsx": "react",
-    "jsxFactory": "h",
 
     /* AND if you're building for a library: */
     "declaration": true

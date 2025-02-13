@@ -16,7 +16,10 @@ type ElementType<Props, Children> = {
   children: Children;
 };
 
-function Element<const Props extends object>(props: Props): CallableElementType<Props> {
+function createElement<const Props extends object, Type extends string>(
+  type: Type,
+  props: Props,
+): CallableElementType<Props> {
   let inner: ChildBuilder<Props> = (...children) => ({ props, children });
   return Object.assign(inner, { props, children: null });
 }
@@ -31,7 +34,7 @@ type MessageProps = {
   length: number;
 };
 export function Message(props: MessageProps) {
-  return Element(props);
+  return createElement('Message', props);
 }
 
 type SignalProps<Name> = {
@@ -40,7 +43,7 @@ type SignalProps<Name> = {
   length: number;
 };
 export function Signal<Name extends string>(props: SignalProps<Name>) {
-  return Element(props);
+  return createElement('Signal', props);
 }
 
 type ValueProps = {
@@ -49,11 +52,11 @@ type ValueProps = {
   intercept?: number;
 };
 export function Value(props: ValueProps) {
-  return Element(props);
+  return createElement('Value', props);
 }
 
 export let LabelSet: ChildBuilder<{}> = (...children) => {
-  return Element({})(...children);
+  return createElement('LabelSet', {})(...children);
 };
 
 type LabelProps<Name> = {
@@ -61,5 +64,5 @@ type LabelProps<Name> = {
   value: number;
 };
 export function Label<Name extends string>(props: LabelProps<Name>) {
-  return Element(props);
+  return createElement('Label', props);
 }
