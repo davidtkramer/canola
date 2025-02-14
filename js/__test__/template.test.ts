@@ -1,30 +1,6 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
 
-const elSym = Symbol('element');
-
-type ElementType<Type extends string, Props, Children = undefined> = {
-  type: Type;
-  props: Props;
-  children: Children;
-  [elSym]: boolean;
-  <_Children extends Array<any>>(
-    ...children: _Children
-  ): ElementType<Type, Props, _Children>;
-};
-
-function createElement<
-  Type extends string,
-  const Props extends object,
-  Children extends Array<any>,
->(type: Type, props: Props, ...children: Children) {
-  return {
-    type,
-    props,
-    children,
-  };
-}
-
-const h = createElement;
+const symbol = Symbol('element');
 
 type TypeToProps = {
   Message: {
@@ -35,94 +11,62 @@ type TypeToProps = {
   };
 };
 
-const createElementCurried =
-  <Type extends keyof TypeToProps>(type: Type) =>
-  <const Props extends TypeToProps[Type], Children extends Array<any>>(
-    props: Props,
-    ...children: Children
-  ) => {
-    return {
-      type,
-      props,
-      children,
-    };
-  };
+type ElementTypeList = Array<{ [symbol]: boolean }>;
 
-const createElementCurried2 =
-  <Type extends keyof TypeToProps>(type: Type) =>
-  <const Props extends TypeToProps[Type]>(props: Props): ElementType<Type, Props> => {
-    const inner = <Children extends Array<any>>(
-      ...children: Children
-    ): ElementType<Type, Props, Children> => {
-      return Object.assign({}, inner, { type, props, children, [elSym]: true });
-    };
-    return Object.assign(inner, { type, props, children: undefined, [elSym]: true });
-  };
-
-const createElementCurried3 = <Type extends keyof TypeToProps>(type: Type) => {
-  const createElementWithProps: PropsOrChildren<Type> = (...propsOrChildren: any) => {
-    let props = propsOrChildren;
-    const inner = <Children extends Array<any>>(
-      ...children: Children
-    ): ElementType<Type, any, Children> => {
-      return Object.assign({}, inner, { type, props, children, [elSym]: true });
-    };
-
-    return Object.assign(inner, { type, props, children: undefined, [elSym]: true });
-  };
-
-  return createElementWithProps;
+type ElementType<Type extends string, Props, Children = undefined> = {
+  type: Type;
+  props: Props;
+  children: Children;
+  [symbol]: boolean;
+  <_Children extends ElementTypeList>(
+    ...children: _Children
+  ): ElementType<Type, Props, _Children>;
 };
 
-type PropsOnly<Type extends keyof TypeToProps> = <const Props extends TypeToProps[Type]>(
-  props: Props,
-) => ElementType<Type, Props>;
+type CreateElement = {
+  <Type extends keyof TypeToProps>(type: Type): CreateElementInner<Type>;
+};
 
-type PropsOrChildren<Type extends keyof TypeToProps> = {
+type CreateElementInner<Type extends keyof TypeToProps> = {} extends TypeToProps[Type]
+  ? PropsOptionalOrChildren<Type>
+  : PropsRequired<Type>;
+
+type PropsOptionalOrChildren<Type extends keyof TypeToProps> = {
   <const Props extends TypeToProps[Type]>(props: Props): ElementType<Type, Props>;
-  <const Children extends Array<{ [elSym]: boolean }>>(
-    ...args: {} extends TypeToProps[Type] ? Children : never
+  <const Children extends ElementTypeList>(
+    ...children: Children
   ): ElementType<Type, {}, Children>;
 };
 
-type InnerCreateElement<Type extends keyof TypeToProps> = {} extends TypeToProps[Type]
-  ? PropsOrChildren<Type>
-  : PropsOnly<Type>;
-
-const createElementCurried4 = <Type extends keyof TypeToProps>(type: Type) => {
-  const createElementWithProps: InnerCreateElement<Type> = (...propsOrChildren: any) => {
-    let props = propsOrChildren;
-    const inner = <Children extends Array<any>>(
-      ...children: Children
-    ): ElementType<Type, any, Children> => {
-      return Object.assign({}, inner, { type, props, children, [elSym]: true });
-    };
-
-    return Object.assign(inner, { type, props, children: undefined, [elSym]: true });
-  };
-
-  return createElementWithProps;
+type PropsRequired<Type extends keyof TypeToProps> = {
+  <const Props extends TypeToProps[Type]>(props: Props): ElementType<Type, Props>;
 };
 
-const Message = createElementCurried3('Message');
-const Signal = createElementCurried3('Signal');
+const createElement: CreateElement = (type) => {
+  return (...propsOrChildren: any) => {
+    let props = propsOrChildren;
 
-test('regular createElement', () => {
-  // prettier-ignore
-  let result = h('Message', { foo: 'bar' },
-    h('Signal', { name: 'signalA' }),
-    h('Signal', { name: 'signalA' }),
-  );
-  console.log(result);
-});
+    const withChildren = Object.assign(
+      (...children: Array<any>) => {
+        return Object.assign({}, withChildren, { children });
+      },
+      {
+        type,
+        props,
+        children: undefined,
+        [symbol]: true,
+      },
+    );
+    return withChildren;
+  };
+};
+
+const Message = createElement('Message');
+const Signal = createElement('Signal');
 
 test('curried createElement', () => {
   let result = Message({ foobar: 'bar' })(
-    Signal(
-      Signal(), //
-      Signal(),
-    ),
-    Message(
+    Message({ foobar: 'bar' })(
       Signal({ name: 'name' }), //
     ),
   );
