@@ -31,7 +31,7 @@ type TypeToProps = {
     foobar: 'foo' | 'bar' | 'foobar';
   };
   Signal: {
-    name: string;
+    name?: string;
   };
 };
 
@@ -60,21 +60,47 @@ const createElementCurried2 =
   };
 
 const createElementCurried3 = <Type extends keyof TypeToProps>(type: Type) => {
-  function createElementWithProps<const Props extends TypeToProps[Type]>(
-    props: Props,
-  ): ElementType<Type, Props>;
-  function createElementWithProps<const Children extends Array<{ [elSym]: boolean }>>(
-    ...args: {} extends TypeToProps[Type] ? Children : never
-  ): ElementType<Type, {}, Children>;
-  function createElementWithProps(...propsOrChildren: any): ElementType<Type, any, any> {
+  const createElementWithProps: PropsOrChildren<Type> = (...propsOrChildren: any) => {
     let props = propsOrChildren;
     const inner = <Children extends Array<any>>(
       ...children: Children
     ): ElementType<Type, any, Children> => {
       return Object.assign({}, inner, { type, props, children, [elSym]: true });
     };
+
     return Object.assign(inner, { type, props, children: undefined, [elSym]: true });
-  }
+  };
+
+  return createElementWithProps;
+};
+
+type PropsOnly<Type extends keyof TypeToProps> = <const Props extends TypeToProps[Type]>(
+  props: Props,
+) => ElementType<Type, Props>;
+
+type PropsOrChildren<Type extends keyof TypeToProps> = {
+  <const Props extends TypeToProps[Type]>(props: Props): ElementType<Type, Props>;
+  <const Children extends Array<{ [elSym]: boolean }>>(
+    ...args: {} extends TypeToProps[Type] ? Children : never
+  ): ElementType<Type, {}, Children>;
+};
+
+type InnerCreateElement<Type extends keyof TypeToProps> = {} extends TypeToProps[Type]
+  ? PropsOrChildren<Type>
+  : PropsOnly<Type>;
+
+const createElementCurried4 = <Type extends keyof TypeToProps>(type: Type) => {
+  const createElementWithProps: InnerCreateElement<Type> = (...propsOrChildren: any) => {
+    let props = propsOrChildren;
+    const inner = <Children extends Array<any>>(
+      ...children: Children
+    ): ElementType<Type, any, Children> => {
+      return Object.assign({}, inner, { type, props, children, [elSym]: true });
+    };
+
+    return Object.assign(inner, { type, props, children: undefined, [elSym]: true });
+  };
+
   return createElementWithProps;
 };
 
@@ -91,22 +117,14 @@ test('regular createElement', () => {
 });
 
 test('curried createElement', () => {
-  // prettier-ignore
   let result = Message({ foobar: 'bar' })(
-    Signal({ name: 'signalA' }),
-    Signal({ name: 'signalB' }),
-    Message({ foobar: 'bar' })(
-      Signal({ name: 'name'})
-    )
+    Signal(
+      Signal(), //
+      Signal(),
+    ),
+    Message(
+      Signal({ name: 'name' }), //
+    ),
   );
   console.log(result);
 });
-
-test('foo', () => {});
-
-type fooprops = { fooooooo: 'a' | 'b' };
-function foo<const props extends fooprops>(props: props): any;
-function foo(...args: Array<{ [elSym]: boolean }>): any;
-function foo(props: any) {}
-
-foo({ fooooooo: 'a' });
