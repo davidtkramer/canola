@@ -4,7 +4,8 @@ const symbol = Symbol('element');
 
 type TypeToProps = {
   Message: {
-    foobar: 'foo' | 'bar' | 'foobar';
+    id: number;
+    name: string;
   };
   Signal: {
     name?: string;
@@ -13,7 +14,11 @@ type TypeToProps = {
 
 type ElementTypeList = Array<{ [symbol]: boolean }>;
 
-type ElementType<Type extends string, Props, Children = undefined> = {
+type ElementType<
+  Type extends string,
+  Props,
+  Children extends ElementTypeList | null = null,
+> = {
   type: Type;
   props: Props;
   children: Children;
@@ -44,16 +49,27 @@ type PropsRequired<Type extends keyof TypeToProps> = {
 
 const createElement: CreateElement = (type) => {
   return (...propsOrChildren: any) => {
-    let props = propsOrChildren;
+    let props =
+      propsOrChildren.length === 1 && !propsOrChildren[0]?.[symbol]
+        ? propsOrChildren[0]
+        : {};
+
+    let children =
+      propsOrChildren.length >= 1 && propsOrChildren[0]?.[symbol]
+        ? propsOrChildren
+        : null;
 
     const withChildren = Object.assign(
       (...children: Array<any>) => {
-        return Object.assign({}, withChildren, { children });
+        console.log(children);
+        let foo = Object.assign({}, withChildren, { children });
+        console.log(foo);
+        return foo;
       },
       {
         type,
         props,
-        children: undefined,
+        children,
         [symbol]: true,
       },
     );
@@ -64,11 +80,18 @@ const createElement: CreateElement = (type) => {
 const Message = createElement('Message');
 const Signal = createElement('Signal');
 
+type BuildMessageType<T extends ElementType<'Message', any, any>> = {
+  id: T['props']['id'];
+  name: T['props']['name'];
+  signals: {
+    [S in T['children'][number] as S['props']['name']]: number;
+  };
+};
+
 test('curried createElement', () => {
-  let result = Message({ foobar: 'bar' })(
-    Message({ foobar: 'bar' })(
-      Signal({ name: 'name' }), //
-    ),
+  let result = Message({ id: 0x3c2, name: 'TestMessage' })(
+    Signal({ name: 'name' }), //
+    Signal({ name: 'foo' }),
   );
-  console.log(result);
+  type Result = BuildMessageType<typeof result>;
 });
