@@ -51,7 +51,7 @@ export type Message<
   (node: h.JSX.Element): M;
 };
 
-function createMessage<Name extends string>(testName: Name) {
+export function createMessage<Name extends string>(testName: Name) {
   let schemaName = toUpperCamelCase(testName);
   let root = createRoot(schemaName);
 
