@@ -22,9 +22,12 @@
     "sourceMap": true,
     "moduleResolution": "NodeNext",
     "emitDeclarationOnly": false,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "h.Fragment",
 
     /* AND if you're building for a library: */
     "declaration": true
   },
-  "include": ["js/*.ts", "js/*.cjs"]
+  "include": ["js/**/*.ts", "js/**/*.tsx", "js/*.cjs"]
 }

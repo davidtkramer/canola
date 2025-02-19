@@ -9,11 +9,11 @@ let socket = new CanSocket('can1', {
 });
 
 socket.on('message', async (frame) => {
-  let { data } = schema.decode(frame);
+  let message = schema.decode(frame);
 
   if (
-    data.switchStatusIndex === 'INDEX_1' &&
-    data.secondRowSeatLeftFoldFlatSwitch &&
+    message.data.switchStatusIndex === 'INDEX_1' &&
+    message.data.secondRowSeatLeftFoldFlatSwitch &&
     !state.isMovingSeat
   ) {
     try {

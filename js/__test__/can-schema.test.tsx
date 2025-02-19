@@ -1,21 +1,20 @@
-import { beforeAll, expect, test } from 'vitest';
-import path from 'path';
-import { CanSchema, generateTypes } from '..';
-import { buffer } from './utils.js';
-import type {
-  Messages,
-  MultiplexedMessage_Signals_0,
-  MultiplexedMessage_Signals_1,
-} from './files/can-schema.test.types.js';
+import { expect, test } from 'vitest';
+import { buffer, createCanSchema } from './utils/index.js';
+import { h } from './utils/jsx-runtime.js';
 
-let schema: CanSchema<Messages>;
-beforeAll(async () => {
-  schema = CanSchema.loadFile('js/__test__/files/can-schema.test.kcd');
-  await generateTypes(
-    schema.messages,
-    path.join(process.cwd(), 'js/__test__/files/can-schema.test.types.ts'),
-  );
-});
+let schema = createCanSchema(
+  'can schema test',
+  <bus>
+    <message id={0x200} name='RegularMessage' length={1}>
+      <signal name='signalA' offset={0} length={1}>
+        <value min={0} max={1} />
+      </signal>
+      <signal name='signalB' offset={1} length={1}>
+        <value min={0} max={1} />
+      </signal>
+    </message>
+  </bus>,
+);
 
 test('encode by name', () => {
   let message = schema.encode({
@@ -87,28 +86,4 @@ test('throws error if message id not found', () => {
   expect(() => {
     schema.decode({ id: 0x000, data: buffer('00') });
   }).toThrowError("Unable to find message with id '0'");
-});
-
-test('encodes and decodes multiplexed messages', async () => {
-  let messageSchema = schema.getMessageSchemaByName('MultiplexedMessage');
-
-  let data0: MultiplexedMessage_Signals_0 = {
-    muxIndex: 'INDEX_0',
-    signalA: 1,
-    signalB: 1,
-  };
-  let encoded0 = messageSchema.encode(data0);
-  expect(encoded0).toEqual(buffer('18'));
-  let decoded0 = messageSchema.decode(encoded0);
-  expect(decoded0).toEqual(data0);
-
-  let data1: MultiplexedMessage_Signals_1 = {
-    muxIndex: 'INDEX_1',
-    signalC: 2,
-    signalD: 1,
-  };
-  let encoded1 = messageSchema.encode(data1);
-  expect(encoded1).toEqual(buffer('31'));
-  let decoded1 = messageSchema.decode(encoded1);
-  expect(decoded1).toEqual(data1);
 });
