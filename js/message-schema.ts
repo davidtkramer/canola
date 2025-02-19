@@ -410,10 +410,6 @@ export class MessageSchema<T extends MessageType = MessageType> {
     return mux;
   }
 
-  data(data: T['signals']): T['signals'] {
-    return data;
-  }
-
   private validateSignals(): void {
     // Implement signal validation
     // Check for overlapping signals and ensure they fit within message length
