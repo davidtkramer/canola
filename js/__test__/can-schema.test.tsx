@@ -13,28 +13,8 @@ let schema = createBus(
         <value min={0} max={1} />
       </signal>
     </message>
-    <message id={0x201} name='MultiplexMessage' length={1}>
-      <multiplex name='muxIndex' offset={0} length={2}>
-        <value min={0} max={2} />
-        <labelset>
-          <label name='INDEX_0' value={0} />
-          <label name='INDEX_1' value={1} />
-        </labelset>
-        <muxgroup count={0}>
-          <signal name='signalA' offset={3} length={1}>
-            <value min={0} max={1} />
-          </signal>
-        </muxgroup>
-        <muxgroup count={1}>
-          <signal name='signalB' offset={3} length={2}>
-            <value min={0} max={3} />
-          </signal>
-        </muxgroup>
-      </multiplex>
-    </message>
   </bus>,
 );
-console.log(schema);
 
 test('encode by name', () => {
   let message = schema.encode({

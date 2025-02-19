@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
-import { CanSocket, type CanFrame } from '..';
-import { buffer, waitFor, sleep, throttle, unthrottle } from './utils.js';
+import { CanSocket, type CanFrame } from '../can-socket.js';
+import { buffer, waitFor, sleep, throttle, unthrottle } from './utils/index.js';
 
 test('reads and writes a message', async () => {
   let frame: CanFrame;
@@ -54,7 +54,7 @@ test.runIf(!process.env['CI'])(
     await waitFor(() => {
       expect(frames[1]?.id).toBe(125);
     });
-    expect(frames[0].id).toBe(124);
+    expect(frames[0]!.id).toBe(124);
     expect(frames).toHaveLength(2);
   },
 );
@@ -83,8 +83,8 @@ test.runIf(!process.env['CI'])(
     await waitFor(() => {
       expect(frames[2]?.id).toBe(125);
     });
-    expect(frames[1].id).toBe(124);
-    expect(frames[0].id).toBe(123); // sent before filters were applied
+    expect(frames[1]!.id).toBe(124);
+    expect(frames[0]!.id).toBe(123); // sent before filters were applied
     expect(frames).toHaveLength(3);
   },
 );

@@ -1,6 +1,6 @@
 import { test, expect, describe } from 'vitest';
 import { BitStruct } from '../bitstruct.js';
-import { buffer } from './utils.js';
+import { buffer } from './utils/index.js';
 
 test('packing and unpacking', () => {
   let struct = new BitStruct([
