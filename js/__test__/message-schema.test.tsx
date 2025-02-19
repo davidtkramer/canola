@@ -2,7 +2,7 @@ import { expect } from 'vitest';
 import { h, test } from './utils/index.js';
 
 test('labels', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={1}>
       <signal name='signal' offset={0} length={1}>
         <value min={0} max={1} />
@@ -19,7 +19,7 @@ test('labels', (ctx) => {
 });
 
 test('unsigned integer', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={1}>
       <signal name='signalA' offset={0} length={8}>
         <value min={0} max={255} />
@@ -31,7 +31,7 @@ test('unsigned integer', (ctx) => {
 });
 
 test('double', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={8}>
       <signal name='signal' offset={0} length={64}>
         <value type='double' />
@@ -44,7 +44,7 @@ test('double', (ctx) => {
 });
 
 test('scaled unsigned integer', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={4}>
       <signal name='signal' offset={0} length={32}>
         <value type='single' slope={1.5} intercept={10} />
@@ -56,7 +56,7 @@ test('scaled unsigned integer', (ctx) => {
 });
 
 test('scaled signed integer', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={4}>
       <signal name='temp' offset={7} length={12} endianess='big'>
         <value
@@ -78,7 +78,7 @@ test('scaled float', () => {});
 test('scaled double', () => {});
 
 test('multiplex with labeled mux signal', (ctx) => {
-  let schema = ctx.message(
+  let schema = ctx.createMessageSchema(
     <message length={1}>
       <multiplex name='muxIndex' offset={0} length={2}>
         <value min={0} max={2} />

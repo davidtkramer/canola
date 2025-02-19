@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
-import { buffer, createBus } from './utils/index.js';
+import { buffer, createCanSchema } from './utils/index.js';
 import { h } from './utils/jsx-runtime.js';
 
-let schema = createBus(
+let schema = createCanSchema(
   'can schema test',
   <bus>
     <message id={0x200} name='RegularMessage' length={1}>

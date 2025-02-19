@@ -14,7 +14,7 @@ import type { MessageSchema } from '../../message-schema.js';
 import type { TestMessages } from '../files/generated/index.js';
 import { h, createRoot } from './jsx-runtime.js';
 
-export function createBus<Name extends string>(busName: Name, node: h.JSX.Element) {
+export function createCanSchema<Name extends string>(busName: Name, node: h.JSX.Element) {
   let root = createRoot();
 
   let str = root.render(<networkdefinition>{node}</networkdefinition>);
@@ -34,28 +34,27 @@ export function createBus<Name extends string>(busName: Name, node: h.JSX.Elemen
 
 function _test<Name extends string>(
   name: Name,
-  fn: TestFunction<{ message: Message<Name> }>,
+  fn: TestFunction<{ createMessageSchema: CreateMessageSchema<Name> }>,
 ) {
   originalTest(name, (context) => {
-    (context as any).message = createMessage(name);
+    (context as any).createMessageSchema = createMessageSchemaCreator(name);
     fn(context as any);
   });
 }
 
 export const test: typeof _test & TestAPI = Object.assign(_test, originalTest);
 
-export type Message<
+export type CreateMessageSchema<
   Name extends string,
   M extends MessageSchema = MessageSchema<TestMessages[ToUpperCamelCase<Name>]>,
 > = {
   (node: h.JSX.Element): M;
 };
-
-export function createMessage<Name extends string>(testName: Name) {
+export function createMessageSchemaCreator<Name extends string>(testName: Name) {
   let schemaName = toUpperCamelCase(testName);
   let root = createRoot(schemaName);
 
-  return function message(node: h.JSX.Element) {
+  return function createMessageSchema(node: h.JSX.Element) {
     let schema = CanSchema.loadString(
       root.render(
         <networkdefinition>

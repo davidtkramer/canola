@@ -1,7 +1,10 @@
 import { execSync } from 'child_process';
 import { test as originalTest, type TestAPI, type TestFunction } from 'vitest';
 import type { MessageSchema } from '../message-schema.js';
-import { createMessage, type Message } from './utils/test-wrapper.js';
+import {
+  createMessageSchemaCreator,
+  type CreateMessageSchema,
+} from './utils/test-wrapper.js';
 
 export function waitFor(callback: any, { timeout = 4000, interval = 50 } = {}) {
   if (typeof callback !== 'function') {
@@ -65,10 +68,10 @@ export function roundTrip<T extends MessageSchema<any>>(
 
 function _test<Name extends string>(
   name: Name,
-  fn: TestFunction<{ message: Message<Name> }>,
+  fn: TestFunction<{ message: CreateMessageSchema<Name> }>,
 ) {
   originalTest(name, (context) => {
-    (context as any).message = createMessage(name);
+    (context as any).message = createMessageSchemaCreator(name);
     fn(context as any);
   });
 }
