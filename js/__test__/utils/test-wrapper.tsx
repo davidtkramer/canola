@@ -14,7 +14,10 @@ import type { MessageSchema } from '../../message-schema.js';
 import type { TestMessages } from '../files/generated/index.js';
 import { h, createRoot } from './jsx-runtime.js';
 
-export function createCanSchema<Name extends string>(busName: Name, node: h.JSX.Element) {
+export function createCanSchema<Name extends string>(
+  schemaName: Name,
+  node: h.JSX.Element,
+) {
   let root = createRoot();
 
   let str = root.render(<networkdefinition>{node}</networkdefinition>);
@@ -23,10 +26,10 @@ export function createCanSchema<Name extends string>(busName: Name, node: h.JSX.
 
   let outputPath = path.join(
     process.cwd(),
-    `js/__test__/files/generated/${toKabobCase(busName)}.d.ts`,
+    `js/__test__/files/generated/${toKabobCase(schemaName)}.d.ts`,
   );
   generateTypes(schema.messages, outputPath).then(() => {
-    generateModuleDeclaration(outputPath, toUpperCamelCase(busName));
+    generateModuleDeclaration(outputPath, toUpperCamelCase(schemaName));
   });
 
   return schema as CanSchema<TestMessages[ToUpperCamelCase<Name>]>;
