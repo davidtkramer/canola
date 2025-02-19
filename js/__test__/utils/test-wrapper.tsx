@@ -20,9 +20,9 @@ export function createCanSchema<Name extends string>(
 ) {
   let root = createRoot();
 
-  let str = root.render(<networkdefinition>{node}</networkdefinition>);
-  console.log(str);
-  let schema = CanSchema.loadString(str);
+  let schema = CanSchema.loadString(
+    root.render(<networkdefinition>{node}</networkdefinition>),
+  );
 
   let outputPath = path.join(
     process.cwd(),
