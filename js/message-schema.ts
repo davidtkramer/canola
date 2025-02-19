@@ -1,6 +1,7 @@
 import { SignalSchema } from './signal-schema.js';
 import type { ByteOrder, Comments, SignalValue } from './types.js';
 import { BitStruct } from './bitstruct.js';
+import type { assert } from 'console';
 
 type Codec = {
   signals: Array<SignalSchema>;
@@ -407,6 +408,10 @@ export class MessageSchema<T extends MessageType = MessageType> {
     }
 
     return mux;
+  }
+
+  data(data: T['signals']): T['signals'] {
+    return data;
   }
 
   private validateSignals(): void {

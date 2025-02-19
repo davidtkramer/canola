@@ -1,17 +1,40 @@
-import { beforeAll, expect, test } from 'vitest';
-import path from 'path';
-import { CanSchema, generateTypes } from '..';
-import { buffer } from './utils.js';
-import type { Messages } from './files/can-schema.test.types.js';
+import { expect, test } from 'vitest';
+import { buffer, createBus } from './utils/index.js';
+import { h } from './utils/jsx-runtime.js';
 
-let schema: CanSchema<Messages>;
-beforeAll(async () => {
-  schema = CanSchema.loadFile('js/__test__/files/can-schema.test.kcd');
-  await generateTypes(
-    schema.messages,
-    path.join(process.cwd(), 'js/__test__/files/can-schema.test.types.ts'),
-  );
-});
+let schema = createBus(
+  'can schema test',
+  <bus>
+    <message id={0x200} name='RegularMessage' length={1}>
+      <signal name='signalA' offset={0} length={1}>
+        <value min={0} max={1} />
+      </signal>
+      <signal name='signalB' offset={1} length={1}>
+        <value min={0} max={1} />
+      </signal>
+    </message>
+    <message id={0x201} name='MultiplexMessage' length={1}>
+      <multiplex name='muxIndex' offset={0} length={2}>
+        <value min={0} max={2} />
+        <labelset>
+          <label name='INDEX_0' value={0} />
+          <label name='INDEX_1' value={1} />
+        </labelset>
+        <muxgroup count={0}>
+          <signal name='signalA' offset={3} length={1}>
+            <value min={0} max={1} />
+          </signal>
+        </muxgroup>
+        <muxgroup count={1}>
+          <signal name='signalB' offset={3} length={2}>
+            <value min={0} max={3} />
+          </signal>
+        </muxgroup>
+      </multiplex>
+    </message>
+  </bus>,
+);
+console.log(schema);
 
 test('encode by name', () => {
   let message = schema.encode({
