@@ -16,7 +16,7 @@ import { h, createRoot } from './jsx-runtime.js';
 export function createCanSchema<Name extends string>(
   schemaName: Name,
   node: h.JSX.Element,
-) {
+): CanSchema<TestMessages[ToUpperCamelCase<Name>]> {
   let root = createRoot();
 
   let schema = CanSchema.loadString(
@@ -37,7 +37,7 @@ export function createCanSchema<Name extends string>(
 export function createMessageSchema<Name extends string>(
   schemaName: Name,
   node: h.JSX.Element,
-) {
+): MessageSchema<TestMessages[ToUpperCamelCase<Name>]> {
   let schemaNameCamelized = toUpperCamelCase(schemaName);
 
   let schema = CanSchema.loadString(
@@ -59,7 +59,7 @@ export function createMessageSchema<Name extends string>(
     generateModuleDeclaration(outputPath, schemaNameCamelized);
   });
 
-  return schema.messages[0] as MessageSchema<TestMessages[Name]>;
+  return schema.messages[0] as MessageSchema<TestMessages[ToUpperCamelCase<Name>]>;
 }
 
 function generateModuleDeclaration(outputPath: string, name: string) {

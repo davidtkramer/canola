@@ -1,10 +1,6 @@
-import { type TestAPI, type TestFunction, test as originalTest } from 'vitest';
 import { execSync } from 'child_process';
-export { h } from './jsx-runtime.js';
-import './matchers.js';
-import type { MessageSchema } from '../../message-schema.js';
-import type { TestMessages } from '../files/generated/index.js';
-import { createMessageSchema, type ToUpperCamelCase } from './test-wrapper.js';
+import { test as originalTest, type TestAPI, type TestFunction } from 'vitest';
+import { createMessageSchema } from './schema.js';
 import type { h } from './jsx-runtime.js';
 
 export function waitFor(callback: any, { timeout = 4000, interval = 50 } = {}) {
@@ -61,7 +57,7 @@ export function unthrottle() {
 }
 
 export type CreateMessageSchema<Name extends string> = {
-  (node: h.JSX.Element): MessageSchema<TestMessages[ToUpperCamelCase<Name>]>;
+  (node: h.JSX.Element): ReturnType<typeof createMessageSchema<Name>>;
 };
 function _test<Name extends string>(
   name: Name,
@@ -70,8 +66,11 @@ function _test<Name extends string>(
   originalTest(name, (context) => {
     let _createMessageSchema: CreateMessageSchema<Name> = (node) =>
       createMessageSchema(name, node);
-    (context as any).createMessageSchema = _createMessageSchema;
-    fn(context as any);
+
+    let newContext = Object.assign(context, {
+      createMessageSchema: _createMessageSchema,
+    });
+    fn(newContext);
   });
 }
 
