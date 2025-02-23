@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import { h, test } from './utils/index.js';
+import { buffer, h, test } from './utils/index.js';
 
 test('labels', (ctx) => {
   let schema = ctx.createMessageSchema(
@@ -104,7 +104,37 @@ test('multiplex with labeled mux signal', (ctx) => {
   expect(schema).toRoundTrip({ muxIndex: 'INDEX_1', signalB: 3 }, '19');
 });
 
-test('multiplex without mux signal', () => {});
+test('multiplex with numeric mux signal', (ctx) => {
+  let schema = ctx.createMessageSchema(
+    <message length={3}>
+      <multiplex name='ABS_InfoMux' offset={16} length={2}>
+        <muxgroup count={0}>
+          <signal name='Info0' offset={0} length={8} />
+          <signal name='Info1' offset={8} length={8} />
+        </muxgroup>
+        <muxgroup count={1}>
+          <signal name='Info2' offset={0} length={8} />
+          <signal name='Info3' offset={8} length={8} />
+        </muxgroup>
+        <muxgroup count={2}>
+          <signal name='Info4' offset={0} length={8} />
+          <signal name='Info5' offset={8} length={8} />
+        </muxgroup>
+        <muxgroup count={3}>
+          <signal name='Info6' offset={0} length={8} />
+          <signal name='Info7' offset={8} length={8} />
+        </muxgroup>
+      </multiplex>
+    </message>,
+  );
+
+  let data = { ABS_InfoMux: 0, Info0: 1, Info1: 2 } as const;
+  expect(schema.encode(data)).toEqual(buffer('0102'));
+  expect(schema).toRoundTrip({ ABS_InfoMux: 0, Info0: 1, Info1: 2 }, '000102');
+  expect(schema).toRoundTrip({ ABS_InfoMux: 1, Info2: 3, Info3: 4 }, '0304');
+  expect(schema).toRoundTrip({ ABS_InfoMux: 2, Info4: 5, Info5: 6 }, '0506');
+  expect(schema).toRoundTrip({ ABS_InfoMux: 3, Info6: 7, Info7: 8 }, '0708');
+});
 
 test('container messages', () => {});
 
